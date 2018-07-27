@@ -1,0 +1,9 @@
+!: AUTO INIT
+!: AUTO RESET
+
+C: RUN "CALL dbms.cluster.routing.getServers" {}
+   PULL_ALL
+S: FAILURE {"code": "Neo.DatabaseError.General.UnknownError", "message": "An unknown error occurred."}
+   IGNORED
+C: RESET
+S: SUCCESS {}
