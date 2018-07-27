@@ -14,4 +14,5 @@ install:
   - pip install tox-travis
 
 script:
+  - export BOTO_CONFIG=/dev/null  # https://github.com/travis-ci/travis-ci/issues/7940
   - tox
