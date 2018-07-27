@@ -1,0 +1,17 @@
+language: python
+
+sudo: required
+
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+
+install:
+  - sudo apt-get update && sudo apt-get install oracle-java8-set-default
+  - pip install tox-travis
+
+script:
+  - tox
