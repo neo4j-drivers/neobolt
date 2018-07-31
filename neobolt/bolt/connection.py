@@ -204,8 +204,9 @@ class Connection(object):
         self.der_encoded_server_certificate = config.get("der_encoded_server_certificate")
 
     def init(self):
-        response = InitResponse(self)
-        self.append(INIT, (self.user_agent, self.auth_dict), response=response)
+        metadata = {}
+        response = InitResponse(self, metadata)
+        self._append(INIT, (self.user_agent, self.auth_dict), response=response)
         self.sync()
 
         self._supports_statement_reuse = self.server.supports_statement_reuse()
@@ -223,13 +224,16 @@ class Connection(object):
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
 
-    def run(self, statement, parameters=None, **handlers):
-        self.append(RUN, (statement, parameters or {}), response=Response(self, **handlers))
+    def run(self, statement, parameters, metadata, **handlers):
+        return self._append(RUN, (statement, parameters or {}), Response(self, metadata, **handlers))
 
-    def pull_all(self, **handlers):
-        self.append(PULL_ALL, (), response=Response(self, **handlers))
+    def pull_all(self, metadata, **handlers):
+        return self._append(PULL_ALL, (), Response(self, metadata, **handlers))
 
-    def append(self, signature, fields=(), response=None):
+    def discard_all(self, metadata, **handlers):
+        return self._append(DISCARD_ALL, (), Response(self, metadata, **handlers))
+
+    def _append(self, signature, fields=(), response=None):
         """ Add a message to the outgoing queue.
 
         :arg signature: the signature of the message
@@ -259,12 +263,14 @@ class Connection(object):
         self.output_buffer.chunk()
         self.output_buffer.chunk()
         self.responses.append(response)
+        return response
 
     def reset(self):
         """ Add a RESET message to the outgoing queue, send
         it and consume all remaining messages.
         """
-        self.append(RESET, response=ResetResponse(self))
+        metadata = {}
+        self._append(RESET, response=ResetResponse(self, metadata))
         self.sync()
 
     def send(self):

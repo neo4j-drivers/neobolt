@@ -53,20 +53,20 @@ class ConnectionTestCase(StubTestCase):
         with StubCluster({9001: "return_1.script"}):
             address = ("127.0.0.1", 9001)
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
-                run_response = RunResponse(cx)
-                pull_all_response = PullAllResponse(cx)
-                cx.append(RUN, ("RETURN $x", {"x": 1}), response=run_response)
-                cx.append(PULL_ALL, response=pull_all_response)
+                metadata = {}
+                records = []
+                cx.run("RETURN $x", {"x": 1}, metadata)
+                cx.pull_all(Response(cx, metadata, records))
                 cx.sync()
-                self.assertEqual([[1]], pull_all_response.records)
+                self.assertEqual([[1]], records)
 
     def test_disconnect_on_run(self):
         with StubCluster({9001: "disconnect_on_run.script"}):
             address = ("127.0.0.1", 9001)
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
                 with self.assertRaises(ServiceUnavailable):
-                    run_response = RunResponse(cx)
-                    cx.append(RUN, ("RETURN $x", {"x": 1}), response=run_response)
+                    metadata = {}
+                    cx.run("RETURN $x", {"x": 1}, metadata)
                     cx.sync()
 
     def test_disconnect_on_pull_all(self):
@@ -74,10 +74,10 @@ class ConnectionTestCase(StubTestCase):
             address = ("127.0.0.1", 9001)
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
                 with self.assertRaises(ServiceUnavailable):
-                    run_response = RunResponse(cx)
-                    pull_all_response = PullAllResponse(cx)
-                    cx.append(RUN, ("RETURN $x", {"x": 1}), response=run_response)
-                    cx.append(PULL_ALL, response=pull_all_response)
+                    metadata = {}
+                    records = []
+                    cx.run("RETURN $x", {"x": 1}, metadata)
+                    cx.pull_all(metadata, records)
                     cx.sync()
 
     def test_disconnect_after_init(self):
@@ -85,5 +85,6 @@ class ConnectionTestCase(StubTestCase):
             address = ("127.0.0.1", 9001)
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
                 with self.assertRaises(ServiceUnavailable):
-                    cx.append(RUN, ("RETURN $x", {"x": 1}), response=RunResponse(cx))
+                    metadata = {}
+                    cx.run("RETURN $x", {"x": 1}, metadata)
                     cx.sync()

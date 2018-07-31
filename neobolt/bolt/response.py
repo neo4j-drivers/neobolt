@@ -19,7 +19,7 @@
 # limitations under the License.
 
 
-from neobolt.exceptions import AuthError, ServiceUnavailable, ProtocolError
+from neobolt.exceptions import AuthError, ServiceUnavailable, ProtocolError, CypherError
 
 
 class Response(object):
@@ -27,9 +27,10 @@ class Response(object):
     more detail messages followed by one summary message).
     """
 
-    def __init__(self, connection, **handlers):
+    def __init__(self, connection, metadata, **handlers):
         self.connection = connection
         self.handlers = handlers
+        self.metadata = metadata
         self.complete = False
 
     def on_records(self, records):
@@ -42,16 +43,25 @@ class Response(object):
     def on_success(self, metadata):
         """ Called when a SUCCESS message has been received.
         """
+        self.metadata.update(metadata)
         handler = self.handlers.get("on_success")
         if callable(handler):
-            handler(metadata)
+            handler(self.metadata)
+        handler = self.handlers.get("on_summary")
+        if callable(handler):
+            handler()
 
     def on_failure(self, metadata):
         """ Called when a FAILURE message has been received.
         """
+        self.connection.reset()
         handler = self.handlers.get("on_failure")
         if callable(handler):
             handler(metadata)
+        handler = self.handlers.get("on_summary")
+        if callable(handler):
+            handler()
+        raise CypherError.hydrate(**metadata)
 
     def on_ignored(self, metadata=None):
         """ Called when an IGNORED message has been received.
@@ -59,6 +69,9 @@ class Response(object):
         handler = self.handlers.get("on_ignored")
         if callable(handler):
             handler(metadata)
+        handler = self.handlers.get("on_summary")
+        if callable(handler):
+            handler()
 
 
 class InitResponse(Response):

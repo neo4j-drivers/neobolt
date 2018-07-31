@@ -19,7 +19,7 @@
 # limitations under the License.
 
 
-from neobolt.bolt import DEFAULT_PORT, Connection, connect, ServiceUnavailable
+from neobolt.bolt import DEFAULT_PORT, Connection, connect, ServiceUnavailable, Response
 
 from test.integration.tools import IntegrationTestCase
 
@@ -37,8 +37,9 @@ class ConnectionTestCase(IntegrationTestCase):
     def test_connection_simple_run(self):
         records = []
         with connect(self.bolt_address, auth=self.auth_token) as cx:
-            cx.run("RETURN 1", on_failure=fail)
-            cx.pull_all(on_records=records.extend, on_failure=fail)
+            metadata = {}
+            cx.run("RETURN 1", {}, metadata)
+            cx.pull_all(metadata, records)
             cx.sync()
         self.assertEqual(records, [[1]])
 

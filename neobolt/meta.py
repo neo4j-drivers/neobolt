@@ -20,4 +20,4 @@
 
 
 # This version number will be automatically set in release-prepare build.
-version = "1.7.0a2"
+version = "1.7.0a3"

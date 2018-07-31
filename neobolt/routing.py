@@ -25,7 +25,8 @@ from threading import Lock
 from time import clock
 
 from neobolt.addressing import SocketAddress
-from neobolt.bolt import ConnectionPool, ServiceUnavailable, ProtocolError, DEFAULT_PORT, ConnectionErrorHandler
+from neobolt.bolt import ConnectionPool, ServiceUnavailable, ProtocolError, DEFAULT_PORT, ConnectionErrorHandler, \
+    Response
 from neobolt.compat.collections import MutableSet, OrderedDict
 from neobolt.exceptions import ConnectionExpired, DatabaseUnavailableError, \
     NotALeaderError, ForbiddenOnReadOnlyDatabaseError, RoutingProtocolError
@@ -271,14 +272,11 @@ class RoutingConnectionPool(ConnectionPool):
         :raise ServiceUnavailable: if the server does not support routing or
                                    if routing support is broken
         """
-        keys = []
+        metadata = {}
         records = []
 
-        def extract_keys(metadata):
-            keys.extend(metadata.get("fields", ()))
-
-        def fail(metadata):
-            if metadata.get("code") == "Neo.ClientError.Procedure.ProcedureNotFound":
+        def fail(md):
+            if md.get("code") == "Neo.ClientError.Procedure.ProcedureNotFound":
                 raise RoutingProtocolError("Server {!r} does not support routing".format(address))
             else:
                 raise RoutingProtocolError("Routing support broken on server {!r}".format(address))
@@ -287,12 +285,10 @@ class RoutingConnectionPool(ConnectionPool):
             with self.acquire_direct(address) as cx:
                 if ServerVersion.from_str(cx.server.version).at_least_version(3, 2):
                     cx.run("CALL dbms.cluster.routing.getRoutingTable({context})",
-                           {"context": self.routing_context},
-                           on_success=extract_keys, on_failure=fail)
+                           {"context": self.routing_context}, metadata, on_failure=fail)
                 else:
-                    cx.run("CALL dbms.cluster.routing.getServers",
-                           on_success=extract_keys, on_failure=fail)
-                cx.pull_all(on_records=records.extend)
+                    cx.run("CALL dbms.cluster.routing.getServers", {}, metadata, on_failure=fail)
+                cx.pull_all(metadata, on_records=records.extend)
                 cx.sync()
         except RoutingProtocolError as error:
             raise ServiceUnavailable(*error.args)
@@ -300,7 +296,7 @@ class RoutingConnectionPool(ConnectionPool):
             self.deactivate(address)
             return None
         else:
-            return [dict(zip(keys, values)) for values in records]
+            return [dict(zip(metadata.get("fields", ()), values)) for values in records]
 
     def fetch_routing_table(self, address):
         """ Fetch a routing table from a given router address.
