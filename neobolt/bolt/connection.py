@@ -52,20 +52,6 @@ DEFAULT_PORT = 7687
 MAGIC_PREAMBLE = 0x6060B017
 
 
-# Signature bytes for each message type
-INIT = b"\x01"             # 0000 0001 // INIT <user_agent> <auth>
-RESET = b"\x0F"            # 0000 1111 // RESET
-RUN = b"\x10"              # 0001 0000 // RUN <statement> <parameters>
-DISCARD_ALL = b"\x2F"      # 0010 1111 // DISCARD *
-PULL_ALL = b"\x3F"         # 0011 1111 // PULL *
-SUCCESS = b"\x70"          # 0111 0000 // SUCCESS <metadata>
-RECORD = b"\x71"           # 0111 0001 // RECORD <value>
-IGNORED = b"\x7E"          # 0111 1110 // IGNORED <metadata>
-FAILURE = b"\x7F"          # 0111 1111 // FAILURE <metadata>
-
-DETAIL = {RECORD}
-SUMMARY = {SUCCESS, IGNORED, FAILURE}
-
 # Set up logger
 log = logging.getLogger("neo4j.bolt")
 log_debug = log.debug
@@ -168,10 +154,10 @@ class Connection(object):
 
     _last_run_statement = None
 
-    def __init__(self, address, sock, protocol_version, error_handler, **config):
+    def __init__(self, protocol_version, address, sock, error_handler, **config):
+        self.protocol_version = protocol_version
         self.address = address
         self.socket = sock
-        self.protocol_version = protocol_version
         self.error_handler = error_handler or ConnectionErrorHandler()
         self.server = ServerInfo(SocketAddress.from_socket(sock))
         self.input_buffer = ChunkedInputBuffer()
@@ -204,11 +190,18 @@ class Connection(object):
         self.der_encoded_server_certificate = config.get("der_encoded_server_certificate")
 
     def init(self):
-        metadata = {}
-        response = InitResponse(self, metadata)
-        self._append(INIT, (self.user_agent, self.auth_dict), response=response)
+        log_debug("C: INIT %r {...}", self.user_agent)
+        self._append(b"\x01", (self.user_agent, self.auth_dict), response=InitResponse(self, {}))
         self.sync()
+        self._supports_statement_reuse = self.server.supports_statement_reuse()
+        self.packer.supports_bytes = self.server.supports_bytes()
 
+    def hello(self):
+        headers = {"user_agent": self.user_agent}
+        headers.update(self.auth_dict)
+        log_debug("C: HELLO %r" % headers, self.user_agent)     # TODO: obscure password
+        self._append(b"\x01", (headers,), response=InitResponse(self, {}))
+        self.sync()
         self._supports_statement_reuse = self.server.supports_statement_reuse()
         self.packer.supports_bytes = self.server.supports_bytes()
 
@@ -225,13 +218,49 @@ class Connection(object):
         self.close()
 
     def run(self, statement, parameters, metadata, **handlers):
-        return self._append(RUN, (statement, parameters or {}), Response(self, metadata, **handlers))
-
-    def pull_all(self, metadata, **handlers):
-        return self._append(PULL_ALL, (), Response(self, metadata, **handlers))
+        if self._supports_statement_reuse:
+            if statement.upper() not in (u"BEGIN", u"COMMIT", u"ROLLBACK"):
+                if statement == self._last_run_statement:
+                    statement = ""
+                else:
+                    self._last_run_statement = statement
+        log_debug("C: RUN %r %r", statement, parameters)
+        self._append(b"\x10", (statement, parameters or {}), Response(self, metadata, **handlers))
 
     def discard_all(self, metadata, **handlers):
-        return self._append(DISCARD_ALL, (), Response(self, metadata, **handlers))
+        log_debug("C: DISCARD_ALL")
+        self._append(b"\x2F", (), Response(self, metadata, **handlers))
+
+    def pull_all(self, metadata, **handlers):
+        log_debug("C: PULL_ALL")
+        self._append(b"\x3F", (), Response(self, metadata, **handlers))
+
+    def begin(self, bookmarks, metadata):
+        parameters = {}
+        if bookmarks:
+            if self.protocol_version < 2:
+                # TODO 2.0: remove
+                parameters["bookmark"] = last_bookmark(bookmarks)
+            parameters["bookmarks"] = list(bookmarks)
+        if self.protocol_version >= 3:
+            self._append(b"\x11", (parameters,), Response(self, metadata))
+        else:
+            self.run(u"BEGIN", parameters, metadata)
+            self.discard_all(metadata)
+
+    def commit(self, metadata):
+        if self.protocol_version >= 3:
+            self._append(b"\x12", (), Response(self, metadata))
+        else:
+            self.run(u"COMMIT", {}, metadata)
+            self.discard_all(metadata)
+
+    def rollback(self, metadata):
+        if self.protocol_version >= 3:
+            self._append(b"\x13", (), Response(self, metadata))
+        else:
+            self.run(u"ROLLBACK", {}, metadata)
+            self.discard_all(metadata)
 
     def _append(self, signature, fields=(), response=None):
         """ Add a message to the outgoing queue.
@@ -240,37 +269,17 @@ class Connection(object):
         :arg fields: the fields of the message as a tuple
         :arg response: a response object to handle callbacks
         """
-        if signature == RUN:
-            if self._supports_statement_reuse:
-                statement = fields[0]
-                if statement.upper() not in ("BEGIN", "COMMIT", "ROLLBACK"):
-                    if statement == self._last_run_statement:
-                        fields = ("",) + fields[1:]
-                    else:
-                        self._last_run_statement = statement
-            log_debug("C: RUN %r", fields)
-        elif signature == PULL_ALL:
-            log_debug("C: PULL_ALL %r", fields)
-        elif signature == DISCARD_ALL:
-            log_debug("C: DISCARD_ALL %r", fields)
-        elif signature == RESET:
-            log_debug("C: RESET %r", fields)
-        elif signature == INIT:
-            log_debug("C: INIT (%r, {...})", fields[0])
-        else:
-            raise ValueError("Unknown message signature")
         self.packer.pack_struct(signature, fields)
         self.output_buffer.chunk()
         self.output_buffer.chunk()
         self.responses.append(response)
-        return response
 
     def reset(self):
         """ Add a RESET message to the outgoing queue, send
         it and consume all remaining messages.
         """
-        metadata = {}
-        self._append(RESET, response=ResetResponse(self, metadata))
+        log_debug("C: RESET")
+        self._append(b"\x0F", response=ResetResponse(self, {}))
         self.sync()
 
     def send(self):
@@ -325,14 +334,14 @@ class Connection(object):
 
         response = self.responses.popleft()
         response.complete = True
-        if summary_signature == SUCCESS:
+        if summary_signature == b"\x70":
             log_debug("S: SUCCESS (%r)", summary_metadata)
             response.on_success(summary_metadata or {})
-        elif summary_signature == IGNORED:
+        elif summary_signature == b"\x7E":
             self._last_run_statement = None
             log_debug("S: IGNORED (%r)", summary_metadata)
             response.on_ignored(summary_metadata or {})
-        elif summary_signature == FAILURE:
+        elif summary_signature == b"\x7F":
             self._last_run_statement = None
             log_debug("S: FAILURE (%r)", summary_metadata)
             response.on_failure(summary_metadata or {})
@@ -365,7 +374,7 @@ class Connection(object):
             size, signature = unpacker.unpack_structure_header()
             if size > 1:
                 raise ProtocolError("Expected one field")
-            if signature == RECORD:
+            if signature == b"\x71":
                 data = unpacker.unpack_list()
                 details.append(data)
                 more = input_buffer.frame_message()
@@ -558,6 +567,35 @@ class ConnectionPool(object):
             return self._closed
 
 
+# TODO: remove in 2.0
+def _last_bookmark(b0, b1):
+    """ Return the latest of two bookmarks by looking for the maximum
+    integer value following the last colon in the bookmark string.
+    """
+    n = [None, None]
+    _, _, n[0] = b0.rpartition(":")
+    _, _, n[1] = b1.rpartition(":")
+    for i in range(2):
+        try:
+            n[i] = int(n[i])
+        except ValueError:
+            raise ValueError("Invalid bookmark: {}".format(b0))
+    return b0 if n[0] > n[1] else b1
+
+
+# TODO: remove in 2.0
+def last_bookmark(bookmarks):
+    """ The bookmark returned by the last :class:`.Transaction`.
+    """
+    last = None
+    for bookmark in bookmarks:
+        if last is None:
+            last = bookmark
+        else:
+            last = _last_bookmark(last, bookmark)
+    return last
+
+
 def _force_close(s):
     try:
         s.close()
@@ -640,7 +678,7 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, error_handle
     """
 
     # Send details of the protocol versions supported
-    supported_versions = [2, 1, 0, 0]
+    supported_versions = [3, 2, 1, 0]
     handshake = [MAGIC_PREAMBLE] + supported_versions
     log_debug("C: [HANDSHAKE] 0x%X %r", MAGIC_PREAMBLE, supported_versions)
     data = b"".join(struct_pack(">I", num) for num in handshake)
@@ -673,10 +711,16 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, error_handle
         s.shutdown(SHUT_RDWR)
         s.close()
     elif agreed_version in (1, 2):
-        connection = Connection(resolved_address, s, agreed_version,
+        connection = Connection(agreed_version, resolved_address, s,
                                 der_encoded_server_certificate=der_encoded_server_certificate,
                                 error_handler=error_handler, **config)
         connection.init()
+        return connection
+    elif agreed_version in (3,):
+        connection = Connection(agreed_version, resolved_address, s,
+                                der_encoded_server_certificate=der_encoded_server_certificate,
+                                error_handler=error_handler, **config)
+        connection.hello()
         return connection
     elif agreed_version == 0x48545450:
         log_error("S: [CLOSE]")

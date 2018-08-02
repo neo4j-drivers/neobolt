@@ -39,7 +39,7 @@ class ConnectionTestCase(IntegrationTestCase):
         with connect(self.bolt_address, auth=self.auth_token) as cx:
             metadata = {}
             cx.run("RETURN 1", {}, metadata)
-            cx.pull_all(metadata, records)
+            cx.pull_all(metadata, on_records=records.extend)
             cx.sync()
         self.assertEqual(records, [[1]])
 

@@ -19,26 +19,10 @@
 # limitations under the License.
 
 
-from neobolt.bolt.connection import Connection, connect, RUN, PULL_ALL
-from neobolt.bolt.response import Response
+from neobolt.bolt.connection import Connection, connect
 from neobolt.exceptions import ServiceUnavailable
 
 from test.stub.tools import StubTestCase, StubCluster
-
-
-class RunResponse(Response):
-
-    pass
-
-
-class PullAllResponse(Response):
-
-    def __init__(self, connection):
-        super(PullAllResponse, self).__init__(connection)
-        self.records = []
-
-    def on_records(self, records):
-        self.records.extend(records)
 
 
 class ConnectionTestCase(StubTestCase):
@@ -56,7 +40,7 @@ class ConnectionTestCase(StubTestCase):
                 metadata = {}
                 records = []
                 cx.run("RETURN $x", {"x": 1}, metadata)
-                cx.pull_all(Response(cx, metadata, records))
+                cx.pull_all(metadata, on_records=records.extend)
                 cx.sync()
                 self.assertEqual([[1]], records)
 
@@ -77,7 +61,7 @@ class ConnectionTestCase(StubTestCase):
                     metadata = {}
                     records = []
                     cx.run("RETURN $x", {"x": 1}, metadata)
-                    cx.pull_all(metadata, records)
+                    cx.pull_all(metadata, on_records=records.extend)
                     cx.sync()
 
     def test_disconnect_after_init(self):
