@@ -28,13 +28,13 @@ from test.stub.tools import StubTestCase, StubCluster
 class ConnectionTestCase(StubTestCase):
 
     def test_construction(self):
-        with StubCluster({9001: "empty.script"}):
+        with StubCluster({9001: "v1/empty.script"}):
             address = ("127.0.0.1", 9001)
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
                 self.assertIsInstance(cx, Connection)
 
     def test_return_1(self):
-        with StubCluster({9001: "return_1.script"}):
+        with StubCluster({9001: "v1/return_1.script"}):
             address = ("127.0.0.1", 9001)
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
                 metadata = {}
@@ -45,7 +45,7 @@ class ConnectionTestCase(StubTestCase):
                 self.assertEqual([[1]], records)
 
     def test_disconnect_on_run(self):
-        with StubCluster({9001: "disconnect_on_run.script"}):
+        with StubCluster({9001: "v1/disconnect_on_run.script"}):
             address = ("127.0.0.1", 9001)
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
                 with self.assertRaises(ServiceUnavailable):
@@ -54,7 +54,7 @@ class ConnectionTestCase(StubTestCase):
                     cx.sync()
 
     def test_disconnect_on_pull_all(self):
-        with StubCluster({9001: "disconnect_on_pull_all.script"}):
+        with StubCluster({9001: "v1/disconnect_on_pull_all.script"}):
             address = ("127.0.0.1", 9001)
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
                 with self.assertRaises(ServiceUnavailable):
@@ -65,7 +65,7 @@ class ConnectionTestCase(StubTestCase):
                     cx.sync()
 
     def test_disconnect_after_init(self):
-        with StubCluster({9001: "disconnect_after_init.script"}):
+        with StubCluster({9001: "v1/disconnect_after_init.script"}):
             address = ("127.0.0.1", 9001)
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
                 with self.assertRaises(ServiceUnavailable):
