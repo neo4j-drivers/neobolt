@@ -22,11 +22,10 @@
 from collections import OrderedDict
 from unittest import TestCase
 
-from neobolt.bolt import ProtocolError
-from neobolt.bolt.connection import connect
-from neobolt.routing import OrderedSet, RoutingTable, RoutingConnectionPool, LeastConnectedLoadBalancingStrategy, \
-    RoundRobinLoadBalancingStrategy
-from neobolt.routing import READ_ACCESS, WRITE_ACCESS
+from neobolt.direct import connect
+from neobolt.routing import READ_ACCESS, WRITE_ACCESS, OrderedSet, RoutingTable, RoutingConnectionPool,\
+    RoutingProtocolError, \
+    LeastConnectedLoadBalancingStrategy, RoundRobinLoadBalancingStrategy
 
 
 VALID_ROUTING_RECORD = {
@@ -158,15 +157,15 @@ class RoutingTableParseRoutingInfoTestCase(TestCase):
         assert table.ttl == 300
 
     def test_should_fail_on_invalid_record(self):
-        with self.assertRaises(ProtocolError):
+        with self.assertRaises(RoutingProtocolError):
             _ = RoutingTable.parse_routing_info([INVALID_ROUTING_RECORD])
 
     def test_should_fail_on_zero_records(self):
-        with self.assertRaises(ProtocolError):
+        with self.assertRaises(RoutingProtocolError):
             _ = RoutingTable.parse_routing_info([])
 
     def test_should_fail_on_multiple_records(self):
-        with self.assertRaises(ProtocolError):
+        with self.assertRaises(RoutingProtocolError):
             _ = RoutingTable.parse_routing_info([VALID_ROUTING_RECORD, VALID_ROUTING_RECORD])
 
 

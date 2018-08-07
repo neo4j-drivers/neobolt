@@ -22,7 +22,7 @@
 from codecs import decode
 from struct import unpack as struct_unpack
 
-from .structure import Structure
+from neobolt.packstream import Structure
 
 
 EndOfStream = object()

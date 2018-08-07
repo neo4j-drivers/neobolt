@@ -1208,7 +1208,6 @@ static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_Structure[] = "Structure";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
-static const char __pyx_k_structure[] = "structure";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_unpack_map[] = "unpack_map";
 static const char __pyx_k_EndOfStream[] = "EndOfStream";
@@ -1219,6 +1218,7 @@ static const char __pyx_k_struct_unpack[] = "struct_unpack";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_Nothing_to_unpack[] = "Nothing to unpack";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_neobolt_packstream[] = "neobolt.packstream";
 static const char __pyx_k_unpack_structure_header[] = "unpack_structure_header";
 static const char __pyx_k_Unknown_PackStream_marker_02X[] = "Unknown PackStream marker %02X";
 static const char __pyx_k_Expected_structure_found_marker[] = "Expected structure, found marker %02X";
@@ -1245,6 +1245,7 @@ static PyObject *__pyx_kp_s_i;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
+static PyObject *__pyx_n_s_neobolt_packstream;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_n_s_object;
 static PyObject *__pyx_n_s_pyx_vtable;
@@ -1259,7 +1260,6 @@ static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_struct;
 static PyObject *__pyx_n_s_struct_unpack;
-static PyObject *__pyx_n_s_structure;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_tobytes;
 static PyObject *__pyx_n_s_unpack;
@@ -6807,6 +6807,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
+  {&__pyx_n_s_neobolt_packstream, __pyx_k_neobolt_packstream, sizeof(__pyx_k_neobolt_packstream), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
   {&__pyx_n_s_object, __pyx_k_object, sizeof(__pyx_k_object), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
@@ -6821,7 +6822,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_struct, __pyx_k_struct, sizeof(__pyx_k_struct), 0, 0, 1, 1},
   {&__pyx_n_s_struct_unpack, __pyx_k_struct_unpack, sizeof(__pyx_k_struct_unpack), 0, 0, 1, 1},
-  {&__pyx_n_s_structure, __pyx_k_structure, sizeof(__pyx_k_structure), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_tobytes, __pyx_k_tobytes, sizeof(__pyx_k_tobytes), 0, 0, 1, 1},
   {&__pyx_n_s_unpack, __pyx_k_unpack, sizeof(__pyx_k_unpack), 0, 0, 1, 1},
@@ -7187,7 +7187,7 @@ if (!__Pyx_RefNanny) {
  * from codecs import decode
  * from struct import unpack as struct_unpack             # <<<<<<<<<<<<<<
  * 
- * from .structure import Structure
+ * from neobolt.packstream import Structure
  */
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -7206,7 +7206,7 @@ if (!__Pyx_RefNanny) {
   /* "neobolt/packstream/_unpacker.pyx":25
  * from struct import unpack as struct_unpack
  * 
- * from .structure import Structure             # <<<<<<<<<<<<<<
+ * from neobolt.packstream import Structure             # <<<<<<<<<<<<<<
  * 
  * 
  */
@@ -7215,7 +7215,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_Structure);
   __Pyx_GIVEREF(__pyx_n_s_Structure);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_Structure);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_structure, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_neobolt_packstream, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Structure); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)

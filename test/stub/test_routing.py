@@ -19,8 +19,9 @@
 # limitations under the License.
 
 
-from neobolt.bolt import connect, ProtocolError, ServiceUnavailable
-from neobolt.routing import READ_ACCESS, WRITE_ACCESS, RoutingTable, RoutingConnectionPool
+from neobolt.direct import connect
+from neobolt.exceptions import ServiceUnavailable
+from neobolt.routing import READ_ACCESS, WRITE_ACCESS, RoutingTable, RoutingConnectionPool, RoutingProtocolError
 
 from test.stub.tools import StubCluster, StubTestCase
 
@@ -168,14 +169,14 @@ class RoutingConnectionPoolFetchRoutingTableTestCase(StubTestCase):
         with StubCluster({9001: "v1/router_no_routers.script"}):
             address = ("127.0.0.1", 9001)
             with RoutingPool() as pool:
-                with self.assertRaises(ProtocolError):
+                with self.assertRaises(RoutingProtocolError):
                     _ = pool.fetch_routing_table(address)
 
     def test_no_readers_should_raise_protocol_error(self):
         with StubCluster({9001: "v1/router_no_readers.script"}):
             address = ("127.0.0.1", 9001)
             with RoutingPool() as pool:
-                with self.assertRaises(ProtocolError):
+                with self.assertRaises(RoutingProtocolError):
                     _ = pool.fetch_routing_table(address)
 
     def test_no_writers_should_return_table_with_no_writer(self):
@@ -474,7 +475,7 @@ class RoutingConnectionPoolAcquireForWriteTestCase(StubTestCase):
             address = ("127.0.0.1", 9001)
             with RoutingPool(address) as pool:
                 assert not pool.routing_table.is_fresh(WRITE_ACCESS)
-                with self.assertRaises(ProtocolError):
+                with self.assertRaises(RoutingProtocolError):
                     _ = pool.acquire(access_mode=WRITE_ACCESS)
                 assert not pool.routing_table.is_fresh(READ_ACCESS)
                 assert not pool.routing_table.is_fresh(WRITE_ACCESS)

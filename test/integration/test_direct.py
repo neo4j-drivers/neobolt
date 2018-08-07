@@ -19,7 +19,8 @@
 # limitations under the License.
 
 
-from neobolt.bolt import DEFAULT_PORT, Connection, connect, ServiceUnavailable, Response
+from neobolt.direct import DEFAULT_PORT, Connection, connect
+from neobolt.exceptions import ServiceUnavailable
 
 from test.integration.tools import IntegrationTestCase
 
@@ -38,8 +39,8 @@ class ConnectionTestCase(IntegrationTestCase):
         records = []
         with connect(self.bolt_address, auth=self.auth_token) as cx:
             metadata = {}
-            cx.run("RETURN 1", {}, metadata)
-            cx.pull_all(metadata, on_records=records.extend)
+            cx.run("RETURN 1", {}, on_success=metadata.update)
+            cx.pull_all(on_records=records.extend, on_success=metadata.update)
             cx.sync()
         self.assertEqual(records, [[1]])
 

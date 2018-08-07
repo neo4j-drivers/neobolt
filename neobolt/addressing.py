@@ -23,7 +23,6 @@ from collections import namedtuple
 from socket import getaddrinfo, gaierror, SOCK_STREAM, IPPROTO_TCP
 
 from neobolt.compat import urlparse, parse_qs
-from neobolt.exceptions import AddressError
 
 
 VALID_IPv4_SEGMENTS = [str(i).encode("latin1") for i in range(0x100)]
@@ -141,3 +140,8 @@ class Resolver(object):
                         continue
                     new_addresses.append(address)
         self.addresses = new_addresses
+
+
+class AddressError(Exception):
+    """ Raised when a network address is invalid.
+    """

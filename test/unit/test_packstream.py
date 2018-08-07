@@ -27,9 +27,9 @@ from unittest import TestCase
 from uuid import uuid4
 
 from neobolt.bolt.io import MessageFrame as PyMessageFrame
+from neobolt.packstream import Structure
 from neobolt.packstream.packer import Packer as PyPacker
 from neobolt.packstream.unpacker import Unpacker as PyUnpacker
-from neobolt.packstream.structure import Structure
 
 
 class PackStreamTestCase(TestCase):

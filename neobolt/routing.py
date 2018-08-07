@@ -25,13 +25,11 @@ from threading import Lock
 from time import clock
 
 from neobolt.addressing import SocketAddress
-from neobolt.bolt import ConnectionPool, ServiceUnavailable, ProtocolError, DEFAULT_PORT, ConnectionErrorHandler, \
-    Response
 from neobolt.compat.collections import MutableSet, OrderedDict
+from neobolt.direct import AbstractConnectionPool, DEFAULT_PORT, ConnectionErrorHandler
 from neobolt.exceptions import ConnectionExpired, DatabaseUnavailableError, \
-    NotALeaderError, ForbiddenOnReadOnlyDatabaseError, RoutingProtocolError
+    NotALeaderError, ForbiddenOnReadOnlyDatabaseError, ServiceUnavailable
 from neobolt.util import ServerVersion
-from neobolt.config import default_config, LOAD_BALANCING_STRATEGY_LEAST_CONNECTED, LOAD_BALANCING_STRATEGY_ROUND_ROBIN
 
 
 READ_ACCESS = "READ"
@@ -40,6 +38,12 @@ WRITE_ACCESS = "WRITE"
 INITIAL_RETRY_DELAY = 1.0
 RETRY_DELAY_MULTIPLIER = 2.0
 RETRY_DELAY_JITTER_FACTOR = 0.2
+
+DEFAULT_MAX_RETRY_TIME = 30.0  # 30s
+
+LOAD_BALANCING_STRATEGY_LEAST_CONNECTED = 0
+LOAD_BALANCING_STRATEGY_ROUND_ROBIN = 1
+DEFAULT_LOAD_BALANCING_STRATEGY = LOAD_BALANCING_STRATEGY_LEAST_CONNECTED
 
 
 class OrderedSet(MutableSet):
@@ -100,7 +104,7 @@ class RoutingTable(object):
         return a new RoutingTable instance.
         """
         if len(records) != 1:
-            raise ProtocolError("Expected exactly one record")
+            raise RoutingProtocolError("Expected exactly one record")
         record = records[0]
         routers = []
         readers = []
@@ -120,7 +124,7 @@ class RoutingTable(object):
                     writers.extend(addresses)
             ttl = record["ttl"]
         except (KeyError, TypeError):
-            raise ProtocolError("Cannot parse routing info")
+            raise RoutingProtocolError("Cannot parse routing info")
         else:
             return cls(routers, readers, writers, ttl)
 
@@ -156,7 +160,7 @@ class LoadBalancingStrategy(object):
 
     @classmethod
     def build(cls, connection_pool, **config):
-        load_balancing_strategy = config.get("load_balancing_strategy", default_config["load_balancing_strategy"])
+        load_balancing_strategy = config.get("load_balancing_strategy", DEFAULT_LOAD_BALANCING_STRATEGY)
         if load_balancing_strategy == LOAD_BALANCING_STRATEGY_LEAST_CONNECTED:
             return LeastConnectedLoadBalancingStrategy(connection_pool)
         elif load_balancing_strategy == LOAD_BALANCING_STRATEGY_ROUND_ROBIN:
@@ -250,7 +254,7 @@ class RoutingConnectionErrorHandler(ConnectionErrorHandler):
         })
 
 
-class RoutingConnectionPool(ConnectionPool):
+class RoutingConnectionPool(AbstractConnectionPool):
     """ Connection pool with routing table.
     """
 
@@ -283,12 +287,12 @@ class RoutingConnectionPool(ConnectionPool):
 
         try:
             with self.acquire_direct(address) as cx:
-                if ServerVersion.from_str(cx.server.version).at_least_version(3, 2):
+                if ServerVersion.from_str(cx.server.agent).at_least_version(3, 2):
                     cx.run("CALL dbms.cluster.routing.getRoutingTable({context})",
-                           {"context": self.routing_context}, metadata, on_failure=fail)
+                           {"context": self.routing_context}, on_success=metadata.update, on_failure=fail)
                 else:
-                    cx.run("CALL dbms.cluster.routing.getServers", {}, metadata, on_failure=fail)
-                cx.pull_all(metadata, on_records=records.extend)
+                    cx.run("CALL dbms.cluster.routing.getServers", {}, on_success=metadata.update, on_failure=fail)
+                cx.pull_all(on_success=metadata.update, on_records=records.extend)
                 cx.sync()
         except RoutingProtocolError as error:
             raise ServiceUnavailable(*error.args)
@@ -324,11 +328,11 @@ class RoutingConnectionPool(ConnectionPool):
 
         # No routers
         if num_routers == 0:
-            raise ProtocolError("No routing servers returned from server %r" % (address,))
+            raise RoutingProtocolError("No routing servers returned from server %r" % (address,))
 
         # No readers
         if num_readers == 0:
-            raise ProtocolError("No read servers returned from server %r" % (address,))
+            raise RoutingProtocolError("No read servers returned from server %r" % (address,))
 
         # At least one of each is fine, so return this table
         return new_routing_table
@@ -441,3 +445,8 @@ class RoutingConnectionPool(ConnectionPool):
         """ Remove a writer address from the routing table, if present.
         """
         self.routing_table.writers.discard(address)
+
+
+class RoutingProtocolError(Exception):
+    """ Raised when a fault occurs with the routing protocol.
+    """

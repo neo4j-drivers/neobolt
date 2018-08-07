@@ -24,9 +24,9 @@ from os.path import basename, dirname, join as path_join, realpath, isfile, expa
 import platform
 from unittest import TestCase, SkipTest
 from shutil import copyfile
-from sys import exit, stderr
+from sys import stderr
 
-from neobolt.bolt import connect
+from neobolt.direct import connect
 
 
 try:
@@ -111,7 +111,7 @@ class IntegrationTestCase(TestCase):
     @classmethod
     def server_version_info(cls):
         with connect(cls.bolt_address, auth=cls.auth_token) as cx:
-            full_version = cx.server.version
+            full_version = cx.server.agent
             return ServerVersion.from_str(full_version)
 
     @classmethod

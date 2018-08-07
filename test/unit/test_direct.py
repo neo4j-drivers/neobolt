@@ -24,8 +24,7 @@ from __future__ import print_function
 from unittest import TestCase
 from threading import Thread, Event
 
-from neobolt.direct import DirectConnectionErrorHandler
-from neobolt.bolt import Connection, ConnectionPool
+from neobolt.direct import Connection, DirectConnectionPool, ConnectionErrorHandler
 from neobolt.exceptions import ClientError, ServiceUnavailable
 
 
@@ -73,26 +72,26 @@ class ConnectionTestCase(TestCase):
 
     def test_conn_timedout(self):
         address = ("127.0.0.1", 7687)
-        connection = Connection(1, address, FakeSocket(address), DirectConnectionErrorHandler(),
+        connection = Connection(1, address, FakeSocket(address), ConnectionErrorHandler(),
                                 max_connection_lifetime=0)
         self.assertEqual(connection.timedout(), True)
 
     def test_conn_not_timedout_if_not_enabled(self):
         address = ("127.0.0.1", 7687)
-        connection = Connection(1, address, FakeSocket(address), DirectConnectionErrorHandler(),
+        connection = Connection(1, address, FakeSocket(address), ConnectionErrorHandler(),
                                 max_connection_lifetime=-1)
         self.assertEqual(connection.timedout(), False)
 
     def test_conn_not_timedout(self):
         address = ("127.0.0.1", 7687)
-        connection = Connection(1, address, FakeSocket(address), DirectConnectionErrorHandler(),
+        connection = Connection(1, address, FakeSocket(address), ConnectionErrorHandler(),
                                 max_connection_lifetime=999999999)
         self.assertEqual(connection.timedout(), False)
 
 
 class ConnectionPoolTestCase(TestCase):
     def setUp(self):
-        self.pool = ConnectionPool(connector, DirectConnectionErrorHandler())
+        self.pool = DirectConnectionPool(connector, ConnectionErrorHandler())
 
     def tearDown(self):
         self.pool.close()
@@ -150,7 +149,7 @@ class ConnectionPoolTestCase(TestCase):
         self.assert_pool_size(address, 0, 1)
 
     def test_cannot_acquire_after_close(self):
-        with ConnectionPool(lambda a: QuickConnection(FakeSocket(a)), DirectConnectionErrorHandler()) as pool:
+        with DirectConnectionPool(lambda a: QuickConnection(FakeSocket(a)), ConnectionErrorHandler()) as pool:
             pool.close()
             with self.assertRaises(ServiceUnavailable):
                 _ = pool.acquire_direct("X")
@@ -164,7 +163,7 @@ class ConnectionPoolTestCase(TestCase):
         self.assertEqual(self.pool.in_use_connection_count(address), 0)
 
     def test_max_conn_pool_size(self):
-        with ConnectionPool(connector, DirectConnectionErrorHandler,
+        with DirectConnectionPool(connector, ConnectionErrorHandler,
                             max_connection_pool_size=1, connection_acquisition_timeout=0) as pool:
             address = ("127.0.0.1", 7687)
             pool.acquire_direct(address)
@@ -174,7 +173,7 @@ class ConnectionPoolTestCase(TestCase):
             self.assertEqual(pool.in_use_connection_count(address), 1)
 
     def test_multithread(self):
-        with ConnectionPool(connector, DirectConnectionErrorHandler,
+        with DirectConnectionPool(connector, ConnectionErrorHandler,
                             max_connection_pool_size=5, connection_acquisition_timeout=10) as pool:
             address = ("127.0.0.1", 7687)
             releasing_event = Event()

@@ -22,9 +22,22 @@
 from struct import pack as struct_pack
 
 from neobolt.compat import integer, string
+from neobolt.packstream import Structure
 
-from .constants import *
-from .structure import Structure
+
+NULL_ = b"\xC0"
+FALSE = b"\xC2"
+TRUE = b"\xC3"
+
+PACKED_UINT_8 = [struct_pack(">B", value) for value in range(0x100)]
+PACKED_UINT_16 = [struct_pack(">H", value) for value in range(0x10000)]
+
+UNPACKED_UINT_8 = {bytes(bytearray([x])): x for x in range(0x100)}
+UNPACKED_UINT_16 = {struct_pack(">H", x): x for x in range(0x10000)}
+
+UNPACKED_MARKERS = {NULL_: None, TRUE: True, FALSE: False}
+UNPACKED_MARKERS.update({bytes(bytearray([z])): z for z in range(0x00, 0x80)})
+UNPACKED_MARKERS.update({bytes(bytearray([z + 256])): z for z in range(-0x10, 0x00)})
 
 
 cdef INT64_HI = 2 ** 63

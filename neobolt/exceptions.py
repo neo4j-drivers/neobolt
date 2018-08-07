@@ -45,18 +45,8 @@ This module contains the core driver exceptions.
 # -
 
 
-class AddressError(Exception):
-    """ Raised when a network address is invalid.
-    """
-
-
 class ProtocolError(Exception):
     """ Raised when an unexpected or unsupported protocol event occurs.
-    """
-
-
-class RoutingProtocolError(Exception):
-    """ Raised when a fault occurs with the routing protocol.
     """
 
 
