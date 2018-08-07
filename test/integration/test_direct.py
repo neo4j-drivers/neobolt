@@ -31,6 +31,14 @@ def fail(metadata):
 
 class ConnectionTestCase(IntegrationTestCase):
 
+    def test_insecure_by_default(self):
+        with connect(self.bolt_address, auth=self.auth_token) as cx:
+            self.assertFalse(cx.secure)
+
+    def test_can_be_secured(self):
+        with connect(self.bolt_address, auth=self.auth_token, encrypted=True) as cx:
+            self.assertTrue(cx.secure)
+
     def test_connection_open_close(self):
         with connect(self.bolt_address, auth=self.auth_token) as cx:
             self.assertIsInstance(cx, Connection)

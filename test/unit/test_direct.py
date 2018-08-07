@@ -24,7 +24,7 @@ from __future__ import print_function
 from unittest import TestCase
 from threading import Thread, Event
 
-from neobolt.direct import Connection, DirectConnectionPool, ConnectionErrorHandler
+from neobolt.direct import Connection, ConnectionPool, ConnectionErrorHandler
 from neobolt.exceptions import ClientError, ServiceUnavailable
 
 
@@ -64,7 +64,7 @@ class QuickConnection(object):
         return False
 
 
-def connector(address, _):
+def connector(address, **kwargs):
     return QuickConnection(FakeSocket(address))
 
 
@@ -72,26 +72,27 @@ class ConnectionTestCase(TestCase):
 
     def test_conn_timedout(self):
         address = ("127.0.0.1", 7687)
-        connection = Connection(1, address, FakeSocket(address), ConnectionErrorHandler(),
+        connection = Connection(1, address, FakeSocket(address),
                                 max_connection_lifetime=0)
         self.assertEqual(connection.timedout(), True)
 
     def test_conn_not_timedout_if_not_enabled(self):
         address = ("127.0.0.1", 7687)
-        connection = Connection(1, address, FakeSocket(address), ConnectionErrorHandler(),
+        connection = Connection(1, address, FakeSocket(address),
                                 max_connection_lifetime=-1)
         self.assertEqual(connection.timedout(), False)
 
     def test_conn_not_timedout(self):
         address = ("127.0.0.1", 7687)
-        connection = Connection(1, address, FakeSocket(address), ConnectionErrorHandler(),
+        connection = Connection(1, address, FakeSocket(address),
                                 max_connection_lifetime=999999999)
         self.assertEqual(connection.timedout(), False)
 
 
 class ConnectionPoolTestCase(TestCase):
+
     def setUp(self):
-        self.pool = DirectConnectionPool(connector, ConnectionErrorHandler())
+        self.pool = ConnectionPool(connector, ("127.0.0.1", 7687))
 
     def tearDown(self):
         self.pool.close()
@@ -102,11 +103,11 @@ class ConnectionPoolTestCase(TestCase):
         try:
             connections = pool.connections[address]
         except KeyError:
-            assert 0 == expected_active
-            assert 0 == expected_inactive
+            self.assertEqual(0, expected_active)
+            self.assertEqual(0, expected_inactive)
         else:
-            assert len([c for c in connections if c.in_use]) == expected_active
-            assert len([c for c in connections if not c.in_use]) == expected_inactive
+            self.assertEqual(expected_active, len([cx for cx in connections if cx.in_use]))
+            self.assertEqual(expected_inactive, len([cx for cx in connections if not cx.in_use]))
 
     def test_can_acquire(self):
         address = ("127.0.0.1", 7687)
@@ -149,7 +150,7 @@ class ConnectionPoolTestCase(TestCase):
         self.assert_pool_size(address, 0, 1)
 
     def test_cannot_acquire_after_close(self):
-        with DirectConnectionPool(lambda a: QuickConnection(FakeSocket(a)), ConnectionErrorHandler()) as pool:
+        with ConnectionPool(lambda a: QuickConnection(FakeSocket(a)), ConnectionErrorHandler()) as pool:
             pool.close()
             with self.assertRaises(ServiceUnavailable):
                 _ = pool.acquire_direct("X")
@@ -163,7 +164,7 @@ class ConnectionPoolTestCase(TestCase):
         self.assertEqual(self.pool.in_use_connection_count(address), 0)
 
     def test_max_conn_pool_size(self):
-        with DirectConnectionPool(connector, ConnectionErrorHandler,
+        with ConnectionPool(connector, ConnectionErrorHandler,
                             max_connection_pool_size=1, connection_acquisition_timeout=0) as pool:
             address = ("127.0.0.1", 7687)
             pool.acquire_direct(address)
@@ -173,7 +174,7 @@ class ConnectionPoolTestCase(TestCase):
             self.assertEqual(pool.in_use_connection_count(address), 1)
 
     def test_multithread(self):
-        with DirectConnectionPool(connector, ConnectionErrorHandler,
+        with ConnectionPool(connector, ConnectionErrorHandler,
                             max_connection_pool_size=5, connection_acquisition_timeout=10) as pool:
             address = ("127.0.0.1", 7687)
             releasing_event = Event()

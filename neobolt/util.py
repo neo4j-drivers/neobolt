@@ -20,9 +20,7 @@
 
 
 from importlib import import_module
-import logging
 from os import getenv as getenv
-from sys import stdout
 from warnings import warn
 
 
@@ -43,73 +41,6 @@ class ServerVersion(object):
         tags = tagged_version.split("-")
         version = map(int, tags[0].split("."))
         return ServerVersion(product, tuple(version), tuple(tags[1:]))
-
-
-class ColourFormatter(logging.Formatter):
-    """ Colour formatter for pretty log output.
-    """
-
-    def format(self, record):
-        s = super(ColourFormatter, self).format(record)
-        if record.levelno == logging.CRITICAL:
-            return "\x1b[31;1m%s\x1b[0m" % s  # bright red
-        elif record.levelno == logging.ERROR:
-            return "\x1b[33;1m%s\x1b[0m" % s  # bright yellow
-        elif record.levelno == logging.WARNING:
-            return "\x1b[33m%s\x1b[0m" % s    # yellow
-        elif record.levelno == logging.INFO:
-            return "\x1b[36m%s\x1b[0m" % s    # cyan
-        elif record.levelno == logging.DEBUG:
-            return "\x1b[34m%s\x1b[0m" % s    # blue
-        else:
-            return s
-
-
-class Watcher(object):
-    """ Log watcher for monitoring driver and protocol activity.
-    """
-
-    handlers = {}
-
-    def __init__(self, logger_name):
-        super(Watcher, self).__init__()
-        self.logger_name = logger_name
-        self.logger = logging.getLogger(self.logger_name)
-        self.formatter = ColourFormatter("%(asctime)s  %(message)s")
-
-    def __enter__(self):
-        self.watch()
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.stop()
-
-    def watch(self, level=logging.DEBUG, out=stdout):
-        self.stop()
-        handler = logging.StreamHandler(out)
-        handler.setFormatter(self.formatter)
-        self.handlers[self.logger_name] = handler
-        self.logger.addHandler(handler)
-        self.logger.setLevel(level)
-
-    def stop(self):
-        try:
-            self.logger.removeHandler(self.handlers[self.logger_name])
-        except KeyError:
-            pass
-
-
-def watch(logger_name, level=logging.DEBUG, out=stdout):
-    """ Quick wrapper for using the Watcher.
-
-    :param logger_name: name of logger to watch
-    :param level: minimum log level to show (default INFO)
-    :param out: where to send output (default stdout)
-    :return: Watcher instance
-    """
-    watcher = Watcher(logger_name)
-    watcher.watch(level, out)
-    return watcher
 
 
 def import_best(c_module, py_module):

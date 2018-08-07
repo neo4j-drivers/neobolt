@@ -30,9 +30,9 @@ from __future__ import division
 
 __all__ = [
     "DEFAULT_PORT",
-    "Connection",
     "AbstractConnectionPool",
-    "DirectConnectionPool",
+    "Connection",
+    "ConnectionPool",
     "ServerInfo",
     "connect",
 ]
@@ -48,11 +48,12 @@ from sys import platform, version_info
 
 from neobolt.addressing import SocketAddress, Resolver
 from neobolt.compat import perf_counter
-from neobolt.compat.ssl import SSL_AVAILABLE, HAS_SNI, SSLError
+from neobolt.compat.ssl import SSL_AVAILABLE, HAS_SNI, SSLSocket, SSLError
 from neobolt.exceptions import ClientError, ProtocolError, SecurityError, ServiceUnavailable, AuthError, CypherError
 from neobolt.meta import version
 from neobolt.packstream import Packer, Unpacker
-from neobolt.security import AuthToken, TRUST_DEFAULT, TRUST_ON_FIRST_USE, KNOWN_HOSTS, PersonalCertificateStore
+from neobolt.security import AuthToken, TRUST_DEFAULT, TRUST_ON_FIRST_USE, KNOWN_HOSTS, PersonalCertificateStore, \
+    SecurityPlan
 from neobolt.util import import_best as _import_best
 
 ChunkedInputBuffer = _import_best("neobolt.bolt._io", "neobolt.bolt.io").ChunkedInputBuffer
@@ -181,11 +182,11 @@ class Connection(object):
 
     _last_run_statement = None
 
-    def __init__(self, protocol_version, address, sock, error_handler, **config):
+    def __init__(self, protocol_version, address, sock, **config):
         self.protocol_version = protocol_version
         self.address = address
         self.socket = sock
-        self.error_handler = error_handler or ConnectionErrorHandler()
+        self.error_handler = config.get("error_handler", ConnectionErrorHandler())
         self.server = ServerInfo(SocketAddress.from_socket(sock), protocol_version)
         self.input_buffer = ChunkedInputBuffer()
         self.output_buffer = ChunkedOutputBuffer()
@@ -215,6 +216,10 @@ class Connection(object):
 
         # Pick up the server certificate, if any
         self.der_encoded_server_certificate = config.get("der_encoded_server_certificate")
+
+    @property
+    def secure(self):
+        return SSL_AVAILABLE and isinstance(self.socket, SSLSocket)
 
     def init(self):
         log_debug("C: INIT %r {...}", self.user_agent)
@@ -458,7 +463,7 @@ class Connection(object):
                     self.send()
                 except ServiceUnavailable:
                     pass
-            log_debug("~~ [CLOSE]")
+            log_debug("C: <CLOSE> %r" % (self.address,))
             try:
                 self.socket.close()
             except IOError:
@@ -523,7 +528,7 @@ class AbstractConnectionPool(object):
                 can_create_new_connection = self._max_connection_pool_size == INFINITE or len(connections) < self._max_connection_pool_size
                 if can_create_new_connection:
                     try:
-                        connection = self.connector(address, self.connection_error_handler)
+                        connection = self.connector(address, error_handler=self.connection_error_handler)
                     except ServiceUnavailable:
                         self.remove(address)
                         raise
@@ -623,10 +628,10 @@ class AbstractConnectionPool(object):
             return self._closed
 
 
-class DirectConnectionPool(AbstractConnectionPool):
+class ConnectionPool(AbstractConnectionPool):
 
     def __init__(self, connector, address, **config):
-        super(DirectConnectionPool, self).__init__(connector, ConnectionErrorHandler(), **config)
+        super(ConnectionPool, self).__init__(connector, ConnectionErrorHandler(), **config)
         self.address = address
 
     def acquire(self, access_mode=None):
@@ -740,14 +745,18 @@ def _connect(resolved_address, **config):
             raise ValueError("Unsupported address {!r}".format(resolved_address))
         t = s.gettimeout()
         s.settimeout(config.get("connection_timeout", DEFAULT_CONNECTION_TIMEOUT))
-        log_debug("~~ [CONNECT] %s", resolved_address)
+        log_debug("C: <OPEN> %s", resolved_address)
         s.connect(resolved_address)
         s.settimeout(t)
         s.setsockopt(SOL_SOCKET, SO_KEEPALIVE, 1 if config.get("keep_alive", DEFAULT_KEEP_ALIVE) else 0)
     except SocketTimeout:
+        log_error("C: <TIMEOUT> %s", resolved_address)
+        log_debug("C: <CLOSE> %s", resolved_address)
         s.close()
         raise ServiceUnavailable("Timed out trying to establish connection to {!r}".format(resolved_address))
     except SocketError as error:
+        log_error("C: <ERROR> %s %s", type(error).__name__, " ".join(map(repr, error.args)))
+        log_debug("C: <CLOSE> %s", resolved_address)
         s.close()
         if error.errno in (61, 99, 111, 10061):
             raise ServiceUnavailable("Failed to establish connection to {!r} (reason {})".format(resolved_address, error.errno))
@@ -762,7 +771,7 @@ def _connect(resolved_address, **config):
 def _secure(s, host, ssl_context, **config):
     # Secure the connection if an SSL context has been provided
     if ssl_context and SSL_AVAILABLE:
-        log_debug("~~ [SECURE] %s", host)
+        log_debug("C: <SECURE> %s", host)
         try:
             s = ssl_context.wrap_socket(s, server_hostname=host if HAS_SNI and host else None)
         except SSLError as cause:
@@ -789,7 +798,7 @@ def _secure(s, host, ssl_context, **config):
     return s, der_encoded_server_certificate
 
 
-def _handshake(s, resolved_address, der_encoded_server_certificate, error_handler, **config):
+def _handshake(s, resolved_address, der_encoded_server_certificate, **config):
     """
 
     :param s:
@@ -799,7 +808,8 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, error_handle
     # Send details of the protocol versions supported
     supported_versions = [3, 2, 1, 0]
     handshake = [MAGIC_PREAMBLE] + supported_versions
-    log_debug("C: [HANDSHAKE] 0x%X %r", MAGIC_PREAMBLE, supported_versions)
+    log_debug("C: <MAGIC> 0x%08X", MAGIC_PREAMBLE)
+    log_debug("C: <HANDSHAKE> 0x%08X 0x%08X 0x%08X 0x%08X", *supported_versions)
     data = b"".join(struct_pack(">I", num) for num in handshake)
     s.sendall(data)
 
@@ -815,7 +825,7 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, error_handle
     if data_size == 0:
         # If no data is returned after a successful select
         # response, the server has closed the connection
-        log_error("S: [CLOSE]")
+        log_error("S: <CLOSE>")
         s.close()
         raise ProtocolError("Connection to %r closed without handshake response" % (resolved_address,))
     if data_size != 4:
@@ -824,54 +834,53 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, error_handle
         s.close()
         raise ProtocolError("Expected four byte handshake response, received %r instead" % data)
     agreed_version, = struct_unpack(">I", data)
-    log_debug("S: [HANDSHAKE] %d", agreed_version)
+    log_debug("S: <HANDSHAKE> 0x%08X", agreed_version)
     if agreed_version == 0:
-        log_debug("~~ [CLOSE]")
+        log_debug("C: <CLOSE>")
         s.shutdown(SHUT_RDWR)
         s.close()
     elif agreed_version in (1, 2):
         connection = Connection(agreed_version, resolved_address, s,
                                 der_encoded_server_certificate=der_encoded_server_certificate,
-                                error_handler=error_handler, **config)
+                                **config)
         connection.init()
         return connection
     elif agreed_version in (3,):
         connection = Connection(agreed_version, resolved_address, s,
                                 der_encoded_server_certificate=der_encoded_server_certificate,
-                                error_handler=error_handler, **config)
+                                **config)
         connection.hello()
         return connection
     elif agreed_version == 0x48545450:
-        log_error("S: [CLOSE]")
+        log_error("S: <CLOSE>")
         s.close()
         raise ServiceUnavailable("Cannot to connect to Bolt service on {!r} "
                                  "(looks like HTTP)".format(resolved_address))
     else:
-        log_error("S: [CLOSE]")
+        log_error("S: <CLOSE>")
         s.close()
         raise ProtocolError("Unknown Bolt protocol version: {}".format(agreed_version))
 
 
-def connect(address, ssl_context=None, error_handler=None, **config):
+def connect(address, **config):
     """ Connect and perform a handshake and return a valid Connection object, assuming
     a protocol version can be agreed.
     """
-
+    security_plan = SecurityPlan.build(**config)
     last_error = None
     # Establish a connection to the host and port specified
     # Catches refused connections see:
     # https://docs.python.org/2/library/errno.html
-    log_debug("~~ [RESOLVE] %s", address)
+    log_debug("C: <RESOLVE> %s", address)
     resolver = Resolver(custom_resolver=config.get("resolver"))
     resolver.addresses.append(address)
     resolver.custom_resolve()
     resolver.dns_resolve()
     for resolved_address in resolver.addresses:
-        log_debug("~~ [RESOLVED] %s -> %s", address, resolved_address)
         try:
             s = _connect(resolved_address, **config)
-            s, der_encoded_server_certificate = _secure(s, address[0], ssl_context, **config)
-            connection = _handshake(s, resolved_address, der_encoded_server_certificate, error_handler, **config)
+            s, der_encoded_server_certificate = _secure(s, address[0], security_plan.ssl_context, **config)
+            connection = _handshake(s, resolved_address, der_encoded_server_certificate, **config)
         except Exception as error:
             last_error = error
         else:

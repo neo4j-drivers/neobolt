@@ -30,7 +30,7 @@ from neobolt.compat.ssl import SSL_AVAILABLE, SSLContext, PROTOCOL_SSLv23, OP_NO
 
 ENCRYPTION_OFF = 0
 ENCRYPTION_ON = 1
-ENCRYPTION_DEFAULT = ENCRYPTION_ON if SSL_AVAILABLE else ENCRYPTION_OFF
+ENCRYPTION_DEFAULT = ENCRYPTION_OFF
 
 
 TRUST_ON_FIRST_USE = 0  # Deprecated
@@ -66,7 +66,7 @@ class SecurityPlan(object):
     @classmethod
     def build(cls, **config):
         encrypted = config.get("encrypted", ENCRYPTION_DEFAULT)
-        if encrypted is None:
+        if encrypted is None and ENCRYPTION_DEFAULT == ENCRYPTION_ON:
             encrypted = _encryption_default()
         trust = config.get("trust", TRUST_DEFAULT)
         if encrypted:
