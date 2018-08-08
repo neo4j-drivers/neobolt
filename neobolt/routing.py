@@ -287,8 +287,8 @@ class RoutingConnectionPool(AbstractConnectionPool):
 
         try:
             with self.acquire_direct(address) as cx:
-                server_agent = cx.server.agent
-                if server_agent is not None and Version.parse(server_agent) >= Version((3, 2)):
+                _, _, server_version = (cx.server.agent or "").partition("/")
+                if server_version and Version.parse(server_version) >= Version((3, 2)):
                     cx.run("CALL dbms.cluster.routing.getRoutingTable({context})",
                            {"context": self.routing_context}, on_success=metadata.update, on_failure=fail)
                 else:
