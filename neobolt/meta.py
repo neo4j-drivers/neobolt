@@ -19,5 +19,42 @@
 # limitations under the License.
 
 
-# This version number will be automatically set in release-prepare build.
-version = "1.7.0a3"
+version = "1.7.0b1"
+
+
+def deprecated(message):
+    """ Decorator for deprecating functions and methods.
+
+    ::
+
+        @deprecated("'foo' has been deprecated in favour of 'bar'")
+        def foo(x):
+            pass
+
+    """
+    def f__(f):
+        def f_(*args, **kwargs):
+            from warnings import warn
+            warn(message, category=DeprecationWarning, stacklevel=2)
+            return f(*args, **kwargs)
+        f_.__name__ = f.__name__
+        f_.__doc__ = f.__doc__
+        f_.__dict__.update(f.__dict__)
+        return f_
+    return f__
+
+
+def import_best(c_module, py_module):
+    """ Import the best available module,
+    with C preferred to pure Python.
+    """
+    from importlib import import_module
+    from os import getenv
+    pure_python = getenv("PURE_PYTHON", "")
+    if pure_python:
+        return import_module(py_module)
+    else:
+        try:
+            return import_module(c_module)
+        except ImportError:
+            return import_module(py_module)

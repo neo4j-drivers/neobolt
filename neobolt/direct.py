@@ -50,14 +50,13 @@ from neobolt.addressing import SocketAddress, Resolver
 from neobolt.compat import perf_counter
 from neobolt.compat.ssl import SSL_AVAILABLE, HAS_SNI, SSLSocket, SSLError
 from neobolt.exceptions import ClientError, ProtocolError, SecurityError, ServiceUnavailable, AuthError, CypherError
-from neobolt.meta import version
+from neobolt.meta import version, import_best
 from neobolt.packstream import Packer, Unpacker
 from neobolt.security import AuthToken, TRUST_DEFAULT, TRUST_ON_FIRST_USE, KNOWN_HOSTS, PersonalCertificateStore, \
     SecurityPlan
-from neobolt.util import import_best as _import_best
 
-ChunkedInputBuffer = _import_best("neobolt.bolt._io", "neobolt.bolt.io").ChunkedInputBuffer
-ChunkedOutputBuffer = _import_best("neobolt.bolt._io", "neobolt.bolt.io").ChunkedOutputBuffer
+ChunkedInputBuffer = import_best("neobolt.bolt._io", "neobolt.bolt.io").ChunkedInputBuffer
+ChunkedOutputBuffer = import_best("neobolt.bolt._io", "neobolt.bolt.io").ChunkedOutputBuffer
 
 
 DEFAULT_PORT = 7687

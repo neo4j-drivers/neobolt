@@ -1,7 +1,7 @@
-# Neo4j Driver Testing
+# Neo4j Connector Testing
 
-To run driver tests, [Tox](https://tox.readthedocs.io) is required as well as at least one version of Python.
-The versions of Python supported by this driver are CPython 2.7, 3.4, 3.5 and 3.6.
+To run tests, [Tox](https://tox.readthedocs.io) is required as well as at least one version of Python.
+The versions of Python supported by this software are CPython 2.7, 3.4, 3.5, 3.6, and 3.7.
 
 
 ## Unit Tests & Stub Tests
@@ -18,12 +18,12 @@ To enable integration tests, a server must be made available.
 This can be either an existing server listening on the default Bolt port (7687) or a temporary installation from a particular package.
 For example:
 ```bash
-$ NEO4J_SERVER_PACKAGE=~/dist/neo4j-enterprise-3.1.1-unix.tar.gz tox
+$ NEO4J_SERVER_PACKAGE=~/dist/neo4j-community-3.4.1-unix.tar.gz tox
 ```
 
 A web address can be provided as an alternative to a file path:
 ```bash
-$ NEO4J_SERVER_PACKAGE=http://dist.neo4j.org/neo4j-enterprise-3.1.1-unix.tar.gz tox
+$ NEO4J_SERVER_PACKAGE=http://dist.neo4j.org/neo4j-community-3.4.1-unix.tar.gz tox
 ```
 
 If using an existing server, authentication details can be provided in a similar way:

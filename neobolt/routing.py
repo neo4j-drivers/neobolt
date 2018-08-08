@@ -29,7 +29,7 @@ from neobolt.compat.collections import MutableSet, OrderedDict
 from neobolt.direct import AbstractConnectionPool, DEFAULT_PORT, ConnectionErrorHandler
 from neobolt.exceptions import ConnectionExpired, DatabaseUnavailableError, \
     NotALeaderError, ForbiddenOnReadOnlyDatabaseError, ServiceUnavailable
-from neobolt.util import ServerVersion
+from neobolt.versioning import Version
 
 
 READ_ACCESS = "READ"
@@ -287,7 +287,8 @@ class RoutingConnectionPool(AbstractConnectionPool):
 
         try:
             with self.acquire_direct(address) as cx:
-                if ServerVersion.from_str(cx.server.agent).at_least_version(3, 2):
+                server_agent = cx.server.agent
+                if server_agent is not None and Version.parse(server_agent) >= Version((3, 2)):
                     cx.run("CALL dbms.cluster.routing.getRoutingTable({context})",
                            {"context": self.routing_context}, on_success=metadata.update, on_failure=fail)
                 else:
