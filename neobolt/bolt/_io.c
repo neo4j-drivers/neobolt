@@ -5,7 +5,7 @@
     "distutils": {
         "name": "neobolt.bolt._io",
         "sources": [
-            "neobolt/bolt/_io.pyx"
+            "/home/technige/work/neobolt/neobolt/bolt/_io.pyx"
         ]
     },
     "module_name": "neobolt.bolt._io"
@@ -778,7 +778,7 @@ static const char *__pyx_filename;
 
 static const char *__pyx_f[] = {
   "stringsource",
-  "neobolt/bolt/_io.pyx",
+  "_io.pyx",
 };
 
 /*--- Type declarations ---*/
@@ -2525,7 +2525,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_12MessageFrame_read(struct __pyx_ob
  *         self._next_pane()
  *         if len(value) < n and self._current_pane >= 0:             # <<<<<<<<<<<<<<
  *             value.extend(self.read(n - (end - start)))
- *         return value
+ *         return memoryview(value)
  */
   __pyx_t_12 = PyByteArray_GET_SIZE(__pyx_v_value); if (unlikely(__pyx_t_12 == ((Py_ssize_t)-1))) __PYX_ERR(1, 100, __pyx_L1_error)
   __pyx_t_8 = ((__pyx_t_12 < __pyx_v_n) != 0);
@@ -2543,7 +2543,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_12MessageFrame_read(struct __pyx_ob
  *         self._next_pane()
  *         if len(value) < n and self._current_pane >= 0:
  *             value.extend(self.read(n - (end - start)))             # <<<<<<<<<<<<<<
- *         return value
+ *         return memoryview(value)
  * 
  */
     __pyx_t_4 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_MessageFrame *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, (__pyx_v_n - (__pyx_v_end - __pyx_v_start)), 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 101, __pyx_L1_error)
@@ -2558,20 +2558,25 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_12MessageFrame_read(struct __pyx_ob
  *         self._next_pane()
  *         if len(value) < n and self._current_pane >= 0:             # <<<<<<<<<<<<<<
  *             value.extend(self.read(n - (end - start)))
- *         return value
+ *         return memoryview(value)
  */
   }
 
   /* "neobolt/bolt/_io.pyx":102
  *         if len(value) < n and self._current_pane >= 0:
  *             value.extend(self.read(n - (end - start)))
- *         return value             # <<<<<<<<<<<<<<
+ *         return memoryview(value)             # <<<<<<<<<<<<<<
  * 
  *     cpdef close(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_value);
-  __pyx_r = __pyx_v_value;
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 102, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_value); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 102, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_4;
+  __pyx_t_4 = 0;
   goto __pyx_L0;
 
   /* "neobolt/bolt/_io.pyx":74
@@ -2646,7 +2651,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_12MessageFrame_6read(struct __pyx_
 }
 
 /* "neobolt/bolt/_io.pyx":104
- *         return value
+ *         return memoryview(value)
  * 
  *     cpdef close(self):             # <<<<<<<<<<<<<<
  *         self._view = None
@@ -2711,7 +2716,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_12MessageFrame_close(struct __pyx_o
   __pyx_v_self->_view = Py_None;
 
   /* "neobolt/bolt/_io.pyx":104
- *         return value
+ *         return memoryview(value)
  * 
  *     cpdef close(self):             # <<<<<<<<<<<<<<
  *         self._view = None

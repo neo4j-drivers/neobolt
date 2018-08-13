@@ -67,3 +67,14 @@ class ConnectionTestCase(IntegrationTestCase):
 
         with connect(address, auth=self.auth_token, resolver=my_resolver) as cx:
             self.assertEqual(cx.server.address, ("127.0.0.1", 7687))
+
+    def test_multiple_chunk_response(self):
+        b = bytearray(16365)
+        records = []
+        with connect(self.bolt_address, auth=self.auth_token) as cx:
+            metadata = {}
+            cx.run("CREATE (a) SET a.foo = $x RETURN a", {"x": b}, on_success=metadata.update)
+            cx.pull_all(on_records=records.extend, on_success=metadata.update)
+            cx.sync()
+        foo = records[0][0][2]["foo"]
+        self.assertEqual(b, foo)
