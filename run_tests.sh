@@ -13,6 +13,7 @@ then
         STATUS="$?"
         if [ "${STATUS}" != "0" ]
         then
+            cat test/integration/run/neo4j-enterprise-${VERSION}/logs/neo4j.log
             exit ${STATUS}
         fi
     done
