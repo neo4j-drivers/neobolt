@@ -40,5 +40,5 @@ def update_password(user, password, new_password):
 
 
 if __name__ == "__main__":
-    Watcher("neo4j.bolt").watch()
+    Watcher("neobolt").watch()
     update_password("neo4j", "neo4j", argv[1])

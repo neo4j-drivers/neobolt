@@ -34,6 +34,7 @@ try:
 except ImportError:
     from urllib import urlretrieve
 
+from boltkit.config import update as update_config
 from boltkit.controller import _install, WindowsController, UnixController
 
 from neobolt.exceptions import AuthError
@@ -109,6 +110,13 @@ class IntegrationTestCase(TestCase):
     neoctrl_args = NEOCTRL_ARGS
 
     @classmethod
+    def delete_all(cls):
+        with connect(cls.bolt_address, auth=cls.auth_token) as cx:
+            cx.run("MATCH (a) DETACH DELETE a")
+            cx.discard_all()
+            cx.sync()
+
+    @classmethod
     def server_version_info(cls):
         with connect(cls.bolt_address, auth=cls.auth_token) as cx:
             full_version = cx.server.agent
@@ -157,6 +165,7 @@ class IntegrationTestCase(TestCase):
     def _start_server(cls, home):
         controller_class = WindowsController if platform.system() == "Windows" else UnixController
         cls.controller = controller_class(home, 1)
+        update_config(cls.controller.home, {"dbms.connectors.default_listen_address": "::"})
         if NEO4J_USER is None:
             cls.controller.create_user(cls.user, cls.password)
             cls.controller.set_user_role(cls.user, "admin")

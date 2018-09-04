@@ -1,0 +1,14 @@
+!: BOLT 3
+!: AUTO HELLO
+!: AUTO GOODBYE
+!: AUTO RESET
+
+C: BEGIN {"tx_timeout": 12340}
+   RUN "RETURN $x" {"x": 1} {}
+   PULL_ALL
+   COMMIT
+S: SUCCESS {}
+   SUCCESS {"fields": ["x"]}
+   RECORD [1]
+   SUCCESS {}
+   SUCCESS {"bookmark": "bookmark:1"}

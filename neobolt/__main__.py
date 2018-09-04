@@ -48,7 +48,7 @@ def main():
     args = parser.parse_args()
 
     if args.verbose:
-        Watcher("neo4j.bolt").watch(logging.DEBUG, stderr)
+        Watcher("neobolt").watch(logging.DEBUG, stderr)
 
     parameters = {}
     for parameter in args.parameter or []:

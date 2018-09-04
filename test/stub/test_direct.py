@@ -99,7 +99,35 @@ class ConnectionV3TestCase(StubTestCase):
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
                 metadata = {}
                 records = []
-                cx.begin([], on_success=metadata.update)
+                cx.begin(on_success=metadata.update)
+                cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
+                cx.pull_all(on_success=metadata.update, on_records=records.extend)
+                cx.commit(on_success=metadata.update)
+                cx.sync()
+                self.assertEqual([[1]], records)
+                self.assertEqual({"fields": ["x"], "bookmark": "bookmark:1"}, metadata)
+
+    def test_begin_with_metadata(self):
+        with StubCluster({9001: "v3/begin_with_metadata.script"}):
+            address = ("127.0.0.1", 9001)
+            with connect(address, auth=self.auth_token, encrypted=False) as cx:
+                metadata = {}
+                records = []
+                cx.begin(metadata={"mode": "r"}, on_success=metadata.update)
+                cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
+                cx.pull_all(on_success=metadata.update, on_records=records.extend)
+                cx.commit(on_success=metadata.update)
+                cx.sync()
+                self.assertEqual([[1]], records)
+                self.assertEqual({"fields": ["x"], "bookmark": "bookmark:1"}, metadata)
+
+    def test_begin_with_timeout(self):
+        with StubCluster({9001: "v3/begin_with_timeout.script"}):
+            address = ("127.0.0.1", 9001)
+            with connect(address, auth=self.auth_token, encrypted=False) as cx:
+                metadata = {}
+                records = []
+                cx.begin(timeout=12.34, on_success=metadata.update)
                 cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
                 cx.commit(on_success=metadata.update)
@@ -113,7 +141,18 @@ class ConnectionV3TestCase(StubTestCase):
             with connect(address, auth=self.auth_token, encrypted=False) as cx:
                 metadata = {}
                 records = []
-                cx.run("RETURN $x", {"x": 1}, {"mode": "r"}, on_success=metadata.update)
+                cx.run("RETURN $x", {"x": 1}, metadata={"mode": "r"}, on_success=metadata.update)
+                cx.pull_all(on_success=metadata.update, on_records=records.extend)
+                cx.sync()
+                self.assertEqual([[1]], records)
+
+    def test_run_with_timeout(self):
+        with StubCluster({9001: "v3/run_with_timeout.script"}):
+            address = ("127.0.0.1", 9001)
+            with connect(address, auth=self.auth_token, encrypted=False) as cx:
+                metadata = {}
+                records = []
+                cx.run("RETURN $x", {"x": 1}, timeout=12.34, on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
                 cx.sync()
                 self.assertEqual([[1]], records)

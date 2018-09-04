@@ -19,8 +19,10 @@
 # limitations under the License.
 
 
+from unittest import SkipTest
+
 from neobolt.direct import DEFAULT_PORT, Connection, connect
-from neobolt.exceptions import ServiceUnavailable
+from neobolt.exceptions import ServiceUnavailable, TransientError
 
 from test.integration.tools import IntegrationTestCase
 
@@ -78,3 +80,88 @@ class ConnectionTestCase(IntegrationTestCase):
             cx.sync()
         foo = records[0][0][2]["foo"]
         self.assertEqual(b, foo)
+
+
+class ConnectionV3IntegrationTestCase(IntegrationTestCase):
+
+    def setUp(self):
+        if self.protocol_version() < 3:
+            raise SkipTest("Test requires Bolt v3")
+
+    def test_return_1(self):
+        with connect(self.bolt_address, auth=self.auth_token) as cx:
+            metadata = {}
+            records = []
+            cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
+            cx.pull_all(on_success=metadata.update, on_records=records.extend)
+            cx.sync()
+            self.assertEqual([[1]], records)
+
+    def test_return_1_in_tx(self):
+        with connect(self.bolt_address, auth=self.auth_token) as cx:
+            metadata = {}
+            records = []
+            cx.begin(on_success=metadata.update)
+            cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
+            cx.pull_all(on_success=metadata.update, on_records=records.extend)
+            cx.commit(on_success=metadata.update)
+            cx.sync()
+            self.assertEqual([[1]], records)
+            self.assertTrue(metadata["bookmark"].startswith("neo4j:bookmark:"))
+            self.assertEqual(metadata["fields"], ["$x"])
+            self.assertIsInstance(metadata["t_first"], int)
+            self.assertIsInstance(metadata["t_last"], int)
+            self.assertEqual(metadata["type"], "r")
+
+    def test_begin_with_metadata(self):
+        with connect(self.bolt_address, auth=self.auth_token) as cx:
+            metadata = {}
+            records = []
+            cx.begin(metadata={"foo": "bar"})
+            cx.run("CALL dbms.getTXMetaData", on_success=metadata.update)
+            cx.pull_all(on_success=metadata.update, on_records=records.extend)
+            cx.commit()
+            cx.sync()
+            self.assertEqual([[{"foo": "bar"}]], records)
+
+    def test_begin_with_timeout(self):
+        try:
+            with connect(self.bolt_address, auth=self.auth_token) as cx1:
+                cx1.run("CREATE (a:Node)")
+                cx1.discard_all()
+                cx1.sync()
+                with connect(self.bolt_address, auth=self.auth_token) as cx2:
+                    cx1.begin()
+                    cx1.run("MATCH (a:Node) SET a.property = 1")
+                    cx1.sync()
+                    cx2.begin(timeout=0.25)
+                    cx2.run("MATCH (a:Node) SET a.property = 2")
+                    with self.assertRaises(TransientError):
+                        cx2.sync()
+        finally:
+            self.delete_all()
+
+    def test_run_with_metadata(self):
+        with connect(self.bolt_address, auth=self.auth_token) as cx:
+            metadata = {}
+            records = []
+            cx.run("CALL dbms.getTXMetaData", metadata={"foo": "bar"}, on_success=metadata.update)
+            cx.pull_all(on_success=metadata.update, on_records=records.extend)
+            cx.sync()
+            self.assertEqual([[{"foo": "bar"}]], records)
+
+    def test_run_with_timeout(self):
+        try:
+            with connect(self.bolt_address, auth=self.auth_token) as cx1:
+                cx1.run("CREATE (a:Node)")
+                cx1.discard_all()
+                cx1.sync()
+                with connect(self.bolt_address, auth=self.auth_token) as cx2:
+                    cx1.begin()
+                    cx1.run("MATCH (a:Node) SET a.property = 1")
+                    cx1.sync()
+                    cx2.run("MATCH (a:Node) SET a.property = 2", timeout=0.25)
+                    with self.assertRaises(TransientError):
+                        cx2.sync()
+        finally:
+            self.delete_all()
