@@ -10,8 +10,18 @@ then
     for VERSION in ${VERSIONS}
     do
         NEO4J_SERVER_PACKAGE=http://dist.neo4j.org/neo4j-enterprise-${VERSION}-unix.tar.gz coverage run -a -m pytest -v ${ARGS} test/integration
+        STATUS="$?"
+        if [ "${STATUS}" != "0" ]
+        then
+            exit ${STATUS}
+        fi
     done
 else
     coverage run -a -m pytest -v ${ARGS} test/integration
+    STATUS="$?"
+    if [ "${STATUS}" != "0" ]
+    then
+        exit ${STATUS}
+    fi
 fi
 coverage report
