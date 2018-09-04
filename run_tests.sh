@@ -5,22 +5,28 @@ VERSIONS="3.4.7 3.3.6 3.2.12"
 
 coverage erase
 coverage run -a -m pytest -v ${ARGS} test/unit test/stub #test/performance
-if [ -z "NEO4J_SERVER_PACKAGE" ]
+STATUS="$?"
+if [ ${STATUS} -ne 0 ]
+then
+    exit ${STATUS}
+fi
+if [ -z "${NEO4J_SERVER_PACKAGE}" ]
 then
     for VERSION in ${VERSIONS}
     do
-        NEO4J_SERVER_PACKAGE=http://dist.neo4j.org/neo4j-enterprise-${VERSION}-unix.tar.gz coverage run -a -m pytest -v ${ARGS} test/integration
+        echo "Integration testing against Neo4j ${VERSION}"
+        NEO4J_SERVER_PACKAGE="http://dist.neo4j.org/neo4j-enterprise-${VERSION}-unix.tar.gz" coverage run -a -m pytest -v ${ARGS} test/integration
         STATUS="$?"
-        if [ "${STATUS}" != "0" ]
+        if [ ${STATUS} -ne 0 ]
         then
-            cat test/integration/run/neo4j-enterprise-${VERSION}/logs/neo4j.log
             exit ${STATUS}
         fi
     done
 else
+    echo "Integration testing against Neo4j at ${NEO4J_SERVER_PACKAGE}"
     coverage run -a -m pytest -v ${ARGS} test/integration
     STATUS="$?"
-    if [ "${STATUS}" != "0" ]
+    if [ ${STATUS} -ne 0 ]
     then
         exit ${STATUS}
     fi
