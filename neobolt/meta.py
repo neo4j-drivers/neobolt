@@ -19,7 +19,7 @@
 # limitations under the License.
 
 
-version = "1.7.0rc1"
+version = "1.7.0rc2"
 
 
 def deprecated(message):

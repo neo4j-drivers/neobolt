@@ -219,7 +219,10 @@ class Connection(object):
 
     @property
     def local_port(self):
-        return self.socket.getsockname()[1]
+        try:
+            return self.socket.getsockname()[1]
+        except OSError:
+            return 0
 
     def init(self):
         log_debug("[#%04X]  C: INIT %r {...}", self.local_port, self.user_agent)
@@ -775,18 +778,18 @@ def _connect(resolved_address, **config):
             raise ValueError("Unsupported address {!r}".format(resolved_address))
         t = s.gettimeout()
         s.settimeout(config.get("connection_timeout", DEFAULT_CONNECTION_TIMEOUT))
-        log_debug("[-----]  C: <OPEN> %s", resolved_address)
+        log_debug("[#0000]  C: <OPEN> %s", resolved_address)
         s.connect(resolved_address)
         s.settimeout(t)
         s.setsockopt(SOL_SOCKET, SO_KEEPALIVE, 1 if config.get("keep_alive", DEFAULT_KEEP_ALIVE) else 0)
     except SocketTimeout:
-        log_debug("[-----]  C: <TIMEOUT> %s", resolved_address)
-        log_debug("[-----]  C: <CLOSE> %s", resolved_address)
+        log_debug("[#0000]  C: <TIMEOUT> %s", resolved_address)
+        log_debug("[#0000]  C: <CLOSE> %s", resolved_address)
         s.close()
         raise ServiceUnavailable("Timed out trying to establish connection to {!r}".format(resolved_address))
     except SocketError as error:
-        log_debug("[-----]  C: <ERROR> %s %s", type(error).__name__, " ".join(map(repr, error.args)))
-        log_debug("[-----]  C: <CLOSE> %s", resolved_address)
+        log_debug("[#0000]  C: <ERROR> %s %s", type(error).__name__, " ".join(map(repr, error.args)))
+        log_debug("[#0000]  C: <CLOSE> %s", resolved_address)
         s.close()
         if error.errno in (61, 99, 111, 10061):
             raise ServiceUnavailable("Failed to establish connection to {!r} (reason {})".format(resolved_address, error.errno))
@@ -903,7 +906,7 @@ def connect(address, **config):
     # Establish a connection to the host and port specified
     # Catches refused connections see:
     # https://docs.python.org/2/library/errno.html
-    log_debug("[-----]  C: <RESOLVE> %s", address)
+    log_debug("[#0000]  C: <RESOLVE> %s", address)
     resolver = Resolver(custom_resolver=config.get("resolver"))
     resolver.addresses.append(address)
     resolver.custom_resolve()
