@@ -1,5 +1,7 @@
 [run]
 branch = True
+source =
+    neobolt
 omit =
     .*/*
     test/*
