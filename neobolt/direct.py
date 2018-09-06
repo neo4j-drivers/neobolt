@@ -221,7 +221,7 @@ class Connection(object):
     def local_port(self):
         try:
             return self.socket.getsockname()[1]
-        except OSError:
+        except IOError:
             return 0
 
     def init(self):
