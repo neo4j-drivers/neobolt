@@ -135,6 +135,17 @@ class ConnectionV3TestCase(StubTestCase):
                 self.assertEqual([[1]], records)
                 self.assertEqual({"fields": ["x"], "bookmark": "bookmark:1"}, metadata)
 
+    def test_run_with_bookmarks(self):
+        with StubCluster({9001: "v3/run_with_bookmarks.script"}):
+            address = ("127.0.0.1", 9001)
+            with connect(address, auth=self.auth_token, encrypted=False) as cx:
+                metadata = {}
+                records = []
+                cx.run("RETURN $x", {"x": 1}, bookmarks=["foo", "bar"], on_success=metadata.update)
+                cx.pull_all(on_success=metadata.update, on_records=records.extend)
+                cx.sync()
+                self.assertEqual([[1]], records)
+
     def test_run_with_metadata(self):
         with StubCluster({9001: "v3/run_with_metadata.script"}):
             address = ("127.0.0.1", 9001)

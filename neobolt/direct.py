@@ -255,7 +255,7 @@ class Connection(object):
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
 
-    def run(self, statement, parameters=None, metadata=None, timeout=None, **handlers):
+    def run(self, statement, parameters=None, bookmarks=None, metadata=None, timeout=None, **handlers):
         if self.server.supports("statement_reuse"):
             if statement.upper() not in (u"BEGIN", u"COMMIT", u"ROLLBACK"):
                 if statement == self._last_run_statement:
@@ -266,6 +266,11 @@ class Connection(object):
             parameters = {}
         if self.protocol_version >= 3:
             extra = {}
+            if bookmarks:
+                try:
+                    extra["bookmarks"] = list(bookmarks)
+                except TypeError:
+                    raise TypeError("Bookmarks must be provided within an iterable")
             if metadata:
                 try:
                     extra["tx_metadata"] = dict(metadata)
