@@ -284,7 +284,9 @@ class Connection(object):
             fields = (statement, parameters, extra)
         else:
             if metadata:
-                raise ProtocolError("Bolt v%d does not support RUN metadata" % self.protocol_version)
+                raise NotImplementedError("Transaction metadata is not supported in Bolt v%d" % self.protocol_version)
+            if timeout:
+                raise NotImplementedError("Transaction timeouts are not supported in Bolt v%d" % self.protocol_version)
             fields = (statement, parameters)
         log_debug("[#%04X]  C: RUN %s", self.local_port, " ".join(map(repr, fields)))
         self._append(b"\x10", fields, Response(self, **handlers))
@@ -327,6 +329,10 @@ class Connection(object):
                     extra["bookmarks"] = list(bookmarks)
                 except TypeError:
                     raise TypeError("Bookmarks must be provided within an iterable")
+            if metadata:
+                raise NotImplementedError("Transaction metadata is not supported in Bolt v%d" % self.protocol_version)
+            if timeout:
+                raise NotImplementedError("Transaction timeouts are not supported in Bolt v%d" % self.protocol_version)
             self.run(u"BEGIN", extra, **handlers)
             self.discard_all(**handlers)
 
