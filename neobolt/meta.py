@@ -19,7 +19,8 @@
 # limitations under the License.
 
 
-version = "1.7.0rc5"
+package = "neobolt"
+version = "1.7.0rc6"
 
 
 def deprecated(message):

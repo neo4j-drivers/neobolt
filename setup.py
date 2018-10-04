@@ -27,7 +27,7 @@ try:
 except ImportError:
     from distutils.core import setup, Extension
 
-from neobolt.meta import version
+from neobolt.meta import package, version
 
 try:
     from Cython.Build import cythonize
@@ -66,7 +66,7 @@ package_data = {
     "neobolt.packstream": ["*.pyx"],
 }
 setup_args = {
-    "name": "neobolt",
+    "name": package,
     "version": version,
     "description": "Neo4j Bolt connector for Python",
     "license": "Apache License, Version 2.0",
