@@ -22,7 +22,7 @@
 from unittest import SkipTest
 
 from neobolt.direct import DEFAULT_PORT, Connection, connect
-from neobolt.exceptions import ServiceUnavailable, TransientError
+from neobolt.exceptions import ServiceUnavailable, TransientError, AuthError
 
 from test.integration.tools import IntegrationTestCase
 
@@ -165,3 +165,30 @@ class ConnectionV3IntegrationTestCase(IntegrationTestCase):
                         cx2.sync()
         finally:
             self.delete_all()
+
+
+class AuthTestCase(IntegrationTestCase):
+
+    def test_empty_auth(self):
+        with self.assertRaises(AuthError):
+            _ = connect(self.bolt_address, auth=())
+
+    def test_empty_password(self):
+        with self.assertRaises(AuthError):
+            _ = connect(self.bolt_address, auth=(self.user,))
+
+    def test_null_password(self):
+        with self.assertRaises(AuthError):
+            _ = connect(self.bolt_address, auth=(self.user, None))
+
+    def test_null_user_and_password(self):
+        with self.assertRaises(AuthError):
+            _ = connect(self.bolt_address, auth=(None, None))
+
+    def test_non_string_password(self):
+        with self.assertRaises(AuthError):
+            _ = connect(self.bolt_address, auth=(self.user, 1))
+
+    def test_non_string_user_and_password(self):
+        with self.assertRaises(AuthError):
+            _ = connect(self.bolt_address, auth=(1, 1))
