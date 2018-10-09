@@ -160,24 +160,27 @@ cdef class ChunkedInputBuffer(object):
         cdef bytes data
         cdef int data_size
 
-        new_extent = self._extent + n
-        overflow = new_extent - len(self._data)
-        if overflow > 0:
-            if self._recycle():
-                return self.receive(socket, n)
-            self._view = None
-            data = socket.recv(n)
-            data_size = len(data)
-            new_extent = self._extent + data_size
-            self._data[self._extent:new_extent] = data
-            self._view = memoryview(self._data)
-        else:
-            data_size = socket.recv_into(self._view[self._extent:new_extent])
-            new_extent = self._extent + data_size
-        self._extent = new_extent
-        return data_size
+        try:
+            new_extent = self._extent + n
+            overflow = new_extent - len(self._data)
+            if overflow > 0:
+                if self._recycle():
+                    return self.receive(socket, n)
+                self._view = None
+                data = socket.recv(n)
+                data_size = len(data)
+                new_extent = self._extent + data_size
+                self._data[self._extent:new_extent] = data
+                self._view = memoryview(self._data)
+            else:
+                data_size = socket.recv_into(self._view[self._extent:new_extent])
+                new_extent = self._extent + data_size
+            self._extent = new_extent
+            return data_size
+        except KeyboardInterrupt:
+            return -1
 
-    cpdef bint receive_message(self, socket, int n):
+    cpdef int receive_message(self, socket, int n):
         """
 
         :param socket:
@@ -190,9 +193,9 @@ cdef class ChunkedInputBuffer(object):
         receive = self.receive
         while not frame_message():
             received = receive(socket, n)
-            if received == 0:
-                return False
-        return True
+            if received <= 0:
+                return received
+        return 1
 
     cdef _recycle(self):
         """ Reclaim buffer space before the origin.
