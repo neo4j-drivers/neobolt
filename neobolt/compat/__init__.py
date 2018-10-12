@@ -126,3 +126,9 @@ try:
     from urllib.parse import urlparse, parse_qs
 except ImportError:
     from urlparse import urlparse, parse_qs
+
+
+try:
+    from time import perf_counter
+except ImportError:
+    from time import clock as perf_counter

@@ -22,9 +22,9 @@
 from abc import abstractmethod
 from sys import maxsize
 from threading import Lock
-from time import clock
 
 from neobolt.addressing import SocketAddress
+from neobolt.compat import perf_counter
 from neobolt.compat.collections import MutableSet, OrderedDict
 from neobolt.direct import AbstractConnectionPool, DEFAULT_PORT, ConnectionErrorHandler
 from neobolt.exceptions import ConnectionExpired, DatabaseUnavailableError, \
@@ -96,7 +96,7 @@ class OrderedSet(MutableSet):
 
 class RoutingTable(object):
 
-    timer = clock
+    timer = perf_counter
 
     @classmethod
     def parse_routing_info(cls, records):
