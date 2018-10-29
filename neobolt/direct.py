@@ -458,7 +458,10 @@ class Connection(object):
         try:
             received = self.input_buffer.receive_message(self.socket, 8192)
         except SocketError:
-            received = False
+            received = 0
+        else:
+            if received == -1:
+                raise KeyboardInterrupt()
         if not received:
             self._defunct = True
             self.close()

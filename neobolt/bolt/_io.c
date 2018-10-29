@@ -822,7 +822,7 @@ struct __pyx_obj_7neobolt_4bolt_3_io_ChunkedInputBuffer {
 };
 
 
-/* "neobolt/bolt/_io.pyx":257
+/* "neobolt/bolt/_io.pyx":260
  * 
  * 
  * cdef class ChunkedOutputBuffer(object):             # <<<<<<<<<<<<<<
@@ -881,7 +881,7 @@ struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedInputBuffer {
 static struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedInputBuffer *__pyx_vtabptr_7neobolt_4bolt_3_io_ChunkedInputBuffer;
 
 
-/* "neobolt/bolt/_io.pyx":257
+/* "neobolt/bolt/_io.pyx":260
  * 
  * 
  * cdef class ChunkedOutputBuffer(object):             # <<<<<<<<<<<<<<
@@ -1137,6 +1137,33 @@ static CYTHON_INLINE int __Pyx_PyObject_SetSlice(
         PyObject** py_start, PyObject** py_stop, PyObject** py_slice,
         int has_cstart, int has_cstop, int wraparound);
 
+/* SaveResetException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_ExceptionSave(type, value, tb)  __Pyx__ExceptionSave(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#define __Pyx_ExceptionReset(type, value, tb)  __Pyx__ExceptionReset(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
+#else
+#define __Pyx_ExceptionSave(type, value, tb)   PyErr_GetExcInfo(type, value, tb)
+#define __Pyx_ExceptionReset(type, value, tb)  PyErr_SetExcInfo(type, value, tb)
+#endif
+
+/* PyErrExceptionMatches.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_PyErr_ExceptionMatches(err) __Pyx_PyErr_ExceptionMatchesInState(__pyx_tstate, err)
+static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err);
+#else
+#define __Pyx_PyErr_ExceptionMatches(err)  PyErr_ExceptionMatches(err)
+#endif
+
+/* GetException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_GetException(type, value, tb)  __Pyx__GetException(__pyx_tstate, type, value, tb)
+static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#else
+static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb);
+#endif
+
 /* WriteUnraisableException.proto */
 static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
@@ -1273,6 +1300,7 @@ int __pyx_module_is_main_neobolt__bolt___io = 0;
 
 /* Implementation of 'neobolt.bolt._io' */
 static PyObject *__pyx_builtin_TypeError;
+static PyObject *__pyx_builtin_KeyboardInterrupt;
 static const char __pyx_k_H[] = ">H";
 static const char __pyx_k_n[] = "n";
 static const char __pyx_k__5[] = "\000\000";
@@ -1318,9 +1346,11 @@ static const char __pyx_k_neobolt_compat[] = "neobolt.compat";
 static const char __pyx_k_discard_message[] = "discard_message";
 static const char __pyx_k_receive_message[] = "receive_message";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
+static const char __pyx_k_KeyboardInterrupt[] = "KeyboardInterrupt";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static PyObject *__pyx_kp_s_H;
+static PyObject *__pyx_n_s_KeyboardInterrupt;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_b__5;
 static PyObject *__pyx_kp_b__8;
@@ -3757,8 +3787,11 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive(struct __pyx
   PyObject *__pyx_t_5 = NULL;
   int __pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
-  Py_ssize_t __pyx_t_8;
-  int __pyx_t_9;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  PyObject *__pyx_t_10 = NULL;
+  Py_ssize_t __pyx_t_11;
+  int __pyx_t_12;
   __Pyx_RefNannySetupContext("receive", 0);
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
@@ -3829,300 +3862,389 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive(struct __pyx
   /* "neobolt/bolt/_io.pyx":163
  *         cdef int data_size
  * 
- *         new_extent = self._extent + n             # <<<<<<<<<<<<<<
- *         overflow = new_extent - len(self._data)
- *         if overflow > 0:
+ *         try:             # <<<<<<<<<<<<<<
+ *             new_extent = self._extent + n
+ *             overflow = new_extent - len(self._data)
  */
-  __pyx_v_new_extent = (__pyx_v_self->_extent + __pyx_v_n);
+  {
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ExceptionSave(&__pyx_t_8, &__pyx_t_9, &__pyx_t_10);
+    __Pyx_XGOTREF(__pyx_t_8);
+    __Pyx_XGOTREF(__pyx_t_9);
+    __Pyx_XGOTREF(__pyx_t_10);
+    /*try:*/ {
 
-  /* "neobolt/bolt/_io.pyx":164
+      /* "neobolt/bolt/_io.pyx":164
  * 
- *         new_extent = self._extent + n
- *         overflow = new_extent - len(self._data)             # <<<<<<<<<<<<<<
- *         if overflow > 0:
- *             if self._recycle():
+ *         try:
+ *             new_extent = self._extent + n             # <<<<<<<<<<<<<<
+ *             overflow = new_extent - len(self._data)
+ *             if overflow > 0:
  */
-  __pyx_t_1 = __pyx_v_self->_data;
-  __Pyx_INCREF(__pyx_t_1);
-  if (unlikely(__pyx_t_1 == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 164, __pyx_L1_error)
-  }
-  __pyx_t_8 = PyByteArray_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(1, 164, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_overflow = (__pyx_v_new_extent - __pyx_t_8);
+      __pyx_v_new_extent = (__pyx_v_self->_extent + __pyx_v_n);
 
-  /* "neobolt/bolt/_io.pyx":165
- *         new_extent = self._extent + n
- *         overflow = new_extent - len(self._data)
- *         if overflow > 0:             # <<<<<<<<<<<<<<
- *             if self._recycle():
- *                 return self.receive(socket, n)
+      /* "neobolt/bolt/_io.pyx":165
+ *         try:
+ *             new_extent = self._extent + n
+ *             overflow = new_extent - len(self._data)             # <<<<<<<<<<<<<<
+ *             if overflow > 0:
+ *                 if self._recycle():
  */
-  __pyx_t_9 = ((__pyx_v_overflow > 0) != 0);
-  if (__pyx_t_9) {
-
-    /* "neobolt/bolt/_io.pyx":166
- *         overflow = new_extent - len(self._data)
- *         if overflow > 0:
- *             if self._recycle():             # <<<<<<<<<<<<<<
- *                 return self.receive(socket, n)
- *             self._view = None
- */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedInputBuffer *)__pyx_v_self->__pyx_vtab)->_recycle(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 166, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(1, 166, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (__pyx_t_9) {
-
-      /* "neobolt/bolt/_io.pyx":167
- *         if overflow > 0:
- *             if self._recycle():
- *                 return self.receive(socket, n)             # <<<<<<<<<<<<<<
- *             self._view = None
- *             data = socket.recv(n)
- */
-      __pyx_r = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedInputBuffer *)__pyx_v_self->__pyx_vtab)->receive(__pyx_v_self, __pyx_v_socket, __pyx_v_n, 0);
-      goto __pyx_L0;
+      __pyx_t_1 = __pyx_v_self->_data;
+      __Pyx_INCREF(__pyx_t_1);
+      if (unlikely(__pyx_t_1 == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+        __PYX_ERR(1, 165, __pyx_L3_error)
+      }
+      __pyx_t_11 = PyByteArray_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(1, 165, __pyx_L3_error)
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_v_overflow = (__pyx_v_new_extent - __pyx_t_11);
 
       /* "neobolt/bolt/_io.pyx":166
- *         overflow = new_extent - len(self._data)
- *         if overflow > 0:
- *             if self._recycle():             # <<<<<<<<<<<<<<
- *                 return self.receive(socket, n)
- *             self._view = None
+ *             new_extent = self._extent + n
+ *             overflow = new_extent - len(self._data)
+ *             if overflow > 0:             # <<<<<<<<<<<<<<
+ *                 if self._recycle():
+ *                     return self.receive(socket, n)
  */
-    }
+      __pyx_t_12 = ((__pyx_v_overflow > 0) != 0);
+      if (__pyx_t_12) {
 
-    /* "neobolt/bolt/_io.pyx":168
- *             if self._recycle():
- *                 return self.receive(socket, n)
- *             self._view = None             # <<<<<<<<<<<<<<
- *             data = socket.recv(n)
- *             data_size = len(data)
+        /* "neobolt/bolt/_io.pyx":167
+ *             overflow = new_extent - len(self._data)
+ *             if overflow > 0:
+ *                 if self._recycle():             # <<<<<<<<<<<<<<
+ *                     return self.receive(socket, n)
+ *                 self._view = None
  */
-    __Pyx_INCREF(Py_None);
-    __Pyx_GIVEREF(Py_None);
-    __Pyx_GOTREF(__pyx_v_self->_view);
-    __Pyx_DECREF(__pyx_v_self->_view);
-    __pyx_v_self->_view = Py_None;
+        __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedInputBuffer *)__pyx_v_self->__pyx_vtab)->_recycle(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 167, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(1, 167, __pyx_L3_error)
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        if (__pyx_t_12) {
 
-    /* "neobolt/bolt/_io.pyx":169
- *                 return self.receive(socket, n)
- *             self._view = None
- *             data = socket.recv(n)             # <<<<<<<<<<<<<<
- *             data_size = len(data)
- *             new_extent = self._extent + data_size
+          /* "neobolt/bolt/_io.pyx":168
+ *             if overflow > 0:
+ *                 if self._recycle():
+ *                     return self.receive(socket, n)             # <<<<<<<<<<<<<<
+ *                 self._view = None
+ *                 data = socket.recv(n)
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_socket, __pyx_n_s_recv); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 169, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_n); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 169, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_7 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_7)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_7);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
+          __pyx_r = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedInputBuffer *)__pyx_v_self->__pyx_vtab)->receive(__pyx_v_self, __pyx_v_socket, __pyx_v_n, 0);
+          goto __pyx_L7_try_return;
+
+          /* "neobolt/bolt/_io.pyx":167
+ *             overflow = new_extent - len(self._data)
+ *             if overflow > 0:
+ *                 if self._recycle():             # <<<<<<<<<<<<<<
+ *                     return self.receive(socket, n)
+ *                 self._view = None
+ */
+        }
+
+        /* "neobolt/bolt/_io.pyx":169
+ *                 if self._recycle():
+ *                     return self.receive(socket, n)
+ *                 self._view = None             # <<<<<<<<<<<<<<
+ *                 data = socket.recv(n)
+ *                 data_size = len(data)
+ */
+        __Pyx_INCREF(Py_None);
+        __Pyx_GIVEREF(Py_None);
+        __Pyx_GOTREF(__pyx_v_self->_view);
+        __Pyx_DECREF(__pyx_v_self->_view);
+        __pyx_v_self->_view = Py_None;
+
+        /* "neobolt/bolt/_io.pyx":170
+ *                     return self.receive(socket, n)
+ *                 self._view = None
+ *                 data = socket.recv(n)             # <<<<<<<<<<<<<<
+ *                 data_size = len(data)
+ *                 new_extent = self._extent + data_size
+ */
+        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_socket, __pyx_n_s_recv); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 170, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_n); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 170, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        __pyx_t_7 = NULL;
+        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+          __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_2);
+          if (likely(__pyx_t_7)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+            __Pyx_INCREF(__pyx_t_7);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_2, function);
+          }
+        }
+        if (!__pyx_t_7) {
+          __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 170, __pyx_L3_error)
+          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          __Pyx_GOTREF(__pyx_t_1);
+        } else {
+          #if CYTHON_FAST_PYCALL
+          if (PyFunction_Check(__pyx_t_2)) {
+            PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_4};
+            __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 170, __pyx_L3_error)
+            __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+            __Pyx_GOTREF(__pyx_t_1);
+            __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          } else
+          #endif
+          #if CYTHON_FAST_PYCCALL
+          if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+            PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_4};
+            __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 170, __pyx_L3_error)
+            __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+            __Pyx_GOTREF(__pyx_t_1);
+            __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          } else
+          #endif
+          {
+            __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 170, __pyx_L3_error)
+            __Pyx_GOTREF(__pyx_t_3);
+            __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_7); __pyx_t_7 = NULL;
+            __Pyx_GIVEREF(__pyx_t_4);
+            PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_t_4);
+            __pyx_t_4 = 0;
+            __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 170, __pyx_L3_error)
+            __Pyx_GOTREF(__pyx_t_1);
+            __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          }
+        }
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(1, 170, __pyx_L3_error)
+        __pyx_v_data = ((PyObject*)__pyx_t_1);
+        __pyx_t_1 = 0;
+
+        /* "neobolt/bolt/_io.pyx":171
+ *                 self._view = None
+ *                 data = socket.recv(n)
+ *                 data_size = len(data)             # <<<<<<<<<<<<<<
+ *                 new_extent = self._extent + data_size
+ *                 self._data[self._extent:new_extent] = data
+ */
+        if (unlikely(__pyx_v_data == Py_None)) {
+          PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+          __PYX_ERR(1, 171, __pyx_L3_error)
+        }
+        __pyx_t_11 = PyBytes_GET_SIZE(__pyx_v_data); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(1, 171, __pyx_L3_error)
+        __pyx_v_data_size = __pyx_t_11;
+
+        /* "neobolt/bolt/_io.pyx":172
+ *                 data = socket.recv(n)
+ *                 data_size = len(data)
+ *                 new_extent = self._extent + data_size             # <<<<<<<<<<<<<<
+ *                 self._data[self._extent:new_extent] = data
+ *                 self._view = memoryview(self._data)
+ */
+        __pyx_v_new_extent = (__pyx_v_self->_extent + __pyx_v_data_size);
+
+        /* "neobolt/bolt/_io.pyx":173
+ *                 data_size = len(data)
+ *                 new_extent = self._extent + data_size
+ *                 self._data[self._extent:new_extent] = data             # <<<<<<<<<<<<<<
+ *                 self._view = memoryview(self._data)
+ *             else:
+ */
+        if (unlikely(__pyx_v_self->_data == Py_None)) {
+          PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+          __PYX_ERR(1, 173, __pyx_L3_error)
+        }
+        if (__Pyx_PyObject_SetSlice(__pyx_v_self->_data, __pyx_v_data, __pyx_v_self->_extent, __pyx_v_new_extent, NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(1, 173, __pyx_L3_error)
+
+        /* "neobolt/bolt/_io.pyx":174
+ *                 new_extent = self._extent + data_size
+ *                 self._data[self._extent:new_extent] = data
+ *                 self._view = memoryview(self._data)             # <<<<<<<<<<<<<<
+ *             else:
+ *                 data_size = socket.recv_into(self._view[self._extent:new_extent])
+ */
+        __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 174, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_self->_data); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 174, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __Pyx_GIVEREF(__pyx_t_2);
+        __Pyx_GOTREF(__pyx_v_self->_view);
+        __Pyx_DECREF(__pyx_v_self->_view);
+        __pyx_v_self->_view = __pyx_t_2;
+        __pyx_t_2 = 0;
+
+        /* "neobolt/bolt/_io.pyx":166
+ *             new_extent = self._extent + n
+ *             overflow = new_extent - len(self._data)
+ *             if overflow > 0:             # <<<<<<<<<<<<<<
+ *                 if self._recycle():
+ *                     return self.receive(socket, n)
+ */
+        goto __pyx_L9;
       }
-    }
-    if (!__pyx_t_7) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 169, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-    } else {
-      #if CYTHON_FAST_PYCALL
-      if (PyFunction_Check(__pyx_t_2)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_4};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 169, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+      /* "neobolt/bolt/_io.pyx":176
+ *                 self._view = memoryview(self._data)
+ *             else:
+ *                 data_size = socket.recv_into(self._view[self._extent:new_extent])             # <<<<<<<<<<<<<<
+ *                 new_extent = self._extent + data_size
+ *             self._extent = new_extent
+ */
+      /*else*/ {
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_socket, __pyx_n_s_recv_into); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 176, __pyx_L3_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      } else
-      #endif
-      #if CYTHON_FAST_PYCCALL
-      if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_4};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 169, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      } else
-      #endif
-      {
-        __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 169, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_self->_view, __pyx_v_self->_extent, __pyx_v_new_extent, NULL, NULL, NULL, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 176, __pyx_L3_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_7); __pyx_t_7 = NULL;
-        __Pyx_GIVEREF(__pyx_t_4);
-        PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_t_4);
-        __pyx_t_4 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 169, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_4 = NULL;
+        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+          if (likely(__pyx_t_4)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+            __Pyx_INCREF(__pyx_t_4);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_1, function);
+          }
+        }
+        if (!__pyx_t_4) {
+          __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 176, __pyx_L3_error)
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+        } else {
+          #if CYTHON_FAST_PYCALL
+          if (PyFunction_Check(__pyx_t_1)) {
+            PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_3};
+            __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 176, __pyx_L3_error)
+            __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+            __Pyx_GOTREF(__pyx_t_2);
+            __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          } else
+          #endif
+          #if CYTHON_FAST_PYCCALL
+          if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
+            PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_3};
+            __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 176, __pyx_L3_error)
+            __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+            __Pyx_GOTREF(__pyx_t_2);
+            __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          } else
+          #endif
+          {
+            __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 176, __pyx_L3_error)
+            __Pyx_GOTREF(__pyx_t_7);
+            __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4); __pyx_t_4 = NULL;
+            __Pyx_GIVEREF(__pyx_t_3);
+            PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_3);
+            __pyx_t_3 = 0;
+            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 176, __pyx_L3_error)
+            __Pyx_GOTREF(__pyx_t_2);
+            __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+          }
+        }
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 176, __pyx_L3_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_v_data_size = __pyx_t_6;
+
+        /* "neobolt/bolt/_io.pyx":177
+ *             else:
+ *                 data_size = socket.recv_into(self._view[self._extent:new_extent])
+ *                 new_extent = self._extent + data_size             # <<<<<<<<<<<<<<
+ *             self._extent = new_extent
+ *             return data_size
+ */
+        __pyx_v_new_extent = (__pyx_v_self->_extent + __pyx_v_data_size);
       }
+      __pyx_L9:;
+
+      /* "neobolt/bolt/_io.pyx":178
+ *                 data_size = socket.recv_into(self._view[self._extent:new_extent])
+ *                 new_extent = self._extent + data_size
+ *             self._extent = new_extent             # <<<<<<<<<<<<<<
+ *             return data_size
+ *         except KeyboardInterrupt:
+ */
+      __pyx_v_self->_extent = __pyx_v_new_extent;
+
+      /* "neobolt/bolt/_io.pyx":179
+ *                 new_extent = self._extent + data_size
+ *             self._extent = new_extent
+ *             return data_size             # <<<<<<<<<<<<<<
+ *         except KeyboardInterrupt:
+ *             return -1
+ */
+      __pyx_r = __pyx_v_data_size;
+      goto __pyx_L7_try_return;
+
+      /* "neobolt/bolt/_io.pyx":163
+ *         cdef int data_size
+ * 
+ *         try:             # <<<<<<<<<<<<<<
+ *             new_extent = self._extent + n
+ *             overflow = new_extent - len(self._data)
+ */
     }
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(1, 169, __pyx_L1_error)
-    __pyx_v_data = ((PyObject*)__pyx_t_1);
-    __pyx_t_1 = 0;
+    __pyx_L3_error:;
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "neobolt/bolt/_io.pyx":170
- *             self._view = None
- *             data = socket.recv(n)
- *             data_size = len(data)             # <<<<<<<<<<<<<<
- *             new_extent = self._extent + data_size
- *             self._data[self._extent:new_extent] = data
+    /* "neobolt/bolt/_io.pyx":180
+ *             self._extent = new_extent
+ *             return data_size
+ *         except KeyboardInterrupt:             # <<<<<<<<<<<<<<
+ *             return -1
+ * 
  */
-    if (unlikely(__pyx_v_data == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(1, 170, __pyx_L1_error)
-    }
-    __pyx_t_8 = PyBytes_GET_SIZE(__pyx_v_data); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(1, 170, __pyx_L1_error)
-    __pyx_v_data_size = __pyx_t_8;
-
-    /* "neobolt/bolt/_io.pyx":171
- *             data = socket.recv(n)
- *             data_size = len(data)
- *             new_extent = self._extent + data_size             # <<<<<<<<<<<<<<
- *             self._data[self._extent:new_extent] = data
- *             self._view = memoryview(self._data)
- */
-    __pyx_v_new_extent = (__pyx_v_self->_extent + __pyx_v_data_size);
-
-    /* "neobolt/bolt/_io.pyx":172
- *             data_size = len(data)
- *             new_extent = self._extent + data_size
- *             self._data[self._extent:new_extent] = data             # <<<<<<<<<<<<<<
- *             self._view = memoryview(self._data)
- *         else:
- */
-    if (unlikely(__pyx_v_self->_data == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(1, 172, __pyx_L1_error)
-    }
-    if (__Pyx_PyObject_SetSlice(__pyx_v_self->_data, __pyx_v_data, __pyx_v_self->_extent, __pyx_v_new_extent, NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(1, 172, __pyx_L1_error)
-
-    /* "neobolt/bolt/_io.pyx":173
- *             new_extent = self._extent + data_size
- *             self._data[self._extent:new_extent] = data
- *             self._view = memoryview(self._data)             # <<<<<<<<<<<<<<
- *         else:
- *             data_size = socket.recv_into(self._view[self._extent:new_extent])
- */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 173, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_self->_data); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 173, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_GIVEREF(__pyx_t_2);
-    __Pyx_GOTREF(__pyx_v_self->_view);
-    __Pyx_DECREF(__pyx_v_self->_view);
-    __pyx_v_self->_view = __pyx_t_2;
-    __pyx_t_2 = 0;
-
-    /* "neobolt/bolt/_io.pyx":165
- *         new_extent = self._extent + n
- *         overflow = new_extent - len(self._data)
- *         if overflow > 0:             # <<<<<<<<<<<<<<
- *             if self._recycle():
- *                 return self.receive(socket, n)
- */
-    goto __pyx_L3;
-  }
-
-  /* "neobolt/bolt/_io.pyx":175
- *             self._view = memoryview(self._data)
- *         else:
- *             data_size = socket.recv_into(self._view[self._extent:new_extent])             # <<<<<<<<<<<<<<
- *             new_extent = self._extent + data_size
- *         self._extent = new_extent
- */
-  /*else*/ {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_socket, __pyx_n_s_recv_into); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 175, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_self->_view, __pyx_v_self->_extent, __pyx_v_new_extent, NULL, NULL, NULL, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 175, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_4)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_4);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
-      }
-    }
-    if (!__pyx_t_4) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 175, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyboardInterrupt);
+    if (__pyx_t_6) {
+      __Pyx_AddTraceback("neobolt.bolt._io.ChunkedInputBuffer.receive", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_1, &__pyx_t_7) < 0) __PYX_ERR(1, 180, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_2);
-    } else {
-      #if CYTHON_FAST_PYCALL
-      if (PyFunction_Check(__pyx_t_1)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_3};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 175, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      } else
-      #endif
-      #if CYTHON_FAST_PYCCALL
-      if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_3};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 175, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      } else
-      #endif
-      {
-        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 175, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_7);
-        __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4); __pyx_t_4 = NULL;
-        __Pyx_GIVEREF(__pyx_t_3);
-        PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_3);
-        __pyx_t_3 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 175, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      }
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_GOTREF(__pyx_t_7);
+
+      /* "neobolt/bolt/_io.pyx":181
+ *             return data_size
+ *         except KeyboardInterrupt:
+ *             return -1             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef int receive_message(self, socket, int n):
+ */
+      __pyx_r = -1;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      goto __pyx_L6_except_return;
     }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 175, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_v_data_size = __pyx_t_6;
+    goto __pyx_L5_except_error;
+    __pyx_L5_except_error:;
 
-    /* "neobolt/bolt/_io.pyx":176
- *         else:
- *             data_size = socket.recv_into(self._view[self._extent:new_extent])
- *             new_extent = self._extent + data_size             # <<<<<<<<<<<<<<
- *         self._extent = new_extent
- *         return data_size
+    /* "neobolt/bolt/_io.pyx":163
+ *         cdef int data_size
+ * 
+ *         try:             # <<<<<<<<<<<<<<
+ *             new_extent = self._extent + n
+ *             overflow = new_extent - len(self._data)
  */
-    __pyx_v_new_extent = (__pyx_v_self->_extent + __pyx_v_data_size);
+    __Pyx_XGIVEREF(__pyx_t_8);
+    __Pyx_XGIVEREF(__pyx_t_9);
+    __Pyx_XGIVEREF(__pyx_t_10);
+    __Pyx_ExceptionReset(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+    goto __pyx_L1_error;
+    __pyx_L7_try_return:;
+    __Pyx_XGIVEREF(__pyx_t_8);
+    __Pyx_XGIVEREF(__pyx_t_9);
+    __Pyx_XGIVEREF(__pyx_t_10);
+    __Pyx_ExceptionReset(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+    goto __pyx_L0;
+    __pyx_L6_except_return:;
+    __Pyx_XGIVEREF(__pyx_t_8);
+    __Pyx_XGIVEREF(__pyx_t_9);
+    __Pyx_XGIVEREF(__pyx_t_10);
+    __Pyx_ExceptionReset(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+    goto __pyx_L0;
   }
-  __pyx_L3:;
-
-  /* "neobolt/bolt/_io.pyx":177
- *             data_size = socket.recv_into(self._view[self._extent:new_extent])
- *             new_extent = self._extent + data_size
- *         self._extent = new_extent             # <<<<<<<<<<<<<<
- *         return data_size
- * 
- */
-  __pyx_v_self->_extent = __pyx_v_new_extent;
-
-  /* "neobolt/bolt/_io.pyx":178
- *             new_extent = self._extent + data_size
- *         self._extent = new_extent
- *         return data_size             # <<<<<<<<<<<<<<
- * 
- *     cpdef bint receive_message(self, socket, int n):
- */
-  __pyx_r = __pyx_v_data_size;
-  goto __pyx_L0;
 
   /* "neobolt/bolt/_io.pyx":153
  *         self._extent = new_extent
@@ -4233,10 +4355,10 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_18ChunkedInputBuffer_10receive(str
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":180
- *         return data_size
+/* "neobolt/bolt/_io.pyx":183
+ *             return -1
  * 
- *     cpdef bint receive_message(self, socket, int n):             # <<<<<<<<<<<<<<
+ *     cpdef int receive_message(self, socket, int n):             # <<<<<<<<<<<<<<
  *         """
  * 
  */
@@ -4262,10 +4384,10 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive_message(stru
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_receive_message); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 180, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_receive_message); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 183, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4bolt_3_io_18ChunkedInputBuffer_13receive_message)) {
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_n); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 180, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_n); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -4283,7 +4405,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive_message(stru
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_v_socket, __pyx_t_3};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 180, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 183, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4292,14 +4414,14 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive_message(stru
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_v_socket, __pyx_t_3};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 180, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 183, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       } else
       #endif
       {
-        __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 180, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 183, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         if (__pyx_t_5) {
           __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -4310,50 +4432,50 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive_message(stru
         __Pyx_GIVEREF(__pyx_t_3);
         PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_3);
         __pyx_t_3 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 180, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 183, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 180, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 183, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_r = __pyx_t_8;
+      __pyx_r = __pyx_t_6;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       goto __pyx_L0;
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/bolt/_io.pyx":189
+  /* "neobolt/bolt/_io.pyx":192
  *         cdef int received
  * 
  *         frame_message = self.frame_message             # <<<<<<<<<<<<<<
  *         receive = self.receive
  *         while not frame_message():
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_frame_message); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 189, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_frame_message); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_frame_message = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "neobolt/bolt/_io.pyx":190
+  /* "neobolt/bolt/_io.pyx":193
  * 
  *         frame_message = self.frame_message
  *         receive = self.receive             # <<<<<<<<<<<<<<
  *         while not frame_message():
  *             received = receive(socket, n)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_receive); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 190, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_receive); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_receive = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "neobolt/bolt/_io.pyx":191
+  /* "neobolt/bolt/_io.pyx":194
  *         frame_message = self.frame_message
  *         receive = self.receive
  *         while not frame_message():             # <<<<<<<<<<<<<<
  *             received = receive(socket, n)
- *             if received == 0:
+ *             if received <= 0:
  */
   while (1) {
     __Pyx_INCREF(__pyx_v_frame_message);
@@ -4368,26 +4490,26 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive_message(stru
       }
     }
     if (__pyx_t_4) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 191, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 194, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
-      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 191, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 194, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(1, 191, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(1, 194, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_9 = ((!__pyx_t_8) != 0);
     if (!__pyx_t_9) break;
 
-    /* "neobolt/bolt/_io.pyx":192
+    /* "neobolt/bolt/_io.pyx":195
  *         receive = self.receive
  *         while not frame_message():
  *             received = receive(socket, n)             # <<<<<<<<<<<<<<
- *             if received == 0:
- *                 return False
+ *             if received <= 0:
+ *                 return received
  */
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_n); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 192, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_n); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_v_receive);
     __pyx_t_4 = __pyx_v_receive; __pyx_t_7 = NULL;
@@ -4405,7 +4527,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive_message(stru
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_v_socket, __pyx_t_2};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 192, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 195, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4414,14 +4536,14 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive_message(stru
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_v_socket, __pyx_t_2};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 192, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 195, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else
     #endif
     {
-      __pyx_t_3 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 192, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 195, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       if (__pyx_t_7) {
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -4432,59 +4554,59 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive_message(stru
       __Pyx_GIVEREF(__pyx_t_2);
       PyTuple_SET_ITEM(__pyx_t_3, 1+__pyx_t_6, __pyx_t_2);
       __pyx_t_2 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 192, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 195, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 192, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 195, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_received = __pyx_t_6;
 
-    /* "neobolt/bolt/_io.pyx":193
+    /* "neobolt/bolt/_io.pyx":196
  *         while not frame_message():
  *             received = receive(socket, n)
- *             if received == 0:             # <<<<<<<<<<<<<<
- *                 return False
- *         return True
+ *             if received <= 0:             # <<<<<<<<<<<<<<
+ *                 return received
+ *         return 1
  */
-    __pyx_t_9 = ((__pyx_v_received == 0) != 0);
+    __pyx_t_9 = ((__pyx_v_received <= 0) != 0);
     if (__pyx_t_9) {
 
-      /* "neobolt/bolt/_io.pyx":194
+      /* "neobolt/bolt/_io.pyx":197
  *             received = receive(socket, n)
- *             if received == 0:
- *                 return False             # <<<<<<<<<<<<<<
- *         return True
+ *             if received <= 0:
+ *                 return received             # <<<<<<<<<<<<<<
+ *         return 1
  * 
  */
-      __pyx_r = 0;
+      __pyx_r = __pyx_v_received;
       goto __pyx_L0;
 
-      /* "neobolt/bolt/_io.pyx":193
+      /* "neobolt/bolt/_io.pyx":196
  *         while not frame_message():
  *             received = receive(socket, n)
- *             if received == 0:             # <<<<<<<<<<<<<<
- *                 return False
- *         return True
+ *             if received <= 0:             # <<<<<<<<<<<<<<
+ *                 return received
+ *         return 1
  */
     }
   }
 
-  /* "neobolt/bolt/_io.pyx":195
- *             if received == 0:
- *                 return False
- *         return True             # <<<<<<<<<<<<<<
+  /* "neobolt/bolt/_io.pyx":198
+ *             if received <= 0:
+ *                 return received
+ *         return 1             # <<<<<<<<<<<<<<
  * 
  *     cdef _recycle(self):
  */
   __pyx_r = 1;
   goto __pyx_L0;
 
-  /* "neobolt/bolt/_io.pyx":180
- *         return data_size
+  /* "neobolt/bolt/_io.pyx":183
+ *             return -1
  * 
- *     cpdef bint receive_message(self, socket, int n):             # <<<<<<<<<<<<<<
+ *     cpdef int receive_message(self, socket, int n):             # <<<<<<<<<<<<<<
  *         """
  * 
  */
@@ -4538,11 +4660,11 @@ static PyObject *__pyx_pw_7neobolt_4bolt_3_io_18ChunkedInputBuffer_13receive_mes
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("receive_message", 1, 2, 2, 1); __PYX_ERR(1, 180, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("receive_message", 1, 2, 2, 1); __PYX_ERR(1, 183, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "receive_message") < 0)) __PYX_ERR(1, 180, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "receive_message") < 0)) __PYX_ERR(1, 183, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4551,11 +4673,11 @@ static PyObject *__pyx_pw_7neobolt_4bolt_3_io_18ChunkedInputBuffer_13receive_mes
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_socket = values[0];
-    __pyx_v_n = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_n == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 180, __pyx_L3_error)
+    __pyx_v_n = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_n == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 183, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("receive_message", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 180, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("receive_message", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 183, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("neobolt.bolt._io.ChunkedInputBuffer.receive_message", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4574,7 +4696,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_18ChunkedInputBuffer_12receive_mes
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("receive_message", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive_message(__pyx_v_self, __pyx_v_socket, __pyx_v_n, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 180, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive_message(__pyx_v_self, __pyx_v_socket, __pyx_v_n, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4591,8 +4713,8 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_18ChunkedInputBuffer_12receive_mes
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":197
- *         return True
+/* "neobolt/bolt/_io.pyx":200
+ *         return 1
  * 
  *     cdef _recycle(self):             # <<<<<<<<<<<<<<
  *         """ Reclaim buffer space before the origin.
@@ -4609,7 +4731,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("_recycle", 0);
 
-  /* "neobolt/bolt/_io.pyx":205
+  /* "neobolt/bolt/_io.pyx":208
  *         cdef int available
  * 
  *         origin = self._origin             # <<<<<<<<<<<<<<
@@ -4619,7 +4741,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
   __pyx_t_1 = __pyx_v_self->_origin;
   __pyx_v_origin = __pyx_t_1;
 
-  /* "neobolt/bolt/_io.pyx":206
+  /* "neobolt/bolt/_io.pyx":209
  * 
  *         origin = self._origin
  *         if origin == 0:             # <<<<<<<<<<<<<<
@@ -4629,7 +4751,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
   __pyx_t_2 = ((__pyx_v_origin == 0) != 0);
   if (__pyx_t_2) {
 
-    /* "neobolt/bolt/_io.pyx":207
+    /* "neobolt/bolt/_io.pyx":210
  *         origin = self._origin
  *         if origin == 0:
  *             return False             # <<<<<<<<<<<<<<
@@ -4641,7 +4763,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
     __pyx_r = Py_False;
     goto __pyx_L0;
 
-    /* "neobolt/bolt/_io.pyx":206
+    /* "neobolt/bolt/_io.pyx":209
  * 
  *         origin = self._origin
  *         if origin == 0:             # <<<<<<<<<<<<<<
@@ -4650,7 +4772,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
  */
   }
 
-  /* "neobolt/bolt/_io.pyx":208
+  /* "neobolt/bolt/_io.pyx":211
  *         if origin == 0:
  *             return False
  *         available = self._extent - origin             # <<<<<<<<<<<<<<
@@ -4659,7 +4781,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
  */
   __pyx_v_available = (__pyx_v_self->_extent - __pyx_v_origin);
 
-  /* "neobolt/bolt/_io.pyx":209
+  /* "neobolt/bolt/_io.pyx":212
  *             return False
  *         available = self._extent - origin
  *         self._data[:available] = self._data[origin:self._extent]             # <<<<<<<<<<<<<<
@@ -4668,18 +4790,18 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
  */
   if (unlikely(__pyx_v_self->_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(1, 209, __pyx_L1_error)
+    __PYX_ERR(1, 212, __pyx_L1_error)
   }
-  __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_data, __pyx_v_origin, __pyx_v_self->_extent); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 209, __pyx_L1_error)
+  __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_data, __pyx_v_origin, __pyx_v_self->_extent); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (unlikely(__pyx_v_self->_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(1, 209, __pyx_L1_error)
+    __PYX_ERR(1, 212, __pyx_L1_error)
   }
-  if (__Pyx_PyObject_SetSlice(__pyx_v_self->_data, __pyx_t_3, 0, __pyx_v_available, NULL, NULL, NULL, 0, 1, 1) < 0) __PYX_ERR(1, 209, __pyx_L1_error)
+  if (__Pyx_PyObject_SetSlice(__pyx_v_self->_data, __pyx_t_3, 0, __pyx_v_available, NULL, NULL, NULL, 0, 1, 1) < 0) __PYX_ERR(1, 212, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "neobolt/bolt/_io.pyx":210
+  /* "neobolt/bolt/_io.pyx":213
  *         available = self._extent - origin
  *         self._data[:available] = self._data[origin:self._extent]
  *         self._extent = available             # <<<<<<<<<<<<<<
@@ -4688,7 +4810,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
  */
   __pyx_v_self->_extent = __pyx_v_available;
 
-  /* "neobolt/bolt/_io.pyx":211
+  /* "neobolt/bolt/_io.pyx":214
  *         self._data[:available] = self._data[origin:self._extent]
  *         self._extent = available
  *         self._origin = 0             # <<<<<<<<<<<<<<
@@ -4697,7 +4819,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
  */
   __pyx_v_self->_origin = 0;
 
-  /* "neobolt/bolt/_io.pyx":213
+  /* "neobolt/bolt/_io.pyx":216
  *         self._origin = 0
  *         #log_debug("Recycled %d bytes" % origin)
  *         return True             # <<<<<<<<<<<<<<
@@ -4709,8 +4831,8 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
   __pyx_r = Py_True;
   goto __pyx_L0;
 
-  /* "neobolt/bolt/_io.pyx":197
- *         return True
+  /* "neobolt/bolt/_io.pyx":200
+ *         return 1
  * 
  *     cdef _recycle(self):             # <<<<<<<<<<<<<<
  *         """ Reclaim buffer space before the origin.
@@ -4728,7 +4850,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer__recycle(struc
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":215
+/* "neobolt/bolt/_io.pyx":218
  *         return True
  * 
  *     cpdef frame(self):             # <<<<<<<<<<<<<<
@@ -4749,7 +4871,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame(struct _
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_frame); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 215, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_frame); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 218, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4bolt_3_io_18ChunkedInputBuffer_15frame)) {
       __Pyx_XDECREF(__pyx_r);
@@ -4765,10 +4887,10 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame(struct _
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 215, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 218, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 215, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 218, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4780,7 +4902,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame(struct _
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/bolt/_io.pyx":216
+  /* "neobolt/bolt/_io.pyx":219
  * 
  *     cpdef frame(self):
  *         return self._frame             # <<<<<<<<<<<<<<
@@ -4792,7 +4914,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame(struct _
   __pyx_r = ((PyObject *)__pyx_v_self->_frame);
   goto __pyx_L0;
 
-  /* "neobolt/bolt/_io.pyx":215
+  /* "neobolt/bolt/_io.pyx":218
  *         return True
  * 
  *     cpdef frame(self):             # <<<<<<<<<<<<<<
@@ -4833,7 +4955,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_18ChunkedInputBuffer_14frame(struc
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("frame", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 215, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4850,7 +4972,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_18ChunkedInputBuffer_14frame(struc
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":218
+/* "neobolt/bolt/_io.pyx":221
  *         return self._frame
  * 
  *     cpdef bint frame_message(self):             # <<<<<<<<<<<<<<
@@ -4884,7 +5006,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_frame_message); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 218, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_frame_message); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 221, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4bolt_3_io_18ChunkedInputBuffer_17frame_message)) {
       __Pyx_INCREF(__pyx_t_1);
@@ -4899,14 +5021,14 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 218, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 221, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 218, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 221, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 218, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 221, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_r = __pyx_t_5;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4915,7 +5037,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/bolt/_io.pyx":229
+  /* "neobolt/bolt/_io.pyx":232
  *         cdef int q
  * 
  *         if self._frame is not None:             # <<<<<<<<<<<<<<
@@ -4926,18 +5048,18 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
   __pyx_t_6 = (__pyx_t_5 != 0);
   if (__pyx_t_6) {
 
-    /* "neobolt/bolt/_io.pyx":230
+    /* "neobolt/bolt/_io.pyx":233
  * 
  *         if self._frame is not None:
  *             self.discard_message()             # <<<<<<<<<<<<<<
  *         panes = []
  *         p = origin = self._origin
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedInputBuffer *)__pyx_v_self->__pyx_vtab)->discard_message(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 230, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedInputBuffer *)__pyx_v_self->__pyx_vtab)->discard_message(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 233, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "neobolt/bolt/_io.pyx":229
+    /* "neobolt/bolt/_io.pyx":232
  *         cdef int q
  * 
  *         if self._frame is not None:             # <<<<<<<<<<<<<<
@@ -4946,19 +5068,19 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
  */
   }
 
-  /* "neobolt/bolt/_io.pyx":231
+  /* "neobolt/bolt/_io.pyx":234
  *         if self._frame is not None:
  *             self.discard_message()
  *         panes = []             # <<<<<<<<<<<<<<
  *         p = origin = self._origin
  *         extent = self._extent
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 231, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_panes = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "neobolt/bolt/_io.pyx":232
+  /* "neobolt/bolt/_io.pyx":235
  *             self.discard_message()
  *         panes = []
  *         p = origin = self._origin             # <<<<<<<<<<<<<<
@@ -4969,7 +5091,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
   __pyx_v_p = __pyx_t_7;
   __pyx_v_origin = __pyx_t_7;
 
-  /* "neobolt/bolt/_io.pyx":233
+  /* "neobolt/bolt/_io.pyx":236
  *         panes = []
  *         p = origin = self._origin
  *         extent = self._extent             # <<<<<<<<<<<<<<
@@ -4979,7 +5101,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
   __pyx_t_7 = __pyx_v_self->_extent;
   __pyx_v_extent = __pyx_t_7;
 
-  /* "neobolt/bolt/_io.pyx":234
+  /* "neobolt/bolt/_io.pyx":237
  *         p = origin = self._origin
  *         extent = self._extent
  *         while p < extent:             # <<<<<<<<<<<<<<
@@ -4990,7 +5112,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
     __pyx_t_6 = ((__pyx_v_p < __pyx_v_extent) != 0);
     if (!__pyx_t_6) break;
 
-    /* "neobolt/bolt/_io.pyx":235
+    /* "neobolt/bolt/_io.pyx":238
  *         extent = self._extent
  *         while p < extent:
  *             available = extent - p             # <<<<<<<<<<<<<<
@@ -4999,7 +5121,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
  */
     __pyx_v_available = (__pyx_v_extent - __pyx_v_p);
 
-    /* "neobolt/bolt/_io.pyx":236
+    /* "neobolt/bolt/_io.pyx":239
  *         while p < extent:
  *             available = extent - p
  *             if available < 2:             # <<<<<<<<<<<<<<
@@ -5009,7 +5131,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
     __pyx_t_6 = ((__pyx_v_available < 2) != 0);
     if (__pyx_t_6) {
 
-      /* "neobolt/bolt/_io.pyx":237
+      /* "neobolt/bolt/_io.pyx":240
  *             available = extent - p
  *             if available < 2:
  *                 break             # <<<<<<<<<<<<<<
@@ -5018,7 +5140,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
  */
       goto __pyx_L5_break;
 
-      /* "neobolt/bolt/_io.pyx":236
+      /* "neobolt/bolt/_io.pyx":239
  *         while p < extent:
  *             available = extent - p
  *             if available < 2:             # <<<<<<<<<<<<<<
@@ -5027,16 +5149,16 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
  */
     }
 
-    /* "neobolt/bolt/_io.pyx":238
+    /* "neobolt/bolt/_io.pyx":241
  *             if available < 2:
  *                 break
  *             chunk_size, = struct_unpack(">H", self._view[p:(p + 2)])             # <<<<<<<<<<<<<<
  *             p += 2
  *             if chunk_size == 0:
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_struct_unpack); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 238, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_struct_unpack); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_self->_view, __pyx_v_p, (__pyx_v_p + 2), NULL, NULL, NULL, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 238, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_self->_view, __pyx_v_p, (__pyx_v_p + 2), NULL, NULL, NULL, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_4 = NULL;
     __pyx_t_7 = 0;
@@ -5053,7 +5175,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_kp_s_H, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 238, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 241, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5062,14 +5184,14 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_kp_s_H, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 238, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 241, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else
     #endif
     {
-      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 238, __pyx_L1_error)
+      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 241, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       if (__pyx_t_4) {
         __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -5080,7 +5202,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 238, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 241, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
@@ -5091,7 +5213,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
       if (unlikely(size != 1)) {
         if (size > 1) __Pyx_RaiseTooManyValuesError(1);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(1, 238, __pyx_L1_error)
+        __PYX_ERR(1, 241, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -5101,19 +5223,19 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
       }
       __Pyx_INCREF(__pyx_t_2);
       #else
-      __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 238, __pyx_L1_error)
+      __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 241, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       #endif
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_8 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 238, __pyx_L1_error)
+      __pyx_t_8 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 241, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_9 = Py_TYPE(__pyx_t_8)->tp_iternext;
       index = 0; __pyx_t_2 = __pyx_t_9(__pyx_t_8); if (unlikely(!__pyx_t_2)) goto __pyx_L7_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_2);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 1) < 0) __PYX_ERR(1, 238, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 1) < 0) __PYX_ERR(1, 241, __pyx_L1_error)
       __pyx_t_9 = NULL;
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       goto __pyx_L8_unpacking_done;
@@ -5121,14 +5243,14 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __pyx_t_9 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(1, 238, __pyx_L1_error)
+      __PYX_ERR(1, 241, __pyx_L1_error)
       __pyx_L8_unpacking_done:;
     }
-    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 238, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 241, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_chunk_size = __pyx_t_7;
 
-    /* "neobolt/bolt/_io.pyx":239
+    /* "neobolt/bolt/_io.pyx":242
  *                 break
  *             chunk_size, = struct_unpack(">H", self._view[p:(p + 2)])
  *             p += 2             # <<<<<<<<<<<<<<
@@ -5137,7 +5259,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
  */
     __pyx_v_p = (__pyx_v_p + 2);
 
-    /* "neobolt/bolt/_io.pyx":240
+    /* "neobolt/bolt/_io.pyx":243
  *             chunk_size, = struct_unpack(">H", self._view[p:(p + 2)])
  *             p += 2
  *             if chunk_size == 0:             # <<<<<<<<<<<<<<
@@ -5147,7 +5269,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
     __pyx_t_6 = ((__pyx_v_chunk_size == 0) != 0);
     if (__pyx_t_6) {
 
-      /* "neobolt/bolt/_io.pyx":241
+      /* "neobolt/bolt/_io.pyx":244
  *             p += 2
  *             if chunk_size == 0:
  *                 self._limit = p             # <<<<<<<<<<<<<<
@@ -5156,22 +5278,22 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
  */
       __pyx_v_self->_limit = __pyx_v_p;
 
-      /* "neobolt/bolt/_io.pyx":242
+      /* "neobolt/bolt/_io.pyx":245
  *             if chunk_size == 0:
  *                 self._limit = p
  *                 self._frame = MessageFrame(memoryview(self._view[origin:self._limit]), panes)             # <<<<<<<<<<<<<<
  *                 return True
  *             q = p + chunk_size
  */
-      __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 242, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 245, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_self->_view, __pyx_v_origin, __pyx_v_self->_limit, NULL, NULL, NULL, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 242, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_self->_view, __pyx_v_origin, __pyx_v_self->_limit, NULL, NULL, NULL, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 245, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 242, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 245, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 242, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 245, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_GIVEREF(__pyx_t_8);
       PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_8);
@@ -5179,7 +5301,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
       __Pyx_GIVEREF(__pyx_v_panes);
       PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_panes);
       __pyx_t_8 = 0;
-      __pyx_t_8 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7neobolt_4bolt_3_io_MessageFrame), __pyx_t_2, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 242, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7neobolt_4bolt_3_io_MessageFrame), __pyx_t_2, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 245, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GIVEREF(__pyx_t_8);
@@ -5188,7 +5310,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
       __pyx_v_self->_frame = ((struct __pyx_obj_7neobolt_4bolt_3_io_MessageFrame *)__pyx_t_8);
       __pyx_t_8 = 0;
 
-      /* "neobolt/bolt/_io.pyx":243
+      /* "neobolt/bolt/_io.pyx":246
  *                 self._limit = p
  *                 self._frame = MessageFrame(memoryview(self._view[origin:self._limit]), panes)
  *                 return True             # <<<<<<<<<<<<<<
@@ -5198,7 +5320,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
       __pyx_r = 1;
       goto __pyx_L0;
 
-      /* "neobolt/bolt/_io.pyx":240
+      /* "neobolt/bolt/_io.pyx":243
  *             chunk_size, = struct_unpack(">H", self._view[p:(p + 2)])
  *             p += 2
  *             if chunk_size == 0:             # <<<<<<<<<<<<<<
@@ -5207,7 +5329,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
  */
     }
 
-    /* "neobolt/bolt/_io.pyx":244
+    /* "neobolt/bolt/_io.pyx":247
  *                 self._frame = MessageFrame(memoryview(self._view[origin:self._limit]), panes)
  *                 return True
  *             q = p + chunk_size             # <<<<<<<<<<<<<<
@@ -5216,18 +5338,18 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
  */
     __pyx_v_q = (__pyx_v_p + __pyx_v_chunk_size);
 
-    /* "neobolt/bolt/_io.pyx":245
+    /* "neobolt/bolt/_io.pyx":248
  *                 return True
  *             q = p + chunk_size
  *             panes.append((p - origin, q - origin))             # <<<<<<<<<<<<<<
  *             p = q
  *         return False
  */
-    __pyx_t_8 = __Pyx_PyInt_From_int((__pyx_v_p - __pyx_v_origin)); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 245, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_From_int((__pyx_v_p - __pyx_v_origin)); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 248, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_2 = __Pyx_PyInt_From_int((__pyx_v_q - __pyx_v_origin)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 245, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int((__pyx_v_q - __pyx_v_origin)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 248, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 245, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 248, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_8);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
@@ -5235,10 +5357,10 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_2);
     __pyx_t_8 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_panes, __pyx_t_1); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(1, 245, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_panes, __pyx_t_1); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(1, 248, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "neobolt/bolt/_io.pyx":246
+    /* "neobolt/bolt/_io.pyx":249
  *             q = p + chunk_size
  *             panes.append((p - origin, q - origin))
  *             p = q             # <<<<<<<<<<<<<<
@@ -5249,7 +5371,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
   }
   __pyx_L5_break:;
 
-  /* "neobolt/bolt/_io.pyx":247
+  /* "neobolt/bolt/_io.pyx":250
  *             panes.append((p - origin, q - origin))
  *             p = q
  *         return False             # <<<<<<<<<<<<<<
@@ -5259,7 +5381,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(struct
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "neobolt/bolt/_io.pyx":218
+  /* "neobolt/bolt/_io.pyx":221
  *         return self._frame
  * 
  *     cpdef bint frame_message(self):             # <<<<<<<<<<<<<<
@@ -5302,7 +5424,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_18ChunkedInputBuffer_16frame_messa
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("frame_message", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 218, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_frame_message(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5319,7 +5441,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_18ChunkedInputBuffer_16frame_messa
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":249
+/* "neobolt/bolt/_io.pyx":252
  *         return False
  * 
  *     cpdef discard_message(self):             # <<<<<<<<<<<<<<
@@ -5343,7 +5465,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_discard_messag
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_discard_message); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 249, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_discard_message); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 252, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4bolt_3_io_18ChunkedInputBuffer_19discard_message)) {
       __Pyx_XDECREF(__pyx_r);
@@ -5359,10 +5481,10 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_discard_messag
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 249, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 252, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 249, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 252, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5374,7 +5496,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_discard_messag
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/bolt/_io.pyx":250
+  /* "neobolt/bolt/_io.pyx":253
  * 
  *     cpdef discard_message(self):
  *         if self._frame is not None:             # <<<<<<<<<<<<<<
@@ -5385,18 +5507,18 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_discard_messag
   __pyx_t_6 = (__pyx_t_5 != 0);
   if (__pyx_t_6) {
 
-    /* "neobolt/bolt/_io.pyx":251
+    /* "neobolt/bolt/_io.pyx":254
  *     cpdef discard_message(self):
  *         if self._frame is not None:
  *             self._frame.close()             # <<<<<<<<<<<<<<
  *             self._origin = self._limit
  *             self._limit = -1
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_MessageFrame *)__pyx_v_self->_frame->__pyx_vtab)->close(__pyx_v_self->_frame, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 251, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_MessageFrame *)__pyx_v_self->_frame->__pyx_vtab)->close(__pyx_v_self->_frame, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 254, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "neobolt/bolt/_io.pyx":252
+    /* "neobolt/bolt/_io.pyx":255
  *         if self._frame is not None:
  *             self._frame.close()
  *             self._origin = self._limit             # <<<<<<<<<<<<<<
@@ -5406,7 +5528,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_discard_messag
     __pyx_t_7 = __pyx_v_self->_limit;
     __pyx_v_self->_origin = __pyx_t_7;
 
-    /* "neobolt/bolt/_io.pyx":253
+    /* "neobolt/bolt/_io.pyx":256
  *             self._frame.close()
  *             self._origin = self._limit
  *             self._limit = -1             # <<<<<<<<<<<<<<
@@ -5415,7 +5537,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_discard_messag
  */
     __pyx_v_self->_limit = -1;
 
-    /* "neobolt/bolt/_io.pyx":254
+    /* "neobolt/bolt/_io.pyx":257
  *             self._origin = self._limit
  *             self._limit = -1
  *             self._frame = None             # <<<<<<<<<<<<<<
@@ -5428,7 +5550,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_discard_messag
     __Pyx_DECREF(((PyObject *)__pyx_v_self->_frame));
     __pyx_v_self->_frame = ((struct __pyx_obj_7neobolt_4bolt_3_io_MessageFrame *)Py_None);
 
-    /* "neobolt/bolt/_io.pyx":250
+    /* "neobolt/bolt/_io.pyx":253
  * 
  *     cpdef discard_message(self):
  *         if self._frame is not None:             # <<<<<<<<<<<<<<
@@ -5437,7 +5559,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_discard_messag
  */
   }
 
-  /* "neobolt/bolt/_io.pyx":249
+  /* "neobolt/bolt/_io.pyx":252
  *         return False
  * 
  *     cpdef discard_message(self):             # <<<<<<<<<<<<<<
@@ -5480,7 +5602,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_18ChunkedInputBuffer_18discard_mes
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("discard_message", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_discard_message(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 249, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_discard_message(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5604,7 +5726,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_18ChunkedInputBuffer_22__setstate_
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":265
+/* "neobolt/bolt/_io.pyx":268
  *     cdef int _end
  * 
  *     def __cinit__(self, int capacity=1048576, int max_chunk_size=16384):             # <<<<<<<<<<<<<<
@@ -5649,7 +5771,7 @@ static int __pyx_pw_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_1__cinit__(PyObjec
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(1, 265, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(1, 268, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -5662,19 +5784,19 @@ static int __pyx_pw_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_1__cinit__(PyObjec
       }
     }
     if (values[0]) {
-      __pyx_v_capacity = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_capacity == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 265, __pyx_L3_error)
+      __pyx_v_capacity = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_capacity == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 268, __pyx_L3_error)
     } else {
       __pyx_v_capacity = ((int)0x100000);
     }
     if (values[1]) {
-      __pyx_v_max_chunk_size = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_max_chunk_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 265, __pyx_L3_error)
+      __pyx_v_max_chunk_size = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_max_chunk_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 268, __pyx_L3_error)
     } else {
       __pyx_v_max_chunk_size = ((int)0x4000);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 265, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 268, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("neobolt.bolt._io.ChunkedOutputBuffer.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5694,7 +5816,7 @@ static int __pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer___cinit__(struct _
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "neobolt/bolt/_io.pyx":266
+  /* "neobolt/bolt/_io.pyx":269
  * 
  *     def __cinit__(self, int capacity=1048576, int max_chunk_size=16384):
  *         self._max_chunk_size = max_chunk_size             # <<<<<<<<<<<<<<
@@ -5703,7 +5825,7 @@ static int __pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer___cinit__(struct _
  */
   __pyx_v_self->_max_chunk_size = __pyx_v_max_chunk_size;
 
-  /* "neobolt/bolt/_io.pyx":267
+  /* "neobolt/bolt/_io.pyx":270
  *     def __cinit__(self, int capacity=1048576, int max_chunk_size=16384):
  *         self._max_chunk_size = max_chunk_size
  *         self._header = 0             # <<<<<<<<<<<<<<
@@ -5712,7 +5834,7 @@ static int __pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer___cinit__(struct _
  */
   __pyx_v_self->_header = 0;
 
-  /* "neobolt/bolt/_io.pyx":268
+  /* "neobolt/bolt/_io.pyx":271
  *         self._max_chunk_size = max_chunk_size
  *         self._header = 0
  *         self._start = 2             # <<<<<<<<<<<<<<
@@ -5721,7 +5843,7 @@ static int __pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer___cinit__(struct _
  */
   __pyx_v_self->_start = 2;
 
-  /* "neobolt/bolt/_io.pyx":269
+  /* "neobolt/bolt/_io.pyx":272
  *         self._header = 0
  *         self._start = 2
  *         self._end = 2             # <<<<<<<<<<<<<<
@@ -5730,16 +5852,16 @@ static int __pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer___cinit__(struct _
  */
   __pyx_v_self->_end = 2;
 
-  /* "neobolt/bolt/_io.pyx":270
+  /* "neobolt/bolt/_io.pyx":273
  *         self._start = 2
  *         self._end = 2
  *         self._data = bytearray(capacity)             # <<<<<<<<<<<<<<
  * 
  *     cpdef int max_chunk_size(self):
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_capacity); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 270, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_capacity); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyByteArray_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 270, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyByteArray_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_GIVEREF(__pyx_t_2);
@@ -5748,7 +5870,7 @@ static int __pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer___cinit__(struct _
   __pyx_v_self->_data = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "neobolt/bolt/_io.pyx":265
+  /* "neobolt/bolt/_io.pyx":268
  *     cdef int _end
  * 
  *     def __cinit__(self, int capacity=1048576, int max_chunk_size=16384):             # <<<<<<<<<<<<<<
@@ -5769,7 +5891,7 @@ static int __pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer___cinit__(struct _
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":272
+/* "neobolt/bolt/_io.pyx":275
  *         self._data = bytearray(capacity)
  * 
  *     cpdef int max_chunk_size(self):             # <<<<<<<<<<<<<<
@@ -5791,7 +5913,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_max_chunk_size(stru
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_max_chunk_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 272, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_max_chunk_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 275, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_3max_chunk_size)) {
       __Pyx_INCREF(__pyx_t_1);
@@ -5806,14 +5928,14 @@ static int __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_max_chunk_size(stru
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 272, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 275, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 272, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 275, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 272, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 275, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_r = __pyx_t_5;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -5822,7 +5944,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_max_chunk_size(stru
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/bolt/_io.pyx":273
+  /* "neobolt/bolt/_io.pyx":276
  * 
  *     cpdef int max_chunk_size(self):
  *         return self._max_chunk_size             # <<<<<<<<<<<<<<
@@ -5832,7 +5954,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_max_chunk_size(stru
   __pyx_r = __pyx_v_self->_max_chunk_size;
   goto __pyx_L0;
 
-  /* "neobolt/bolt/_io.pyx":272
+  /* "neobolt/bolt/_io.pyx":275
  *         self._data = bytearray(capacity)
  * 
  *     cpdef int max_chunk_size(self):             # <<<<<<<<<<<<<<
@@ -5872,7 +5994,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_2max_chunk_s
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("max_chunk_size", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_max_chunk_size(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 272, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_max_chunk_size(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5889,7 +6011,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_2max_chunk_s
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":275
+/* "neobolt/bolt/_io.pyx":278
  *         return self._max_chunk_size
  * 
  *     cpdef clear(self):             # <<<<<<<<<<<<<<
@@ -5910,7 +6032,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_clear(struct 
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_clear); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 275, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_clear); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 278, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_5clear)) {
       __Pyx_XDECREF(__pyx_r);
@@ -5926,10 +6048,10 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_clear(struct 
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 275, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 278, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 275, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 278, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5941,7 +6063,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_clear(struct 
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/bolt/_io.pyx":276
+  /* "neobolt/bolt/_io.pyx":279
  * 
  *     cpdef clear(self):
  *         self._header = 0             # <<<<<<<<<<<<<<
@@ -5950,7 +6072,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_clear(struct 
  */
   __pyx_v_self->_header = 0;
 
-  /* "neobolt/bolt/_io.pyx":277
+  /* "neobolt/bolt/_io.pyx":280
  *     cpdef clear(self):
  *         self._header = 0
  *         self._start = 2             # <<<<<<<<<<<<<<
@@ -5959,7 +6081,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_clear(struct 
  */
   __pyx_v_self->_start = 2;
 
-  /* "neobolt/bolt/_io.pyx":278
+  /* "neobolt/bolt/_io.pyx":281
  *         self._header = 0
  *         self._start = 2
  *         self._end = 2             # <<<<<<<<<<<<<<
@@ -5968,7 +6090,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_clear(struct 
  */
   __pyx_v_self->_end = 2;
 
-  /* "neobolt/bolt/_io.pyx":279
+  /* "neobolt/bolt/_io.pyx":282
  *         self._start = 2
  *         self._end = 2
  *         self._data[0:2] = b"\x00\x00"             # <<<<<<<<<<<<<<
@@ -5977,11 +6099,11 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_clear(struct 
  */
   if (unlikely(__pyx_v_self->_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(1, 279, __pyx_L1_error)
+    __PYX_ERR(1, 282, __pyx_L1_error)
   }
-  if (__Pyx_PyObject_SetSlice(__pyx_v_self->_data, __pyx_kp_b__5, 0, 2, NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(1, 279, __pyx_L1_error)
+  if (__Pyx_PyObject_SetSlice(__pyx_v_self->_data, __pyx_kp_b__5, 0, 2, NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(1, 282, __pyx_L1_error)
 
-  /* "neobolt/bolt/_io.pyx":275
+  /* "neobolt/bolt/_io.pyx":278
  *         return self._max_chunk_size
  * 
  *     cpdef clear(self):             # <<<<<<<<<<<<<<
@@ -6024,7 +6146,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_4clear(struc
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("clear", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_clear(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 275, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_clear(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6041,7 +6163,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_4clear(struc
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":281
+/* "neobolt/bolt/_io.pyx":284
  *         self._data[0:2] = b"\x00\x00"
  * 
  *     cpdef write(self, bytes b):             # <<<<<<<<<<<<<<
@@ -6073,7 +6195,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 281, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_7write)) {
       __Pyx_XDECREF(__pyx_r);
@@ -6089,13 +6211,13 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 281, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 284, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_b};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 281, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 284, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -6103,19 +6225,19 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_b};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 281, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 284, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 281, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 284, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(__pyx_v_b);
           __Pyx_GIVEREF(__pyx_v_b);
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_b);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 281, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 284, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -6129,7 +6251,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/bolt/_io.pyx":289
+  /* "neobolt/bolt/_io.pyx":292
  *         cdef int new_chunk_size
  * 
  *         data = self._data             # <<<<<<<<<<<<<<
@@ -6141,7 +6263,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
   __pyx_v_data = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "neobolt/bolt/_io.pyx":290
+  /* "neobolt/bolt/_io.pyx":293
  * 
  *         data = self._data
  *         new_data_size = len(b)             # <<<<<<<<<<<<<<
@@ -6150,12 +6272,12 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
  */
   if (unlikely(__pyx_v_b == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 290, __pyx_L1_error)
+    __PYX_ERR(1, 293, __pyx_L1_error)
   }
-  __pyx_t_6 = PyBytes_GET_SIZE(__pyx_v_b); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(1, 290, __pyx_L1_error)
+  __pyx_t_6 = PyBytes_GET_SIZE(__pyx_v_b); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(1, 293, __pyx_L1_error)
   __pyx_v_new_data_size = __pyx_t_6;
 
-  /* "neobolt/bolt/_io.pyx":291
+  /* "neobolt/bolt/_io.pyx":294
  *         data = self._data
  *         new_data_size = len(b)
  *         chunk_size = self._end - self._start             # <<<<<<<<<<<<<<
@@ -6164,50 +6286,50 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
  */
   __pyx_v_chunk_size = (__pyx_v_self->_end - __pyx_v_self->_start);
 
-  /* "neobolt/bolt/_io.pyx":292
+  /* "neobolt/bolt/_io.pyx":295
  *         new_data_size = len(b)
  *         chunk_size = self._end - self._start
  *         max_chunk_size = self._max_chunk_size             # <<<<<<<<<<<<<<
  *         chunk_remaining = max_chunk_size - chunk_size
  *         if new_data_size > max_chunk_size:
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_max_chunk_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 292, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_max_chunk_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 295, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_max_chunk_size = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "neobolt/bolt/_io.pyx":293
+  /* "neobolt/bolt/_io.pyx":296
  *         chunk_size = self._end - self._start
  *         max_chunk_size = self._max_chunk_size
  *         chunk_remaining = max_chunk_size - chunk_size             # <<<<<<<<<<<<<<
  *         if new_data_size > max_chunk_size:
  *             self.write(b[:chunk_remaining])
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_chunk_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 293, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_chunk_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Subtract(__pyx_v_max_chunk_size, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 293, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Subtract(__pyx_v_max_chunk_size, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 293, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 296, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_chunk_remaining = __pyx_t_7;
 
-  /* "neobolt/bolt/_io.pyx":294
+  /* "neobolt/bolt/_io.pyx":297
  *         max_chunk_size = self._max_chunk_size
  *         chunk_remaining = max_chunk_size - chunk_size
  *         if new_data_size > max_chunk_size:             # <<<<<<<<<<<<<<
  *             self.write(b[:chunk_remaining])
  *             self.chunk()
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_new_data_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 294, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_new_data_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_v_max_chunk_size, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 294, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_v_max_chunk_size, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 297, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(1, 294, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(1, 297, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_8) {
 
-    /* "neobolt/bolt/_io.pyx":295
+    /* "neobolt/bolt/_io.pyx":298
  *         chunk_remaining = max_chunk_size - chunk_size
  *         if new_data_size > max_chunk_size:
  *             self.write(b[:chunk_remaining])             # <<<<<<<<<<<<<<
@@ -6216,27 +6338,27 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
  */
     if (unlikely(__pyx_v_b == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(1, 295, __pyx_L1_error)
+      __PYX_ERR(1, 298, __pyx_L1_error)
     }
-    __pyx_t_1 = PySequence_GetSlice(__pyx_v_b, 0, __pyx_v_chunk_remaining); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 295, __pyx_L1_error)
+    __pyx_t_1 = PySequence_GetSlice(__pyx_v_b, 0, __pyx_v_chunk_remaining); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 298, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedOutputBuffer *)__pyx_v_self->__pyx_vtab)->write(__pyx_v_self, ((PyObject*)__pyx_t_1), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 295, __pyx_L1_error)
+    __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedOutputBuffer *)__pyx_v_self->__pyx_vtab)->write(__pyx_v_self, ((PyObject*)__pyx_t_1), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 298, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "neobolt/bolt/_io.pyx":296
+    /* "neobolt/bolt/_io.pyx":299
  *         if new_data_size > max_chunk_size:
  *             self.write(b[:chunk_remaining])
  *             self.chunk()             # <<<<<<<<<<<<<<
  *             self.write(b[chunk_remaining:])
  *             return
  */
-    __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedOutputBuffer *)__pyx_v_self->__pyx_vtab)->chunk(__pyx_v_self, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 296, __pyx_L1_error)
+    __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedOutputBuffer *)__pyx_v_self->__pyx_vtab)->chunk(__pyx_v_self, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 299, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "neobolt/bolt/_io.pyx":297
+    /* "neobolt/bolt/_io.pyx":300
  *             self.write(b[:chunk_remaining])
  *             self.chunk()
  *             self.write(b[chunk_remaining:])             # <<<<<<<<<<<<<<
@@ -6245,16 +6367,16 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
  */
     if (unlikely(__pyx_v_b == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(1, 297, __pyx_L1_error)
+      __PYX_ERR(1, 300, __pyx_L1_error)
     }
-    __pyx_t_2 = PySequence_GetSlice(__pyx_v_b, __pyx_v_chunk_remaining, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 297, __pyx_L1_error)
+    __pyx_t_2 = PySequence_GetSlice(__pyx_v_b, __pyx_v_chunk_remaining, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 300, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedOutputBuffer *)__pyx_v_self->__pyx_vtab)->write(__pyx_v_self, ((PyObject*)__pyx_t_2), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 297, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedOutputBuffer *)__pyx_v_self->__pyx_vtab)->write(__pyx_v_self, ((PyObject*)__pyx_t_2), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 300, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "neobolt/bolt/_io.pyx":298
+    /* "neobolt/bolt/_io.pyx":301
  *             self.chunk()
  *             self.write(b[chunk_remaining:])
  *             return             # <<<<<<<<<<<<<<
@@ -6265,7 +6387,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "neobolt/bolt/_io.pyx":294
+    /* "neobolt/bolt/_io.pyx":297
  *         max_chunk_size = self._max_chunk_size
  *         chunk_remaining = max_chunk_size - chunk_size
  *         if new_data_size > max_chunk_size:             # <<<<<<<<<<<<<<
@@ -6274,7 +6396,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
  */
   }
 
-  /* "neobolt/bolt/_io.pyx":299
+  /* "neobolt/bolt/_io.pyx":302
  *             self.write(b[chunk_remaining:])
  *             return
  *         if new_data_size > chunk_remaining:             # <<<<<<<<<<<<<<
@@ -6284,18 +6406,18 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
   __pyx_t_8 = ((__pyx_v_new_data_size > __pyx_v_chunk_remaining) != 0);
   if (__pyx_t_8) {
 
-    /* "neobolt/bolt/_io.pyx":300
+    /* "neobolt/bolt/_io.pyx":303
  *             return
  *         if new_data_size > chunk_remaining:
  *             self.chunk()             # <<<<<<<<<<<<<<
  *         new_end = self._end + new_data_size
  *         new_chunk_size = new_end - self._start
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedOutputBuffer *)__pyx_v_self->__pyx_vtab)->chunk(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 300, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4bolt_3_io_ChunkedOutputBuffer *)__pyx_v_self->__pyx_vtab)->chunk(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 303, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "neobolt/bolt/_io.pyx":299
+    /* "neobolt/bolt/_io.pyx":302
  *             self.write(b[chunk_remaining:])
  *             return
  *         if new_data_size > chunk_remaining:             # <<<<<<<<<<<<<<
@@ -6304,7 +6426,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
  */
   }
 
-  /* "neobolt/bolt/_io.pyx":301
+  /* "neobolt/bolt/_io.pyx":304
  *         if new_data_size > chunk_remaining:
  *             self.chunk()
  *         new_end = self._end + new_data_size             # <<<<<<<<<<<<<<
@@ -6313,7 +6435,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
  */
   __pyx_v_new_end = (__pyx_v_self->_end + __pyx_v_new_data_size);
 
-  /* "neobolt/bolt/_io.pyx":302
+  /* "neobolt/bolt/_io.pyx":305
  *             self.chunk()
  *         new_end = self._end + new_data_size
  *         new_chunk_size = new_end - self._start             # <<<<<<<<<<<<<<
@@ -6322,7 +6444,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
  */
   __pyx_v_new_chunk_size = (__pyx_v_new_end - __pyx_v_self->_start);
 
-  /* "neobolt/bolt/_io.pyx":303
+  /* "neobolt/bolt/_io.pyx":306
  *         new_end = self._end + new_data_size
  *         new_chunk_size = new_end - self._start
  *         data[self._end:new_end] = b             # <<<<<<<<<<<<<<
@@ -6331,11 +6453,11 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
  */
   if (unlikely(__pyx_v_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(1, 303, __pyx_L1_error)
+    __PYX_ERR(1, 306, __pyx_L1_error)
   }
-  if (__Pyx_PyObject_SetSlice(__pyx_v_data, __pyx_v_b, __pyx_v_self->_end, __pyx_v_new_end, NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(1, 303, __pyx_L1_error)
+  if (__Pyx_PyObject_SetSlice(__pyx_v_data, __pyx_v_b, __pyx_v_self->_end, __pyx_v_new_end, NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(1, 306, __pyx_L1_error)
 
-  /* "neobolt/bolt/_io.pyx":304
+  /* "neobolt/bolt/_io.pyx":307
  *         new_chunk_size = new_end - self._start
  *         data[self._end:new_end] = b
  *         self._end = new_end             # <<<<<<<<<<<<<<
@@ -6344,16 +6466,16 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
  */
   __pyx_v_self->_end = __pyx_v_new_end;
 
-  /* "neobolt/bolt/_io.pyx":305
+  /* "neobolt/bolt/_io.pyx":308
  *         data[self._end:new_end] = b
  *         self._end = new_end
  *         data[self._header:(self._header + 2)] = struct_pack(">H", new_chunk_size)             # <<<<<<<<<<<<<<
  * 
  *     cpdef chunk(self):
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_struct_pack); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 305, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_struct_pack); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 308, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_new_chunk_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 305, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_new_chunk_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 308, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_5 = NULL;
   __pyx_t_7 = 0;
@@ -6370,7 +6492,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_kp_s_H, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 305, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 308, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6379,14 +6501,14 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_kp_s_H, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 305, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 308, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   {
-    __pyx_t_4 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 305, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 308, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -6397,19 +6519,19 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(struct 
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_4, 1+__pyx_t_7, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 305, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 308, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (unlikely(__pyx_v_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(1, 305, __pyx_L1_error)
+    __PYX_ERR(1, 308, __pyx_L1_error)
   }
-  if (__Pyx_PyObject_SetSlice(__pyx_v_data, __pyx_t_1, __pyx_v_self->_header, (__pyx_v_self->_header + 2), NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(1, 305, __pyx_L1_error)
+  if (__Pyx_PyObject_SetSlice(__pyx_v_data, __pyx_t_1, __pyx_v_self->_header, (__pyx_v_self->_header + 2), NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(1, 308, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "neobolt/bolt/_io.pyx":281
+  /* "neobolt/bolt/_io.pyx":284
  *         self._data[0:2] = b"\x00\x00"
  * 
  *     cpdef write(self, bytes b):             # <<<<<<<<<<<<<<
@@ -6442,7 +6564,7 @@ static PyObject *__pyx_pw_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_7write(PyObj
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("write (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_b), (&PyBytes_Type), 1, "b", 1))) __PYX_ERR(1, 281, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_b), (&PyBytes_Type), 1, "b", 1))) __PYX_ERR(1, 284, __pyx_L1_error)
   __pyx_r = __pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_6write(((struct __pyx_obj_7neobolt_4bolt_3_io_ChunkedOutputBuffer *)__pyx_v_self), ((PyObject*)__pyx_v_b));
 
   /* function exit code */
@@ -6460,7 +6582,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_6write(struc
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("write", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(__pyx_v_self, __pyx_v_b, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 281, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write(__pyx_v_self, __pyx_v_b, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 284, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6477,7 +6599,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_6write(struc
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":307
+/* "neobolt/bolt/_io.pyx":310
  *         data[self._header:(self._header + 2)] = struct_pack(">H", new_chunk_size)
  * 
  *     cpdef chunk(self):             # <<<<<<<<<<<<<<
@@ -6499,7 +6621,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_chunk(struct 
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_chunk); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 307, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_chunk); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 310, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_9chunk)) {
       __Pyx_XDECREF(__pyx_r);
@@ -6515,10 +6637,10 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_chunk(struct 
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 307, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 310, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 307, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 310, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6530,7 +6652,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_chunk(struct 
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/bolt/_io.pyx":308
+  /* "neobolt/bolt/_io.pyx":311
  * 
  *     cpdef chunk(self):
  *         self._header = self._end             # <<<<<<<<<<<<<<
@@ -6540,7 +6662,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_chunk(struct 
   __pyx_t_5 = __pyx_v_self->_end;
   __pyx_v_self->_header = __pyx_t_5;
 
-  /* "neobolt/bolt/_io.pyx":309
+  /* "neobolt/bolt/_io.pyx":312
  *     cpdef chunk(self):
  *         self._header = self._end
  *         self._start = self._header + 2             # <<<<<<<<<<<<<<
@@ -6549,7 +6671,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_chunk(struct 
  */
   __pyx_v_self->_start = (__pyx_v_self->_header + 2);
 
-  /* "neobolt/bolt/_io.pyx":310
+  /* "neobolt/bolt/_io.pyx":313
  *         self._header = self._end
  *         self._start = self._header + 2
  *         self._end = self._start             # <<<<<<<<<<<<<<
@@ -6559,7 +6681,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_chunk(struct 
   __pyx_t_5 = __pyx_v_self->_start;
   __pyx_v_self->_end = __pyx_t_5;
 
-  /* "neobolt/bolt/_io.pyx":311
+  /* "neobolt/bolt/_io.pyx":314
  *         self._start = self._header + 2
  *         self._end = self._start
  *         self._data[self._header:self._start] = b"\x00\x00"             # <<<<<<<<<<<<<<
@@ -6568,11 +6690,11 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_chunk(struct 
  */
   if (unlikely(__pyx_v_self->_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(1, 311, __pyx_L1_error)
+    __PYX_ERR(1, 314, __pyx_L1_error)
   }
-  if (__Pyx_PyObject_SetSlice(__pyx_v_self->_data, __pyx_kp_b__5, __pyx_v_self->_header, __pyx_v_self->_start, NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(1, 311, __pyx_L1_error)
+  if (__Pyx_PyObject_SetSlice(__pyx_v_self->_data, __pyx_kp_b__5, __pyx_v_self->_header, __pyx_v_self->_start, NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(1, 314, __pyx_L1_error)
 
-  /* "neobolt/bolt/_io.pyx":307
+  /* "neobolt/bolt/_io.pyx":310
  *         data[self._header:(self._header + 2)] = struct_pack(">H", new_chunk_size)
  * 
  *     cpdef chunk(self):             # <<<<<<<<<<<<<<
@@ -6615,7 +6737,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_8chunk(struc
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("chunk", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_chunk(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 307, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_chunk(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 310, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6632,7 +6754,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_8chunk(struc
   return __pyx_r;
 }
 
-/* "neobolt/bolt/_io.pyx":313
+/* "neobolt/bolt/_io.pyx":316
  *         self._data[self._header:self._start] = b"\x00\x00"
  * 
  *     cpdef view(self):             # <<<<<<<<<<<<<<
@@ -6657,7 +6779,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(struct _
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_view); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 313, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_view); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 316, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_11view)) {
       __Pyx_XDECREF(__pyx_r);
@@ -6673,10 +6795,10 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(struct _
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 313, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 316, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 313, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 316, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6688,7 +6810,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(struct _
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/bolt/_io.pyx":317
+  /* "neobolt/bolt/_io.pyx":320
  *         cdef int chunk_size
  * 
  *         end = self._end             # <<<<<<<<<<<<<<
@@ -6698,7 +6820,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(struct _
   __pyx_t_5 = __pyx_v_self->_end;
   __pyx_v_end = __pyx_t_5;
 
-  /* "neobolt/bolt/_io.pyx":318
+  /* "neobolt/bolt/_io.pyx":321
  * 
  *         end = self._end
  *         chunk_size = end - self._start             # <<<<<<<<<<<<<<
@@ -6707,7 +6829,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(struct _
  */
   __pyx_v_chunk_size = (__pyx_v_end - __pyx_v_self->_start);
 
-  /* "neobolt/bolt/_io.pyx":319
+  /* "neobolt/bolt/_io.pyx":322
  *         end = self._end
  *         chunk_size = end - self._start
  *         if chunk_size == 0:             # <<<<<<<<<<<<<<
@@ -6717,7 +6839,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(struct _
   __pyx_t_6 = ((__pyx_v_chunk_size == 0) != 0);
   if (__pyx_t_6) {
 
-    /* "neobolt/bolt/_io.pyx":320
+    /* "neobolt/bolt/_io.pyx":323
  *         chunk_size = end - self._start
  *         if chunk_size == 0:
  *             return memoryview(self._data[:self._header])             # <<<<<<<<<<<<<<
@@ -6725,15 +6847,15 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(struct _
  *             return memoryview(self._data[:end])
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 320, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 323, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (unlikely(__pyx_v_self->_data == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(1, 320, __pyx_L1_error)
+      __PYX_ERR(1, 323, __pyx_L1_error)
     }
-    __pyx_t_2 = PySequence_GetSlice(__pyx_v_self->_data, 0, __pyx_v_self->_header); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 320, __pyx_L1_error)
+    __pyx_t_2 = PySequence_GetSlice(__pyx_v_self->_data, 0, __pyx_v_self->_header); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 323, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 320, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 323, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -6741,7 +6863,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(struct _
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/bolt/_io.pyx":319
+    /* "neobolt/bolt/_io.pyx":322
  *         end = self._end
  *         chunk_size = end - self._start
  *         if chunk_size == 0:             # <<<<<<<<<<<<<<
@@ -6750,22 +6872,22 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(struct _
  */
   }
 
-  /* "neobolt/bolt/_io.pyx":322
+  /* "neobolt/bolt/_io.pyx":325
  *             return memoryview(self._data[:self._header])
  *         else:
  *             return memoryview(self._data[:end])             # <<<<<<<<<<<<<<
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 322, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 325, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     if (unlikely(__pyx_v_self->_data == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(1, 322, __pyx_L1_error)
+      __PYX_ERR(1, 325, __pyx_L1_error)
     }
-    __pyx_t_2 = PySequence_GetSlice(__pyx_v_self->_data, 0, __pyx_v_end); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 322, __pyx_L1_error)
+    __pyx_t_2 = PySequence_GetSlice(__pyx_v_self->_data, 0, __pyx_v_end); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 325, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 322, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 325, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -6774,7 +6896,7 @@ static PyObject *__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(struct _
     goto __pyx_L0;
   }
 
-  /* "neobolt/bolt/_io.pyx":313
+  /* "neobolt/bolt/_io.pyx":316
  *         self._data[self._header:self._start] = b"\x00\x00"
  * 
  *     cpdef view(self):             # <<<<<<<<<<<<<<
@@ -6815,7 +6937,7 @@ static PyObject *__pyx_pf_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_10view(struc
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("view", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 313, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7335,6 +7457,7 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_H, __pyx_k_H, sizeof(__pyx_k_H), 0, 0, 1, 0},
+  {&__pyx_n_s_KeyboardInterrupt, __pyx_k_KeyboardInterrupt, sizeof(__pyx_k_KeyboardInterrupt), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_kp_b__5, __pyx_k__5, sizeof(__pyx_k__5), 0, 0, 0, 0},
   {&__pyx_kp_b__8, __pyx_k__8, sizeof(__pyx_k__8), 0, 0, 0, 0},
@@ -7385,6 +7508,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_builtin_KeyboardInterrupt = __Pyx_GetBuiltinName(__pyx_n_s_KeyboardInterrupt); if (!__pyx_builtin_KeyboardInterrupt) __PYX_ERR(1, 180, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -7556,14 +7680,14 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_7neobolt_4bolt_3_io_ChunkedOutputBuffer.write = (PyObject *(*)(struct __pyx_obj_7neobolt_4bolt_3_io_ChunkedOutputBuffer *, PyObject *, int __pyx_skip_dispatch))__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_write;
   __pyx_vtable_7neobolt_4bolt_3_io_ChunkedOutputBuffer.chunk = (PyObject *(*)(struct __pyx_obj_7neobolt_4bolt_3_io_ChunkedOutputBuffer *, int __pyx_skip_dispatch))__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_chunk;
   __pyx_vtable_7neobolt_4bolt_3_io_ChunkedOutputBuffer.view = (PyObject *(*)(struct __pyx_obj_7neobolt_4bolt_3_io_ChunkedOutputBuffer *, int __pyx_skip_dispatch))__pyx_f_7neobolt_4bolt_3_io_19ChunkedOutputBuffer_view;
-  if (PyType_Ready(&__pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer) < 0) __PYX_ERR(1, 257, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer) < 0) __PYX_ERR(1, 260, __pyx_L1_error)
   __pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer.tp_dictoffset && __pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer.tp_dict, __pyx_vtabptr_7neobolt_4bolt_3_io_ChunkedOutputBuffer) < 0) __PYX_ERR(1, 257, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "ChunkedOutputBuffer", (PyObject *)&__pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer) < 0) __PYX_ERR(1, 257, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer) < 0) __PYX_ERR(1, 257, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer.tp_dict, __pyx_vtabptr_7neobolt_4bolt_3_io_ChunkedOutputBuffer) < 0) __PYX_ERR(1, 260, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "ChunkedOutputBuffer", (PyObject *)&__pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer) < 0) __PYX_ERR(1, 260, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer) < 0) __PYX_ERR(1, 260, __pyx_L1_error)
   __pyx_ptype_7neobolt_4bolt_3_io_ChunkedOutputBuffer = &__pyx_type_7neobolt_4bolt_3_io_ChunkedOutputBuffer;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -8948,8 +9072,142 @@ bad:
     return -1;
 }
 
+/* SaveResetException */
+      #if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    #if PY_VERSION_HEX >= 0x030700A3
+    *type = tstate->exc_state.exc_type;
+    *value = tstate->exc_state.exc_value;
+    *tb = tstate->exc_state.exc_traceback;
+    #else
+    *type = tstate->exc_type;
+    *value = tstate->exc_value;
+    *tb = tstate->exc_traceback;
+    #endif
+    Py_XINCREF(*type);
+    Py_XINCREF(*value);
+    Py_XINCREF(*tb);
+}
+static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    #if PY_VERSION_HEX >= 0x030700A3
+    tmp_type = tstate->exc_state.exc_type;
+    tmp_value = tstate->exc_state.exc_value;
+    tmp_tb = tstate->exc_state.exc_traceback;
+    tstate->exc_state.exc_type = type;
+    tstate->exc_state.exc_value = value;
+    tstate->exc_state.exc_traceback = tb;
+    #else
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = type;
+    tstate->exc_value = value;
+    tstate->exc_traceback = tb;
+    #endif
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+}
+#endif
+
+/* PyErrExceptionMatches */
+      #if CYTHON_FAST_THREAD_STATE
+static int __Pyx_PyErr_ExceptionMatchesTuple(PyObject *exc_type, PyObject *tuple) {
+    Py_ssize_t i, n;
+    n = PyTuple_GET_SIZE(tuple);
+#if PY_MAJOR_VERSION >= 3
+    for (i=0; i<n; i++) {
+        if (exc_type == PyTuple_GET_ITEM(tuple, i)) return 1;
+    }
+#endif
+    for (i=0; i<n; i++) {
+        if (__Pyx_PyErr_GivenExceptionMatches(exc_type, PyTuple_GET_ITEM(tuple, i))) return 1;
+    }
+    return 0;
+}
+static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err) {
+    PyObject *exc_type = tstate->curexc_type;
+    if (exc_type == err) return 1;
+    if (unlikely(!exc_type)) return 0;
+    if (unlikely(PyTuple_Check(err)))
+        return __Pyx_PyErr_ExceptionMatchesTuple(exc_type, err);
+    return __Pyx_PyErr_GivenExceptionMatches(exc_type, err);
+}
+#endif
+
+/* GetException */
+      #if CYTHON_FAST_THREAD_STATE
+static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+#else
+static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb) {
+#endif
+    PyObject *local_type, *local_value, *local_tb;
+#if CYTHON_FAST_THREAD_STATE
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    local_type = tstate->curexc_type;
+    local_value = tstate->curexc_value;
+    local_tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+#else
+    PyErr_Fetch(&local_type, &local_value, &local_tb);
+#endif
+    PyErr_NormalizeException(&local_type, &local_value, &local_tb);
+#if CYTHON_FAST_THREAD_STATE
+    if (unlikely(tstate->curexc_type))
+#else
+    if (unlikely(PyErr_Occurred()))
+#endif
+        goto bad;
+    #if PY_MAJOR_VERSION >= 3
+    if (local_tb) {
+        if (unlikely(PyException_SetTraceback(local_value, local_tb) < 0))
+            goto bad;
+    }
+    #endif
+    Py_XINCREF(local_tb);
+    Py_XINCREF(local_type);
+    Py_XINCREF(local_value);
+    *type = local_type;
+    *value = local_value;
+    *tb = local_tb;
+#if CYTHON_FAST_THREAD_STATE
+    #if PY_VERSION_HEX >= 0x030700A3
+    tmp_type = tstate->exc_state.exc_type;
+    tmp_value = tstate->exc_state.exc_value;
+    tmp_tb = tstate->exc_state.exc_traceback;
+    tstate->exc_state.exc_type = local_type;
+    tstate->exc_state.exc_value = local_value;
+    tstate->exc_state.exc_traceback = local_tb;
+    #else
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = local_type;
+    tstate->exc_value = local_value;
+    tstate->exc_traceback = local_tb;
+    #endif
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+#else
+    PyErr_SetExcInfo(local_type, local_value, local_tb);
+#endif
+    return 0;
+bad:
+    *type = 0;
+    *value = 0;
+    *tb = 0;
+    Py_XDECREF(local_type);
+    Py_XDECREF(local_value);
+    Py_XDECREF(local_tb);
+    return -1;
+}
+
 /* WriteUnraisableException */
-      static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
+        static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
                                   CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
                                   int full_traceback, CYTHON_UNUSED int nogil) {
     PyObject *old_exc, *old_val, *old_tb;
@@ -8991,7 +9249,7 @@ bad:
 }
 
 /* PyObject_GenericGetAttrNoDict */
-      #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
+        #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
 static PyObject *__Pyx_RaiseGenericGetAttributeError(PyTypeObject *tp, PyObject *attr_name) {
     PyErr_Format(PyExc_AttributeError,
 #if PY_MAJOR_VERSION >= 3
@@ -9031,7 +9289,7 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GenericGetAttrNoDict(PyObject* obj
 #endif
 
 /* PyObject_GenericGetAttr */
-      #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
+        #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
 static PyObject* __Pyx_PyObject_GenericGetAttr(PyObject* obj, PyObject* attr_name) {
     if (unlikely(Py_TYPE(obj)->tp_dictoffset)) {
         return PyObject_GenericGetAttr(obj, attr_name);
@@ -9041,7 +9299,7 @@ static PyObject* __Pyx_PyObject_GenericGetAttr(PyObject* obj, PyObject* attr_nam
 #endif
 
 /* SetVTable */
-      static int __Pyx_SetVtable(PyObject *dict, void *vtable) {
+        static int __Pyx_SetVtable(PyObject *dict, void *vtable) {
 #if PY_VERSION_HEX >= 0x02070000
     PyObject *ob = PyCapsule_New(vtable, 0, 0);
 #else
@@ -9059,7 +9317,7 @@ bad:
 }
 
 /* SetupReduce */
-      static int __Pyx_setup_reduce_is_named(PyObject* meth, PyObject* name) {
+        static int __Pyx_setup_reduce_is_named(PyObject* meth, PyObject* name) {
   int ret;
   PyObject *name_attr;
   name_attr = __Pyx_PyObject_GetAttrStr(meth, __pyx_n_s_name);
@@ -9135,7 +9393,7 @@ GOOD:
 }
 
 /* Import */
-      static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
+        static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
     PyObject *empty_list = 0;
     PyObject *module = 0;
     PyObject *global_dict = 0;
@@ -9200,7 +9458,7 @@ bad:
 }
 
 /* ImportFrom */
-      static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
+        static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
     PyObject* value = __Pyx_PyObject_GetAttrStr(module, name);
     if (unlikely(!value) && PyErr_ExceptionMatches(PyExc_AttributeError)) {
         PyErr_Format(PyExc_ImportError,
@@ -9214,7 +9472,7 @@ bad:
 }
 
 /* CLineInTraceback */
-      #ifndef CYTHON_CLINE_IN_TRACEBACK
+        #ifndef CYTHON_CLINE_IN_TRACEBACK
 static int __Pyx_CLineForTraceback(CYTHON_UNUSED PyThreadState *tstate, int c_line) {
     PyObject *use_cline;
     PyObject *ptype, *pvalue, *ptraceback;
@@ -9254,7 +9512,7 @@ static int __Pyx_CLineForTraceback(CYTHON_UNUSED PyThreadState *tstate, int c_li
 #endif
 
 /* CodeObjectCache */
-      static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
+        static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
     int start = 0, mid = 0, end = count - 1;
     if (end >= 0 && code_line > entries[end].code_line) {
         return count;
@@ -9334,7 +9592,7 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object) {
 }
 
 /* AddTraceback */
-      #include "compile.h"
+        #include "compile.h"
 #include "frameobject.h"
 #include "traceback.h"
 static PyCodeObject* __Pyx_CreateCodeObjectForTraceback(
@@ -9419,7 +9677,7 @@ bad:
 }
 
 /* CIntFromPyVerify */
-      #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+        #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
 #define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
@@ -9441,7 +9699,7 @@ bad:
     }
 
 /* CIntToPy */
-      static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+        static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -9472,7 +9730,7 @@ bad:
 }
 
 /* CIntFromPy */
-      static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
+        static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -9661,7 +9919,7 @@ raise_neg_overflow:
 }
 
 /* CIntToPy */
-      static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+        static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -9692,7 +9950,7 @@ raise_neg_overflow:
 }
 
 /* CIntFromPy */
-      static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+        static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -9881,7 +10139,7 @@ raise_neg_overflow:
 }
 
 /* FastTypeChecks */
-      #if CYTHON_COMPILING_IN_CPYTHON
+        #if CYTHON_COMPILING_IN_CPYTHON
 static int __Pyx_InBases(PyTypeObject *a, PyTypeObject *b) {
     while (a) {
         a = a->tp_base;
@@ -9981,7 +10239,7 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 #endif
 
 /* CheckBinaryVersion */
-      static int __Pyx_check_binary_version(void) {
+        static int __Pyx_check_binary_version(void) {
     char ctversion[4], rtversion[4];
     PyOS_snprintf(ctversion, 4, "%d.%d", PY_MAJOR_VERSION, PY_MINOR_VERSION);
     PyOS_snprintf(rtversion, 4, "%s", Py_GetVersion());
@@ -9997,7 +10255,7 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 }
 
 /* InitStrings */
-      static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
+        static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
     while (t->p) {
         #if PY_MAJOR_VERSION < 3
         if (t->is_unicode) {
