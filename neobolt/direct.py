@@ -810,16 +810,11 @@ def _connect(resolved_address, **config):
         log_debug("[#0000]  C: <CLOSE> %s", resolved_address)
         s.close()
         raise ServiceUnavailable("Timed out trying to establish connection to {!r}".format(resolved_address))
-    except SocketError as error:
+    except (IOError, OSError) as error:  # TODO 2.0: remove IOError alias
         log_debug("[#0000]  C: <ERROR> %s %s", type(error).__name__, " ".join(map(repr, error.args)))
         log_debug("[#0000]  C: <CLOSE> %s", resolved_address)
         s.close()
-        if error.errno in (61, 99, 111, 10061):
-            raise ServiceUnavailable("Failed to establish connection to {!r} (reason {})".format(resolved_address, error.errno))
-        else:
-            raise
-    except ConnectionResetError:
-        raise ServiceUnavailable("Failed to establish connection to {!r}".format(resolved_address))
+        raise ServiceUnavailable("Failed to establish connection to {!r} (reason {})".format(resolved_address, error))
     else:
         return s
 
@@ -877,7 +872,7 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, **config):
         ready_to_read, _, _ = select((s,), (), (), 1)
     try:
         data = s.recv(4)
-    except ConnectionResetError:
+    except (IOError, OSError):  # TODO 2.0: remove IOError alias
         raise ServiceUnavailable("Failed to read any data from server {!r} after connected".format(resolved_address))
     data_size = len(data)
     if data_size == 0:
