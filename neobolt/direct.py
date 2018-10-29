@@ -872,9 +872,9 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, **config):
     s.sendall(data)
 
     # Handle the handshake response
-    ready_to_read, _, _ = select((s,), (), (), 0)
+    ready_to_read = False
     while not ready_to_read:
-        ready_to_read, _, _ = select((s,), (), (), 0)
+        ready_to_read, _, _ = select((s,), (), (), 1)
     try:
         data = s.recv(4)
     except ConnectionResetError:
