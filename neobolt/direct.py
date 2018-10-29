@@ -208,7 +208,16 @@ class Connection(object):
             try:
                 self.auth_dict = vars(auth)
             except (KeyError, TypeError):
-                raise TypeError("Cannot determine auth details from %r" % auth)
+                raise AuthError("Cannot determine auth details from %r" % auth)
+
+        # Check for missing password
+        try:
+            credentials = self.auth_dict["credentials"]
+        except KeyError:
+            pass
+        else:
+            if credentials is None:
+                raise AuthError("Password cannot be None")
 
         # Pick up the server certificate, if any
         self.der_encoded_server_certificate = config.get("der_encoded_server_certificate")
