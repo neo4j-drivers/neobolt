@@ -880,12 +880,13 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, **config):
         # response, the server has closed the connection
         log_debug("[#%04X]  S: <CLOSE>", local_port)
         s.close()
-        raise ProtocolError("Connection to %r closed without handshake response" % (resolved_address,))
+        raise ServiceUnavailable("Connection to %r closed without handshake response" % (resolved_address,))
     if data_size != 4:
         # Some garbled data has been received
         log_debug("[#%04X]  S: @*#!", local_port)
         s.close()
-        raise ProtocolError("Expected four byte handshake response, received %r instead" % data)
+        raise ProtocolError("Expected four byte Bolt handshake response from %r, received %r instead; "
+                            "check for incorrect port number" % (resolved_address, data))
     agreed_version, = struct_unpack(">I", data)
     log_debug("[#%04X]  S: <HANDSHAKE> 0x%08X", local_port, agreed_version)
     if agreed_version == 0:
