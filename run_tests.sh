@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ARGS=$*
-VERSIONS="3.5.0-alpha07 3.4.7 3.3.6 3.2.12"
+VERSIONS="3.5.0-alpha07 3.4.12 3.3.9"
 
 coverage erase
 
