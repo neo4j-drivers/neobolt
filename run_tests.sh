@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 ARGS=$*
-VERSIONS="3.5.2 3.4.10 3.3.9 3.2.13"
+VERSIONS="3.5.5 3.4.14"
 
 coverage erase
 
 echo "Running unit tests"
 coverage run -a -m pytest -v ${ARGS} test/unit
 STATUS="$?"
-if [ ${STATUS} -ne 0 ]
+if [[ ${STATUS} -ne 0 ]]
 then
     exit ${STATUS}
 fi
@@ -16,12 +16,12 @@ fi
 echo "Running stub tests"
 coverage run -a -m pytest -v ${ARGS} test/stub
 STATUS="$?"
-if [ ${STATUS} -ne 0 ]
+if [[ ${STATUS} -ne 0 ]]
 then
     exit ${STATUS}
 fi
 
-if [ -z "${NEO4J_SERVER_PACKAGE}" ]
+if [[ -z "${NEO4J_SERVER_PACKAGE}" ]]
 then
     for VERSION in ${VERSIONS}
     do
@@ -37,7 +37,7 @@ else
     echo "Running integration tests against Neo4j at ${NEO4J_SERVER_PACKAGE}"
     coverage run -a -m pytest -v ${ARGS} test/integration
     STATUS="$?"
-    if [ ${STATUS} -ne 0 ]
+    if [[ ${STATUS} -ne 0 ]]
     then
         exit ${STATUS}
     fi
