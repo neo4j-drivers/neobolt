@@ -20,7 +20,7 @@
 
 
 package = "neobolt"
-version = "1.7.dev0"
+version = "2.0.dev0"
 
 
 def deprecated(message):
