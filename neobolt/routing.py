@@ -20,13 +20,14 @@
 
 
 from abc import abstractmethod
+from collections import OrderedDict
+from collections.abc import MutableSet
 from logging import getLogger
 from sys import maxsize
 from threading import Lock
+from time import perf_counter
 
 from neobolt.addressing import SocketAddress
-from neobolt.compat import perf_counter
-from neobolt.compat.collections import MutableSet, OrderedDict
 from neobolt.direct import AbstractConnectionPool, DEFAULT_PORT
 from neobolt.exceptions import ConnectionExpired, ServiceUnavailable
 from neobolt.versioning import Version

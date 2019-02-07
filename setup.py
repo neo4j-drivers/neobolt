@@ -38,15 +38,14 @@ classifiers = [
     "Operating System :: OS Independent",
     "Topic :: Database",
     "Topic :: Software Development",
-    "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3.4",
     "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
 ]
 packages = [
     "neobolt",
-    "neobolt.compat",
     "neobolt.packstream",
 ]
 setup_args = {
