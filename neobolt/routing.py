@@ -20,12 +20,13 @@
 
 
 from abc import abstractmethod
+from collections import OrderedDict
+from collections.abc import MutableSet
 from sys import maxsize
 from threading import Lock
+from time import perf_counter
 
 from neobolt.addressing import SocketAddress
-from neobolt.compat import perf_counter
-from neobolt.compat.collections import MutableSet, OrderedDict
 from neobolt.direct import AbstractConnectionPool, DEFAULT_PORT, ConnectionErrorHandler
 from neobolt.exceptions import ConnectionExpired, DatabaseUnavailableError, \
     NotALeaderError, ForbiddenOnReadOnlyDatabaseError, ServiceUnavailable

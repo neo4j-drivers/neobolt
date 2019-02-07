@@ -5,7 +5,7 @@
     "distutils": {
         "name": "neobolt.bolt._io",
         "sources": [
-            "/home/technige/work/neobolt/neobolt/bolt/_io.pyx"
+            "neobolt/bolt/_io.pyx"
         ]
     },
     "module_name": "neobolt.bolt._io"
@@ -778,7 +778,7 @@ static const char *__pyx_filename;
 
 static const char *__pyx_f[] = {
   "stringsource",
-  "_io.pyx",
+  "neobolt/bolt/_io.pyx",
 };
 
 /*--- Type declarations ---*/
