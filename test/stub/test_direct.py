@@ -93,6 +93,17 @@ class ConnectionV3TestCase(StubTestCase):
                 cx.sync()
                 self.assertEqual([[1]], records)
 
+    def test_return_1_as_read(self):
+        with StubCluster({9001: "v3/return_1_as_read.script"}):
+            address = ("127.0.0.1", 9001)
+            with connect(address, auth=self.auth_token, encrypted=False) as cx:
+                metadata = {}
+                records = []
+                cx.run("RETURN $x", {"x": 1}, mode="r", on_success=metadata.update)
+                cx.pull_all(on_success=metadata.update, on_records=records.extend)
+                cx.sync()
+                self.assertEqual([[1]], records)
+
     def test_return_1_in_tx(self):
         with StubCluster({9001: "v3/return_1_in_tx.script"}):
             address = ("127.0.0.1", 9001)
@@ -101,6 +112,20 @@ class ConnectionV3TestCase(StubTestCase):
                 records = []
                 cx.begin(on_success=metadata.update)
                 cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
+                cx.pull_all(on_success=metadata.update, on_records=records.extend)
+                cx.commit(on_success=metadata.update)
+                cx.sync()
+                self.assertEqual([[1]], records)
+                self.assertEqual({"fields": ["x"], "bookmark": "bookmark:1"}, metadata)
+
+    def test_return_1_in_tx_as_read(self):
+        with StubCluster({9001: "v3/return_1_in_tx_as_read.script"}):
+            address = ("127.0.0.1", 9001)
+            with connect(address, auth=self.auth_token, encrypted=False) as cx:
+                metadata = {}
+                records = []
+                cx.begin(on_success=metadata.update)
+                cx.run("RETURN $x", {"x": 1}, mode="r", on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
                 cx.commit(on_success=metadata.update)
                 cx.sync()

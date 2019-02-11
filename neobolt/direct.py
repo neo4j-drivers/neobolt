@@ -264,7 +264,7 @@ class Connection(object):
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
 
-    def run(self, statement, parameters=None, bookmarks=None, metadata=None, timeout=None, **handlers):
+    def run(self, statement, parameters=None, mode=None, bookmarks=None, metadata=None, timeout=None, **handlers):
         if self.server.supports("statement_reuse"):
             if statement.upper() not in (u"BEGIN", u"COMMIT", u"ROLLBACK"):
                 if statement == self._last_run_statement:
@@ -275,6 +275,8 @@ class Connection(object):
             parameters = {}
         if self.protocol_version >= 3:
             extra = {}
+            if mode:
+                extra["mode"] = mode
             if bookmarks:
                 try:
                     extra["bookmarks"] = list(bookmarks)
@@ -308,9 +310,11 @@ class Connection(object):
         log_debug("[#%04X]  C: PULL_ALL", self.local_port)
         self._append(b"\x3F", (), Response(self, **handlers))
 
-    def begin(self, bookmarks=None, metadata=None, timeout=None, **handlers):
+    def begin(self, mode=None, bookmarks=None, metadata=None, timeout=None, **handlers):
         if self.protocol_version >= 3:
             extra = {}
+            if mode:
+                extra["mode"] = mode
             if bookmarks:
                 try:
                     extra["bookmarks"] = list(bookmarks)
