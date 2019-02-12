@@ -187,14 +187,14 @@ class AuthTestCase(IntegrationTestCase):
 
     def test_non_string_password(self):
         v = self.server_version_info()
-        if (3, 5, 0) <= v.version_tuple <= (3, 5, 2):
+        if (3, 5, 0) <= v.version_tuple <= (3, 5, 3):
             raise SkipTest("Non-string passwords are broken in server version %r" % v)
         with self.assertRaises(AuthError):
             _ = connect(self.bolt_address, auth=(self.user, 1))
 
     def test_non_string_user_and_password(self):
         v = self.server_version_info()
-        if (3, 5, 0) <= v.version_tuple <= (3, 5, 2):
+        if (3, 5, 0) <= v.version_tuple <= (3, 5, 3):
             raise SkipTest("Non-string passwords are broken in server version %r" % v)
         with self.assertRaises(AuthError):
             _ = connect(self.bolt_address, auth=(1, 1))
