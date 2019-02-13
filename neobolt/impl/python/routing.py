@@ -19,7 +19,6 @@
 # limitations under the License.
 
 
-from abc import abstractmethod
 from collections import OrderedDict
 from collections.abc import MutableSet
 from sys import maxsize
@@ -28,24 +27,11 @@ from time import perf_counter
 
 from neobolt.exceptions import ConnectionExpired, DatabaseUnavailableError, \
     NotALeaderError, ForbiddenOnReadOnlyDatabaseError, ServiceUnavailable
+from neobolt.routing import READ_ACCESS, WRITE_ACCESS, RoutingProtocolError
 from neobolt.versioning import Version
 
 from .addressing import SocketAddress
 from .direct import AbstractConnectionPool, DEFAULT_PORT, ConnectionErrorHandler
-
-
-READ_ACCESS = "READ"
-WRITE_ACCESS = "WRITE"
-
-INITIAL_RETRY_DELAY = 1.0
-RETRY_DELAY_MULTIPLIER = 2.0
-RETRY_DELAY_JITTER_FACTOR = 0.2
-
-DEFAULT_MAX_RETRY_TIME = 30.0  # 30s
-
-LOAD_BALANCING_STRATEGY_LEAST_CONNECTED = 0
-LOAD_BALANCING_STRATEGY_ROUND_ROBIN = 1
-DEFAULT_LOAD_BALANCING_STRATEGY = LOAD_BALANCING_STRATEGY_LEAST_CONNECTED
 
 
 class OrderedSet(MutableSet):
@@ -158,50 +144,7 @@ class RoutingTable(object):
         return set(self.routers) | set(self.writers) | set(self.readers)
 
 
-class LoadBalancingStrategy(object):
-
-    @classmethod
-    def build(cls, connection_pool, **config):
-        load_balancing_strategy = config.get("load_balancing_strategy", DEFAULT_LOAD_BALANCING_STRATEGY)
-        if load_balancing_strategy == LOAD_BALANCING_STRATEGY_LEAST_CONNECTED:
-            return LeastConnectedLoadBalancingStrategy(connection_pool)
-        elif load_balancing_strategy == LOAD_BALANCING_STRATEGY_ROUND_ROBIN:
-            return RoundRobinLoadBalancingStrategy()
-        else:
-            raise ValueError("Unknown load balancing strategy '%s'" % load_balancing_strategy)
-
-    @abstractmethod
-    def select_reader(self, known_readers):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def select_writer(self, known_writers):
-        raise NotImplementedError()
-
-
-class RoundRobinLoadBalancingStrategy(LoadBalancingStrategy):
-
-    _readers_offset = 0
-    _writers_offset = 0
-
-    def select_reader(self, known_readers):
-        address = self._select(self._readers_offset, known_readers)
-        self._readers_offset += 1
-        return address
-
-    def select_writer(self, known_writers):
-        address = self._select(self._writers_offset, known_writers)
-        self._writers_offset += 1
-        return address
-
-    @classmethod
-    def _select(cls, offset, addresses):
-        if not addresses:
-            return None
-        return addresses[offset % len(addresses)]
-
-
-class LeastConnectedLoadBalancingStrategy(LoadBalancingStrategy):
+class LeastConnectedLoadBalancingStrategy(object):
 
     def __init__(self, connection_pool):
         self._readers_offset = 0
@@ -267,7 +210,7 @@ class RoutingConnectionPool(AbstractConnectionPool):
         self.routing_table = RoutingTable(routers)
         self.missing_writer = False
         self.refresh_lock = Lock()
-        self.load_balancing_strategy = LoadBalancingStrategy.build(self, **config)
+        self.load_balancing_strategy = LeastConnectedLoadBalancingStrategy(connection_pool=self)
 
     def fetch_routing_info(self, address):
         """ Fetch raw routing info from a given router address.
@@ -448,8 +391,3 @@ class RoutingConnectionPool(AbstractConnectionPool):
         """ Remove a writer address from the routing table, if present.
         """
         self.routing_table.writers.discard(address)
-
-
-class RoutingProtocolError(Exception):
-    """ Raised when a fault occurs with the routing protocol.
-    """

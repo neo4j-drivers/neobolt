@@ -19,12 +19,21 @@
 # limitations under the License.
 
 
+READ_ACCESS = "READ"
+WRITE_ACCESS = "WRITE"
+
+INITIAL_RETRY_DELAY = 1.0
+RETRY_DELAY_MULTIPLIER = 2.0
+RETRY_DELAY_JITTER_FACTOR = 0.2
+
+DEFAULT_MAX_RETRY_TIME = 30.0  # 30s
+
+
+class RoutingProtocolError(Exception):
+    """ Raised when a fault occurs with the routing protocol.
+    """
+
+
 from neobolt.impl.python.routing import (
-    READ_ACCESS,
-    WRITE_ACCESS,
-    RoutingTable,
     RoutingConnectionPool,
-    RoutingProtocolError,
-    LeastConnectedLoadBalancingStrategy,
-    RoundRobinLoadBalancingStrategy,
 )

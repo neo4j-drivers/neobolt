@@ -21,9 +21,10 @@
 
 from neobolt.direct import connect
 from neobolt.exceptions import ServiceUnavailable
-from neobolt.routing import READ_ACCESS, WRITE_ACCESS, RoutingTable, RoutingConnectionPool, RoutingProtocolError
+from neobolt.routing import READ_ACCESS, WRITE_ACCESS, RoutingConnectionPool, RoutingProtocolError
 
 from test.stub.tools import StubCluster, StubTestCase
+
 
 VALID_ROUTING_RECORD = {
     "ttl": 300,
@@ -49,6 +50,9 @@ INVALID_ROUTING_RECORD = {
 }
 
 UNREACHABLE_ADDRESS = ("127.0.0.1", 8080)
+
+
+RoutingTable = object()
 
 
 def connector(address, **kwargs):
