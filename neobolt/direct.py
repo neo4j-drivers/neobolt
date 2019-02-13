@@ -19,8 +19,60 @@
 # limitations under the License.
 
 
+DEFAULT_PORT = 7687
+
+# Connection Pool Management
+DEFAULT_MAX_CONNECTION_LIFETIME = 3600  # 1h
+DEFAULT_MAX_CONNECTION_POOL_SIZE = 100
+DEFAULT_CONNECTION_TIMEOUT = 5.0  # 5s
+
+DEFAULT_KEEP_ALIVE = True
+
+# Connection Settings
+DEFAULT_CONNECTION_ACQUISITION_TIMEOUT = 60  # 1m
+
+
+class ServerInfo(object):
+
+    address = None
+
+    def __init__(self, address, protocol_version):
+        self.address = address
+        self.protocol_version = protocol_version
+        self.metadata = {}
+
+    @property
+    def agent(self):
+        return self.metadata.get("server")
+
+    def version_info(self):
+        if not self.agent:
+            return None
+        _, _, value = self.agent.partition("/")
+        value = value.replace("-", ".").split(".")
+        for i, v in enumerate(value):
+            try:
+                value[i] = int(v)
+            except ValueError:
+                pass
+        return tuple(value)
+
+    def supports(self, feature):
+        if not self.agent:
+            return None
+        if not self.agent.startswith("Neo4j/"):
+            return None
+        if feature == "bytes":
+            return self.version_info() >= (3, 2)
+        elif feature == "statement_reuse":
+            return self.version_info() >= (3, 2)
+        elif feature == "run_metadata":
+            return self.protocol_version >= 3
+        else:
+            return None
+
+
 from neobolt.impl.python.direct import (
-    DEFAULT_PORT,
     Connection,
     ConnectionPool,
     ConnectionErrorHandler,

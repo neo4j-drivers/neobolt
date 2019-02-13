@@ -29,11 +29,9 @@ from __future__ import division
 
 
 __all__ = [
-    "DEFAULT_PORT",
     "AbstractConnectionPool",
     "Connection",
     "ConnectionPool",
-    "ServerInfo",
     "connect",
 ]
 
@@ -45,11 +43,12 @@ from socket import socket, SOL_SOCKET, SO_KEEPALIVE, SHUT_RDWR, error as SocketE
 from struct import pack as struct_pack, unpack as struct_unpack
 from threading import RLock, Condition
 from time import perf_counter
-from sys import platform, version_info
 
 from neobolt.addressing import SocketAddress, Resolver
+from neobolt.direct import DEFAULT_CONNECTION_TIMEOUT, DEFAULT_MAX_CONNECTION_LIFETIME, \
+    DEFAULT_MAX_CONNECTION_POOL_SIZE, DEFAULT_CONNECTION_ACQUISITION_TIMEOUT, DEFAULT_KEEP_ALIVE, ServerInfo
 from neobolt.exceptions import ClientError, ProtocolError, SecurityError, ServiceUnavailable, AuthError, CypherError
-from neobolt.meta import version, import_best
+from neobolt.meta import get_user_agent, import_best
 
 from .packstream import Packer, Unpacker
 from .security import SSL_AVAILABLE, HAS_SNI, SSLSocket, SSLError, AuthToken,\
@@ -59,73 +58,12 @@ ChunkedInputBuffer = import_best("neobolt.impl.python.bolt._io", "neobolt.impl.p
 ChunkedOutputBuffer = import_best("neobolt.impl.python.bolt._io", "neobolt.impl.python.bolt.io").ChunkedOutputBuffer
 
 
-DEFAULT_PORT = 7687
 MAGIC_PREAMBLE = 0x6060B017
-
-# Connection Pool Management
-INFINITE = -1
-DEFAULT_MAX_CONNECTION_LIFETIME = 3600  # 1h
-DEFAULT_MAX_CONNECTION_POOL_SIZE = 100
-DEFAULT_CONNECTION_TIMEOUT = 5.0  # 5s
-
-DEFAULT_KEEP_ALIVE = True
-
-# Connection Settings
-DEFAULT_CONNECTION_ACQUISITION_TIMEOUT = 60  # 1m
-
-# Client name
-DEFAULT_USER_AGENT = "neobolt/{} Python/{}.{}.{}-{}-{} ({})".format(
-    *((version,) + tuple(version_info) + (platform,)))
 
 
 # Set up logger
 log = getLogger("neobolt")
 log_debug = log.debug
-
-
-class ServerInfo(object):
-
-    address = None
-
-    def __init__(self, address, protocol_version):
-        self.address = address
-        self.protocol_version = protocol_version
-        self.metadata = {}
-
-    @property
-    def agent(self):
-        return self.metadata.get("server")
-
-    @property
-    def version(self):
-        # TODO 2.0: remove
-        return self.agent
-
-    def version_info(self):
-        if not self.agent:
-            return None
-        _, _, value = self.agent.partition("/")
-        value = value.replace("-", ".").split(".")
-        for i, v in enumerate(value):
-            try:
-                value[i] = int(v)
-            except ValueError:
-                pass
-        return tuple(value)
-
-    def supports(self, feature):
-        if not self.agent:
-            return None
-        if not self.agent.startswith("Neo4j/"):
-            return None
-        if feature == "bytes":
-            return self.version_info() >= (3, 2)
-        elif feature == "statement_reuse":
-            return self.version_info() >= (3, 2)
-        elif feature == "run_metadata":
-            return self.protocol_version >= 3
-        else:
-            return None
 
 
 class ConnectionErrorHandler(object):
@@ -193,7 +131,7 @@ class Connection(object):
         self._creation_timestamp = perf_counter()
 
         # Determine the user agent and ensure it is a Unicode value
-        user_agent = config.get("user_agent", DEFAULT_USER_AGENT)
+        user_agent = config.get("user_agent", get_user_agent())
         if isinstance(user_agent, bytes):
             user_agent = user_agent.decode("UTF-8")
         self.user_agent = user_agent
@@ -581,7 +519,9 @@ class AbstractConnectionPool(object):
                         connection.in_use = True
                         return connection
                 # all connections in pool are in-use
-                can_create_new_connection = self._max_connection_pool_size == INFINITE or len(connections) < self._max_connection_pool_size
+                infinite_connection_pool = (self._max_connection_pool_size < 0 or
+                                            self._max_connection_pool_size == float("inf"))
+                can_create_new_connection = infinite_connection_pool or len(connections) < self._max_connection_pool_size
                 if can_create_new_connection:
                     try:
                         connection = self.connector(address, error_handler=self.connection_error_handler)

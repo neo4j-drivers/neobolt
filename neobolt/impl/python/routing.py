@@ -27,11 +27,12 @@ from time import perf_counter
 
 from neobolt.exceptions import ConnectionExpired, DatabaseUnavailableError, \
     NotALeaderError, ForbiddenOnReadOnlyDatabaseError, ServiceUnavailable
+from neobolt.direct import DEFAULT_PORT
 from neobolt.routing import READ_ACCESS, WRITE_ACCESS, RoutingProtocolError
 from neobolt.versioning import Version
 
 from .addressing import SocketAddress
-from .direct import AbstractConnectionPool, DEFAULT_PORT, ConnectionErrorHandler
+from .direct import AbstractConnectionPool, ConnectionErrorHandler
 
 
 class OrderedSet(MutableSet):

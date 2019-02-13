@@ -22,36 +22,7 @@
 from collections import OrderedDict
 from unittest import TestCase
 
-from neobolt.direct import connect
 from neobolt.impl.python.routing import LeastConnectedLoadBalancingStrategy
-
-
-# VALID_ROUTING_RECORD = {
-#     "ttl": 300,
-#     "servers": [
-#         {"role": "ROUTE", "addresses": ["127.0.0.1:9001", "127.0.0.1:9002", "127.0.0.1:9003"]},
-#         {"role": "READ", "addresses": ["127.0.0.1:9004", "127.0.0.1:9005"]},
-#         {"role": "WRITE", "addresses": ["127.0.0.1:9006"]},
-#     ],
-# }
-#
-# VALID_ROUTING_RECORD_WITH_EXTRA_ROLE = {
-#     "ttl": 300,
-#     "servers": [
-#         {"role": "ROUTE", "addresses": ["127.0.0.1:9001", "127.0.0.1:9002", "127.0.0.1:9003"]},
-#         {"role": "READ", "addresses": ["127.0.0.1:9004", "127.0.0.1:9005"]},
-#         {"role": "WRITE", "addresses": ["127.0.0.1:9006"]},
-#         {"role": "MAGIC", "addresses": ["127.0.0.1:9007"]},
-#     ],
-# }
-#
-# INVALID_ROUTING_RECORD = {
-#     "X": 1,
-# }
-#
-#
-# def connector(address, error_handler):
-#     return connect(address, error_handler=error_handler, auth=("neotest", "neotest"))
 
 
 class FakeConnectionPool(object):
