@@ -25,8 +25,8 @@ from neobolt.direct import connect
 from neobolt.routing import RoutingConnectionPool
 
 
-def connector(address, error_handler):
-    return connect(address, error_handler=error_handler, auth=("neotest", "neotest"))
+def connector(address):
+    return connect(address, auth=("neotest", "neotest"))
 
 
 class RoutingConnectionPoolConstructionTestCase(TestCase):

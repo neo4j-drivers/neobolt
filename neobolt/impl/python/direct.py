@@ -120,7 +120,6 @@ class Connection(object):
         self.protocol_version = protocol_version
         self.address = address
         self.socket = sock
-        self.error_handler = config.get("error_handler", ConnectionErrorHandler())
         self.server = ServerInfo(SocketAddress.from_socket(sock), protocol_version)
         self.input_buffer = ChunkedInputBuffer()
         self.output_buffer = ChunkedOutputBuffer()
@@ -326,9 +325,10 @@ class Connection(object):
     def send(self):
         try:
             self._send()
-        except self.error_handler.known_errors as error:
-            self.error_handler.handle(error, self.address)
-            raise error
+        except Exception as error:
+            if self.pool:
+                self.pool.handle(error, self)
+            raise
 
     def _send(self):
         """ Send all queued messages to the server.
@@ -346,9 +346,10 @@ class Connection(object):
     def fetch(self):
         try:
             return self._fetch()
-        except self.error_handler.known_errors as error:
-            self.error_handler.handle(error, self.address)
-            raise error
+        except Exception as error:
+            if self.pool:
+                self.pool.handle(error, self)
+            raise
 
     def _fetch(self):
         """ Receive at least one message from the server, if available.
@@ -478,9 +479,8 @@ class AbstractConnectionPool(object):
 
     _closed = False
 
-    def __init__(self, connector, connection_error_handler, **config):
+    def __init__(self, connector, **config):
         self.connector = connector
-        self.connection_error_handler = connection_error_handler
         self.connections = {}
         self.lock = RLock()
         self.cond = Condition(self.lock)
@@ -524,7 +524,7 @@ class AbstractConnectionPool(object):
                 can_create_new_connection = infinite_connection_pool or len(connections) < self._max_connection_pool_size
                 if can_create_new_connection:
                     try:
-                        connection = self.connector(address, error_handler=self.connection_error_handler)
+                        connection = self.connector(address)
                     except ServiceUnavailable:
                         self.remove(address)
                         raise
@@ -623,11 +623,16 @@ class AbstractConnectionPool(object):
         with self.lock:
             return self._closed
 
+    def handle(self, error, connection):
+        """ Handle any cleanup or similar activity related to an error
+        occurring on a pooled connection.
+        """
+
 
 class ConnectionPool(AbstractConnectionPool):
 
     def __init__(self, connector, address, **config):
-        super(ConnectionPool, self).__init__(connector, ConnectionErrorHandler(), **config)
+        super(ConnectionPool, self).__init__(connector, **config)
         self.address = address
 
     def acquire(self, access_mode=None):

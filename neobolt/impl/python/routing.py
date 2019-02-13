@@ -186,26 +186,12 @@ class LeastConnectedLoadBalancingStrategy(object):
                 return least_connected_address
 
 
-class RoutingConnectionErrorHandler(ConnectionErrorHandler):
-    """ Handler for errors in routing driver connections.
-    """
-
-    def __init__(self, pool):
-        super(RoutingConnectionErrorHandler, self).__init__({
-            ConnectionExpired: lambda address: pool.deactivate(address),
-            ServiceUnavailable: lambda address: pool.deactivate(address),
-            DatabaseUnavailableError: lambda address: pool.deactivate(address),
-            NotALeaderError: lambda address: pool.remove_writer(address),
-            ForbiddenOnReadOnlyDatabaseError: lambda address: pool.remove_writer(address)
-        })
-
-
 class RoutingConnectionPool(AbstractConnectionPool):
     """ Connection pool with routing table.
     """
 
     def __init__(self, connector, initial_address, routing_context, *routers, **config):
-        super(RoutingConnectionPool, self).__init__(connector, RoutingConnectionErrorHandler(self), **config)
+        super(RoutingConnectionPool, self).__init__(connector, **config)
         self.initial_address = initial_address
         self.routing_context = routing_context
         self.routing_table = RoutingTable(routers)
@@ -392,3 +378,13 @@ class RoutingConnectionPool(AbstractConnectionPool):
         """ Remove a writer address from the routing table, if present.
         """
         self.routing_table.writers.discard(address)
+
+    def handle(self, error, connection):
+        """ Handle any cleanup or similar activity related to an error
+        occurring on a pooled connection.
+        """
+        error_class = error.__class__
+        if error_class in (ConnectionExpired, ServiceUnavailable, DatabaseUnavailableError):
+            self.deactivate(connection.address)
+        elif error_class in (NotALeaderError, ForbiddenOnReadOnlyDatabaseError):
+            self.remove_writer(connection.address)

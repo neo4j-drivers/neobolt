@@ -75,6 +75,5 @@ class ServerInfo(object):
 from neobolt.impl.python.direct import (
     Connection,
     ConnectionPool,
-    ConnectionErrorHandler,
     connect,
 )
