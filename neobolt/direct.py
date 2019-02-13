@@ -45,18 +45,17 @@ from socket import socket, SOL_SOCKET, SO_KEEPALIVE, SHUT_RDWR, \
     timeout as SocketTimeout, AF_INET, AF_INET6
 from struct import pack as struct_pack, unpack as struct_unpack
 from threading import RLock, Condition
+from time import perf_counter
 
 from neobolt.addressing import SocketAddress, Resolver
-from neobolt.compat import perf_counter
-from neobolt.compat.ssl import SSL_AVAILABLE, HAS_SNI, SSLSocket, SSLError
 from neobolt.exceptions import ClientError, ProtocolError, SecurityError, \
     ServiceUnavailable, AuthError, CypherError, IncompleteCommitError, \
     ConnectionExpired, DatabaseUnavailableError, NotALeaderError, \
     ForbiddenOnReadOnlyDatabaseError
 from neobolt.meta import get_user_agent
 from neobolt.packstream import Packer, Unpacker, UnpackableBuffer
-from neobolt.security import AuthToken, TRUST_DEFAULT, TRUST_ON_FIRST_USE, KNOWN_HOSTS, PersonalCertificateStore, \
-    SecurityPlan
+from neobolt.security import SSL_AVAILABLE, HAS_SNI, SSLSocket, SSLError, \
+    AuthToken, TRUST_DEFAULT, TRUST_ON_FIRST_USE, KNOWN_HOSTS, PersonalCertificateStore, SecurityPlan
 
 
 DEFAULT_PORT = 7687
@@ -89,11 +88,6 @@ class ServerInfo(object):
     @property
     def agent(self):
         return self.metadata.get("server")
-
-    @property
-    def version(self):
-        # TODO 2.0: remove
-        return self.agent
 
     def version_info(self):
         if not self.agent:
@@ -275,9 +269,6 @@ class Inbox(object):
     def __next__(self):
         return next(self._messages)
 
-    # TODO 2.0: remove
-    next = __next__
-
     @classmethod
     def _load_chunks(cls, sock, buffer):
         chunk_size = 0
@@ -313,7 +304,7 @@ class Inbox(object):
                     summary_signature = signature
                     summary_metadata = unpacker.unpack_map()
                 yield details, summary_signature, summary_metadata
-        except (IOError, OSError) as error:     # TODO 2.0: remove IOError
+        except OSError as error:
             self.on_error(error)
 
 
@@ -1010,7 +1001,7 @@ def _connect(resolved_address, **config):
         log.debug("[#0000]  C: <CLOSE> %s", resolved_address)
         s.close()
         raise ServiceUnavailable("Timed out trying to establish connection to {!r}".format(resolved_address))
-    except (IOError, OSError) as error:  # TODO 2.0: remove IOError alias
+    except OSError as error:
         log.debug("[#0000]  C: <ERROR> %s %s", type(error).__name__, " ".join(map(repr, error.args)))
         log.debug("[#0000]  C: <CLOSE> %s", resolved_address)
         s.close()
@@ -1072,7 +1063,7 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, **config):
         ready_to_read, _, _ = select((s,), (), (), 1)
     try:
         data = s.recv(4)
-    except (IOError, OSError):  # TODO 2.0: remove IOError alias
+    except OSError:
         raise ServiceUnavailable("Failed to read any data from server {!r} after connected".format(resolved_address))
     data_size = len(data)
     if data_size == 0:

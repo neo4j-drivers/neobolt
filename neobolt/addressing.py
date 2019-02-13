@@ -21,8 +21,7 @@
 
 from collections import namedtuple
 from socket import getaddrinfo, gaierror, SOCK_STREAM, IPPROTO_TCP
-
-from neobolt.compat import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs
 
 
 VALID_IPv4_SEGMENTS = [str(i).encode("latin1") for i in range(0x100)]

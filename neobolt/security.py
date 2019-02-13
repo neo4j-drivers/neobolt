@@ -25,7 +25,19 @@ from os import makedirs, open as os_open, write as os_write, close as os_close, 
 from os.path import dirname, join as path_join, expanduser
 from warnings import warn
 
-from neobolt.compat.ssl import SSL_AVAILABLE, SSLContext, PROTOCOL_SSLv23, OP_NO_SSLv2, CERT_REQUIRED
+try:
+    from ssl import SSLSocket, SSLContext, PROTOCOL_SSLv23, OP_NO_SSLv2, CERT_REQUIRED, HAS_SNI, SSLError
+except ImportError:
+    SSL_AVAILABLE = False
+    SSLSocket = None
+    SSLContext = None
+    PROTOCOL_SSLv23 = None
+    OP_NO_SSLv2 = None
+    CERT_REQUIRED = None
+    HAS_SNI = None
+    SSLError = None
+else:
+    SSL_AVAILABLE = True
 
 
 ENCRYPTION_OFF = 0

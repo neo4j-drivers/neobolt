@@ -21,7 +21,6 @@
 
 from struct import pack as struct_pack
 
-from neobolt.compat import integer, string
 from neobolt.packstream import Structure
 
 
@@ -77,7 +76,7 @@ class Packer(object):
             write(struct_pack(">d", value))
 
         # Integer
-        elif isinstance(value, integer):
+        elif isinstance(value, int):
             if -0x10 <= value < 0x80:
                 write(PACKED_UINT_8[value % 0x100])
             elif -0x80 <= value < -0x10:
@@ -96,7 +95,7 @@ class Packer(object):
                 raise OverflowError("Integer %s out of range" % value)
 
         # String
-        elif isinstance(value, string):
+        elif isinstance(value, str):
             if isinstance(value, bytes):
                 value_bytes = value
             else:
