@@ -3,12 +3,12 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "name": "neobolt.packstream._unpacker",
+        "name": "neobolt.impl.python.packstream._unpacker",
         "sources": [
-            "neobolt/packstream/_unpacker.pyx"
+            "neobolt/impl/python/packstream/_unpacker.pyx"
         ]
     },
-    "module_name": "neobolt.packstream._unpacker"
+    "module_name": "neobolt.impl.python.packstream._unpacker"
 }
 END: Cython Metadata */
 
@@ -571,8 +571,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__neobolt__packstream___unpacker
-#define __PYX_HAVE_API__neobolt__packstream___unpacker
+#define __PYX_HAVE__neobolt__impl__python__packstream___unpacker
+#define __PYX_HAVE_API__neobolt__impl__python__packstream___unpacker
 /* Early includes */
 #ifdef _OPENMP
 #include <omp.h>
@@ -777,55 +777,55 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "neobolt/packstream/_unpacker.pyx",
+  "neobolt/impl/python/packstream/_unpacker.pyx",
   "stringsource",
 };
 
 /*--- Type declarations ---*/
-struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker;
-struct __pyx_opt_args_7neobolt_10packstream_9_unpacker_8Unpacker_read;
+struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker;
+struct __pyx_opt_args_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read;
 
-/* "neobolt/packstream/_unpacker.pyx":41
+/* "neobolt/impl/python/packstream/_unpacker.pyx":41
  *         self.source = source
  * 
  *     cdef read(self, int n=1):             # <<<<<<<<<<<<<<
  *         return self.source.read(n)
  * 
  */
-struct __pyx_opt_args_7neobolt_10packstream_9_unpacker_8Unpacker_read {
+struct __pyx_opt_args_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read {
   int __pyx_n;
   int n;
 };
 
-/* "neobolt/packstream/_unpacker.pyx":31
+/* "neobolt/impl/python/packstream/_unpacker.pyx":31
  * 
  * 
  * cdef class Unpacker(object):             # <<<<<<<<<<<<<<
  * 
  *     cdef source
  */
-struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker {
+struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker {
   PyObject_HEAD
-  struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_vtab;
+  struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_vtab;
   PyObject *source;
 };
 
 
 
-struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker {
-  PyObject *(*attach)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, PyObject *, int __pyx_skip_dispatch);
-  PyObject *(*read)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, struct __pyx_opt_args_7neobolt_10packstream_9_unpacker_8Unpacker_read *__pyx_optional_args);
-  int (*read_int)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *);
-  PyObject *(*unpack)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch);
-  PyObject *(*_unpack)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *);
-  PyObject *(*unpack_list)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch);
-  PyObject *(*_unpack_list)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int);
-  PyObject *(*unpack_map)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch);
-  PyObject *(*_unpack_map)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int);
-  PyObject *(*unpack_structure_header)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch);
-  PyObject *(*_unpack_structure_header)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int);
+struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker {
+  PyObject *(*attach)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, PyObject *, int __pyx_skip_dispatch);
+  PyObject *(*read)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, struct __pyx_opt_args_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read *__pyx_optional_args);
+  int (*read_int)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *);
+  PyObject *(*unpack)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch);
+  PyObject *(*_unpack)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *);
+  PyObject *(*unpack_list)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch);
+  PyObject *(*_unpack_list)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int);
+  PyObject *(*unpack_map)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch);
+  PyObject *(*_unpack_map)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int);
+  PyObject *(*unpack_structure_header)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch);
+  PyObject *(*_unpack_structure_header)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int);
 };
-static struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_vtabptr_7neobolt_10packstream_9_unpacker_Unpacker;
+static struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_vtabptr_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1156,25 +1156,25 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_attach(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, PyObject *__pyx_v_source, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, struct __pyx_opt_args_7neobolt_10packstream_9_unpacker_8Unpacker_read *__pyx_optional_args); /* proto*/
-static int __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read_int(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_list(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker); /* proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_map(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker); /* proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_structure_header(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_structure_header(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker); /* proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_attach(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, PyObject *__pyx_v_source, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, struct __pyx_opt_args_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read *__pyx_optional_args); /* proto*/
+static int __pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read_int(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_list(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack_list(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker); /* proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_map(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack_map(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker); /* proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_structure_header(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack_structure_header(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker); /* proto*/
 
-/* Module declarations from 'neobolt.packstream._unpacker' */
-static PyTypeObject *__pyx_ptype_7neobolt_10packstream_9_unpacker_Unpacker = 0;
-#define __Pyx_MODULE_NAME "neobolt.packstream._unpacker"
-extern int __pyx_module_is_main_neobolt__packstream___unpacker;
-int __pyx_module_is_main_neobolt__packstream___unpacker = 0;
+/* Module declarations from 'neobolt.impl.python.packstream._unpacker' */
+static PyTypeObject *__pyx_ptype_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker = 0;
+#define __Pyx_MODULE_NAME "neobolt.impl.python.packstream._unpacker"
+extern int __pyx_module_is_main_neobolt__impl__python__packstream___unpacker;
+int __pyx_module_is_main_neobolt__impl__python__packstream___unpacker = 0;
 
-/* Implementation of 'neobolt.packstream._unpacker' */
+/* Implementation of 'neobolt.impl.python.packstream._unpacker' */
 static PyObject *__pyx_builtin_object;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_range;
@@ -1187,6 +1187,7 @@ static const char __pyx_k_d[] = ">d";
 static const char __pyx_k_h[] = ">h";
 static const char __pyx_k_i[] = ">i";
 static const char __pyx_k_q[] = ">q";
+static const char __pyx_k__5[] = "";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_read[] = "read";
@@ -1218,7 +1219,6 @@ static const char __pyx_k_struct_unpack[] = "struct_unpack";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_Nothing_to_unpack[] = "Nothing to unpack";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_neobolt_packstream[] = "neobolt.packstream";
 static const char __pyx_k_unpack_structure_header[] = "unpack_structure_header";
 static const char __pyx_k_Unknown_PackStream_marker_02X[] = "Unknown PackStream marker %02X";
 static const char __pyx_k_Expected_structure_found_marker[] = "Expected structure, found marker %02X";
@@ -1233,6 +1233,7 @@ static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_n_s_Structure;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_s_Unknown_PackStream_marker_02X;
+static PyObject *__pyx_n_s__5;
 static PyObject *__pyx_n_s_attach;
 static PyObject *__pyx_kp_s_b;
 static PyObject *__pyx_n_s_cline_in_traceback;
@@ -1245,7 +1246,6 @@ static PyObject *__pyx_kp_s_i;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
-static PyObject *__pyx_n_s_neobolt_packstream;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_n_s_object;
 static PyObject *__pyx_n_s_pyx_vtable;
@@ -1267,22 +1267,22 @@ static PyObject *__pyx_n_s_unpack_list;
 static PyObject *__pyx_n_s_unpack_map;
 static PyObject *__pyx_n_s_unpack_structure_header;
 static PyObject *__pyx_kp_s_utf_8;
-static int __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker___cinit__(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_2attach(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, PyObject *__pyx_v_source); /* proto */
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_4unpack(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_6unpack_list(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_8unpack_map(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_10unpack_structure_header(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_12__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_14__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_tp_new_7neobolt_10packstream_9_unpacker_Unpacker(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static int __pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker___cinit__(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_2attach(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, PyObject *__pyx_v_source); /* proto */
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_4unpack(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_6unpack_list(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_8unpack_map(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_10unpack_structure_header(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_12__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_14__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_tp_new_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__4;
 /* Late includes */
 
-/* "neobolt/packstream/_unpacker.pyx":35
+/* "neobolt/impl/python/packstream/_unpacker.pyx":35
  *     cdef source
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1291,27 +1291,27 @@ static PyObject *__pyx_tuple__4;
  */
 
 /* Python wrapper */
-static int __pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
   if (unlikely(PyTuple_GET_SIZE(__pyx_args) > 0)) {
     __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 0, 0, PyTuple_GET_SIZE(__pyx_args)); return -1;}
   if (unlikely(__pyx_kwds) && unlikely(PyDict_Size(__pyx_kwds) > 0) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__cinit__", 0))) return -1;
-  __pyx_r = __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker___cinit__(((struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker___cinit__(((struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker___cinit__(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
+static int __pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker___cinit__(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "neobolt/packstream/_unpacker.pyx":36
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":36
  * 
  *     def __cinit__(self):
  *         self.source = None             # <<<<<<<<<<<<<<
@@ -1324,7 +1324,7 @@ static int __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker___cinit__(struct 
   __Pyx_DECREF(__pyx_v_self->source);
   __pyx_v_self->source = Py_None;
 
-  /* "neobolt/packstream/_unpacker.pyx":35
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":35
  *     cdef source
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1338,7 +1338,7 @@ static int __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker___cinit__(struct 
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":38
+/* "neobolt/impl/python/packstream/_unpacker.pyx":38
  *         self.source = None
  * 
  *     cpdef attach(self, source):             # <<<<<<<<<<<<<<
@@ -1346,8 +1346,8 @@ static int __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker___cinit__(struct 
  * 
  */
 
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_3attach(PyObject *__pyx_v_self, PyObject *__pyx_v_source); /*proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_attach(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, PyObject *__pyx_v_source, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_3attach(PyObject *__pyx_v_self, PyObject *__pyx_v_source); /*proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_attach(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, PyObject *__pyx_v_source, int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1362,7 +1362,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_attach(struc
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_attach); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_3attach)) {
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_3attach)) {
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -1416,7 +1416,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_attach(struc
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":39
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":39
  * 
  *     cpdef attach(self, source):
  *         self.source = source             # <<<<<<<<<<<<<<
@@ -1429,7 +1429,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_attach(struc
   __Pyx_DECREF(__pyx_v_self->source);
   __pyx_v_self->source = __pyx_v_source;
 
-  /* "neobolt/packstream/_unpacker.pyx":38
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":38
  *         self.source = None
  * 
  *     cpdef attach(self, source):             # <<<<<<<<<<<<<<
@@ -1446,7 +1446,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_attach(struc
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.attach", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.attach", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1455,25 +1455,25 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_attach(struc
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_3attach(PyObject *__pyx_v_self, PyObject *__pyx_v_source); /*proto*/
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_3attach(PyObject *__pyx_v_self, PyObject *__pyx_v_source) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_3attach(PyObject *__pyx_v_self, PyObject *__pyx_v_source); /*proto*/
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_3attach(PyObject *__pyx_v_self, PyObject *__pyx_v_source) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("attach (wrapper)", 0);
-  __pyx_r = __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_2attach(((struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self), ((PyObject *)__pyx_v_source));
+  __pyx_r = __pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_2attach(((struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self), ((PyObject *)__pyx_v_source));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_2attach(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, PyObject *__pyx_v_source) {
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_2attach(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, PyObject *__pyx_v_source) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("attach", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_attach(__pyx_v_self, __pyx_v_source, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_attach(__pyx_v_self, __pyx_v_source, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1482,7 +1482,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_2attach(str
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.attach", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.attach", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1490,7 +1490,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_2attach(str
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":41
+/* "neobolt/impl/python/packstream/_unpacker.pyx":41
  *         self.source = source
  * 
  *     cdef read(self, int n=1):             # <<<<<<<<<<<<<<
@@ -1498,7 +1498,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_2attach(str
  * 
  */
 
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, struct __pyx_opt_args_7neobolt_10packstream_9_unpacker_8Unpacker_read *__pyx_optional_args) {
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, struct __pyx_opt_args_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read *__pyx_optional_args) {
   int __pyx_v_n = ((int)1);
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -1514,7 +1514,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read(struct 
     }
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":42
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":42
  * 
  *     cdef read(self, int n=1):
  *         return self.source.read(n)             # <<<<<<<<<<<<<<
@@ -1576,7 +1576,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read(struct 
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "neobolt/packstream/_unpacker.pyx":41
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":41
  *         self.source = source
  * 
  *     cdef read(self, int n=1):             # <<<<<<<<<<<<<<
@@ -1591,7 +1591,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read(struct 
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.read", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.read", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1599,7 +1599,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read(struct 
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":44
+/* "neobolt/impl/python/packstream/_unpacker.pyx":44
  *         return self.source.read(n)
  * 
  *     cdef int read_int(self):             # <<<<<<<<<<<<<<
@@ -1607,7 +1607,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read(struct 
  * 
  */
 
-static int __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read_int(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
+static int __pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read_int(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1616,7 +1616,7 @@ static int __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read_int(struct __
   int __pyx_t_4;
   __Pyx_RefNannySetupContext("read_int", 0);
 
-  /* "neobolt/packstream/_unpacker.pyx":45
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":45
  * 
  *     cdef int read_int(self):
  *         return self.source.read_int()             # <<<<<<<<<<<<<<
@@ -1648,7 +1648,7 @@ static int __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read_int(struct __
   __pyx_r = __pyx_t_4;
   goto __pyx_L0;
 
-  /* "neobolt/packstream/_unpacker.pyx":44
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":44
  *         return self.source.read(n)
  * 
  *     cdef int read_int(self):             # <<<<<<<<<<<<<<
@@ -1661,14 +1661,14 @@ static int __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read_int(struct __
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_WriteUnraisable("neobolt.packstream._unpacker.Unpacker.read_int", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("neobolt.impl.python.packstream._unpacker.Unpacker.read_int", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":47
+/* "neobolt/impl/python/packstream/_unpacker.pyx":47
  *         return self.source.read_int()
  * 
  *     cpdef unpack(self):             # <<<<<<<<<<<<<<
@@ -1676,8 +1676,8 @@ static int __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read_int(struct __
  * 
  */
 
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_5unpack(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_5unpack(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1691,7 +1691,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack(struc
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_unpack); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_5unpack)) {
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_5unpack)) {
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -1720,7 +1720,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack(struc
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":48
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":48
  * 
  *     cpdef unpack(self):
  *         return self._unpack()             # <<<<<<<<<<<<<<
@@ -1728,13 +1728,13 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack(struc
  *     cdef _unpack(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "neobolt/packstream/_unpacker.pyx":47
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":47
  *         return self.source.read_int()
  * 
  *     cpdef unpack(self):             # <<<<<<<<<<<<<<
@@ -1748,7 +1748,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack(struc
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.unpack", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.unpack", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1757,25 +1757,25 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack(struc
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_5unpack(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_5unpack(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_5unpack(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_5unpack(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("unpack (wrapper)", 0);
-  __pyx_r = __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_4unpack(((struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_4unpack(((struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_4unpack(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_4unpack(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("unpack", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1784,7 +1784,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_4unpack(str
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.unpack", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.unpack", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1792,7 +1792,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_4unpack(str
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":50
+/* "neobolt/impl/python/packstream/_unpacker.pyx":50
  *         return self._unpack()
  * 
  *     cdef _unpack(self):             # <<<<<<<<<<<<<<
@@ -1800,7 +1800,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_4unpack(str
  *         cdef int i
  */
 
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
   int __pyx_v_size;
   int __pyx_v_i;
   int __pyx_v_marker;
@@ -1814,7 +1814,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   int __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  struct __pyx_opt_args_7neobolt_10packstream_9_unpacker_8Unpacker_read __pyx_t_6;
+  struct __pyx_opt_args_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read __pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
   int __pyx_t_8;
   PyObject *__pyx_t_9 = NULL;
@@ -1824,16 +1824,16 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   Py_ssize_t __pyx_t_13;
   __Pyx_RefNannySetupContext("_unpack", 0);
 
-  /* "neobolt/packstream/_unpacker.pyx":56
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":56
  *         cdef int marker_high
  * 
  *         marker = self.read_int()             # <<<<<<<<<<<<<<
  * 
  *         if marker == -1:
  */
-  __pyx_v_marker = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read_int(__pyx_v_self);
+  __pyx_v_marker = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read_int(__pyx_v_self);
 
-  /* "neobolt/packstream/_unpacker.pyx":58
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":58
  *         marker = self.read_int()
  * 
  *         if marker == -1:             # <<<<<<<<<<<<<<
@@ -1843,7 +1843,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == -1L) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "neobolt/packstream/_unpacker.pyx":59
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":59
  * 
  *         if marker == -1:
  *             raise RuntimeError("Nothing to unpack")             # <<<<<<<<<<<<<<
@@ -1856,7 +1856,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 59, __pyx_L1_error)
 
-    /* "neobolt/packstream/_unpacker.pyx":58
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":58
  *         marker = self.read_int()
  * 
  *         if marker == -1:             # <<<<<<<<<<<<<<
@@ -1865,7 +1865,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":62
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":62
  * 
  *         # Tiny Integer
  *         if 0x00 <= marker <= 0x7F:             # <<<<<<<<<<<<<<
@@ -1879,7 +1879,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_3 = (__pyx_t_1 != 0);
   if (__pyx_t_3) {
 
-    /* "neobolt/packstream/_unpacker.pyx":63
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":63
  *         # Tiny Integer
  *         if 0x00 <= marker <= 0x7F:
  *             return marker             # <<<<<<<<<<<<<<
@@ -1893,7 +1893,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":62
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":62
  * 
  *         # Tiny Integer
  *         if 0x00 <= marker <= 0x7F:             # <<<<<<<<<<<<<<
@@ -1902,7 +1902,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":64
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":64
  *         if 0x00 <= marker <= 0x7F:
  *             return marker
  *         elif 0xF0 <= marker <= 0xFF:             # <<<<<<<<<<<<<<
@@ -1916,7 +1916,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = (__pyx_t_3 != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":65
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":65
  *             return marker
  *         elif 0xF0 <= marker <= 0xFF:
  *             return marker - 0x100             # <<<<<<<<<<<<<<
@@ -1930,7 +1930,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":64
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":64
  *         if 0x00 <= marker <= 0x7F:
  *             return marker
  *         elif 0xF0 <= marker <= 0xFF:             # <<<<<<<<<<<<<<
@@ -1939,7 +1939,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":68
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":68
  * 
  *         # Null
  *         elif marker == 0xC0:             # <<<<<<<<<<<<<<
@@ -1949,7 +1949,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xC0) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":69
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":69
  *         # Null
  *         elif marker == 0xC0:
  *             return None             # <<<<<<<<<<<<<<
@@ -1960,7 +1960,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":68
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":68
  * 
  *         # Null
  *         elif marker == 0xC0:             # <<<<<<<<<<<<<<
@@ -1969,7 +1969,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":72
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":72
  * 
  *         # Float
  *         elif marker == 0xC1:             # <<<<<<<<<<<<<<
@@ -1979,7 +1979,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xC1) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":73
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":73
  *         # Float
  *         elif marker == 0xC1:
  *             value, = struct_unpack(">d", self.read(8))             # <<<<<<<<<<<<<<
@@ -1990,7 +1990,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = 8;
-    __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 73, __pyx_L1_error)
+    __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 73, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_7 = NULL;
     __pyx_t_8 = 0;
@@ -2081,7 +2081,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_v_value = __pyx_t_4;
     __pyx_t_4 = 0;
 
-    /* "neobolt/packstream/_unpacker.pyx":74
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":74
  *         elif marker == 0xC1:
  *             value, = struct_unpack(">d", self.read(8))
  *             return value             # <<<<<<<<<<<<<<
@@ -2093,7 +2093,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_r = __pyx_v_value;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":72
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":72
  * 
  *         # Float
  *         elif marker == 0xC1:             # <<<<<<<<<<<<<<
@@ -2102,7 +2102,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":77
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":77
  * 
  *         # Boolean
  *         elif marker == 0xC2:             # <<<<<<<<<<<<<<
@@ -2112,7 +2112,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xC2) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":78
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":78
  *         # Boolean
  *         elif marker == 0xC2:
  *             return False             # <<<<<<<<<<<<<<
@@ -2124,7 +2124,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_r = Py_False;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":77
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":77
  * 
  *         # Boolean
  *         elif marker == 0xC2:             # <<<<<<<<<<<<<<
@@ -2133,7 +2133,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":79
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":79
  *         elif marker == 0xC2:
  *             return False
  *         elif marker == 0xC3:             # <<<<<<<<<<<<<<
@@ -2143,7 +2143,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xC3) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":80
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":80
  *             return False
  *         elif marker == 0xC3:
  *             return True             # <<<<<<<<<<<<<<
@@ -2155,7 +2155,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_r = Py_True;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":79
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":79
  *         elif marker == 0xC2:
  *             return False
  *         elif marker == 0xC3:             # <<<<<<<<<<<<<<
@@ -2164,7 +2164,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":83
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":83
  * 
  *         # Integer
  *         elif marker == 0xC8:             # <<<<<<<<<<<<<<
@@ -2174,7 +2174,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xC8) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":84
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":84
  *         # Integer
  *         elif marker == 0xC8:
  *             return struct_unpack(">b", self.read(1))[0]             # <<<<<<<<<<<<<<
@@ -2186,7 +2186,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = 1;
-    __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_5 = NULL;
     __pyx_t_8 = 0;
@@ -2242,7 +2242,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":83
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":83
  * 
  *         # Integer
  *         elif marker == 0xC8:             # <<<<<<<<<<<<<<
@@ -2251,7 +2251,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":85
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":85
  *         elif marker == 0xC8:
  *             return struct_unpack(">b", self.read(1))[0]
  *         elif marker == 0xC9:             # <<<<<<<<<<<<<<
@@ -2261,7 +2261,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xC9) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":86
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":86
  *             return struct_unpack(">b", self.read(1))[0]
  *         elif marker == 0xC9:
  *             return struct_unpack(">h", self.read(2))[0]             # <<<<<<<<<<<<<<
@@ -2273,7 +2273,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = 2;
-    __pyx_t_7 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __pyx_t_7 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 86, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_9 = NULL;
     __pyx_t_8 = 0;
@@ -2329,7 +2329,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":85
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":85
  *         elif marker == 0xC8:
  *             return struct_unpack(">b", self.read(1))[0]
  *         elif marker == 0xC9:             # <<<<<<<<<<<<<<
@@ -2338,7 +2338,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":87
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":87
  *         elif marker == 0xC9:
  *             return struct_unpack(">h", self.read(2))[0]
  *         elif marker == 0xCA:             # <<<<<<<<<<<<<<
@@ -2348,7 +2348,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xCA) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":88
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":88
  *             return struct_unpack(">h", self.read(2))[0]
  *         elif marker == 0xCA:
  *             return struct_unpack(">i", self.read(4))[0]             # <<<<<<<<<<<<<<
@@ -2360,7 +2360,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = 4;
-    __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 88, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_7 = NULL;
     __pyx_t_8 = 0;
@@ -2416,7 +2416,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":87
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":87
  *         elif marker == 0xC9:
  *             return struct_unpack(">h", self.read(2))[0]
  *         elif marker == 0xCA:             # <<<<<<<<<<<<<<
@@ -2425,7 +2425,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":89
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":89
  *         elif marker == 0xCA:
  *             return struct_unpack(">i", self.read(4))[0]
  *         elif marker == 0xCB:             # <<<<<<<<<<<<<<
@@ -2435,7 +2435,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xCB) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":90
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":90
  *             return struct_unpack(">i", self.read(4))[0]
  *         elif marker == 0xCB:
  *             return struct_unpack(">q", self.read(8))[0]             # <<<<<<<<<<<<<<
@@ -2447,7 +2447,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = 8;
-    __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_5 = NULL;
     __pyx_t_8 = 0;
@@ -2503,7 +2503,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":89
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":89
  *         elif marker == 0xCA:
  *             return struct_unpack(">i", self.read(4))[0]
  *         elif marker == 0xCB:             # <<<<<<<<<<<<<<
@@ -2512,7 +2512,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":93
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":93
  * 
  *         # Bytes
  *         elif marker == 0xCC:             # <<<<<<<<<<<<<<
@@ -2522,7 +2522,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xCC) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":94
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":94
  *         # Bytes
  *         elif marker == 0xCC:
  *             size, = struct_unpack(">B", self.read(1))             # <<<<<<<<<<<<<<
@@ -2533,7 +2533,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = 1;
-    __pyx_t_7 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_7 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 94, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_9 = NULL;
     __pyx_t_8 = 0;
@@ -2625,7 +2625,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_size = __pyx_t_8;
 
-    /* "neobolt/packstream/_unpacker.pyx":95
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":95
  *         elif marker == 0xCC:
  *             size, = struct_unpack(">B", self.read(1))
  *             return self.read(size).tobytes()             # <<<<<<<<<<<<<<
@@ -2635,7 +2635,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = __pyx_v_size;
-    __pyx_t_4 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
@@ -2662,7 +2662,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":93
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":93
  * 
  *         # Bytes
  *         elif marker == 0xCC:             # <<<<<<<<<<<<<<
@@ -2671,7 +2671,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":96
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":96
  *             size, = struct_unpack(">B", self.read(1))
  *             return self.read(size).tobytes()
  *         elif marker == 0xCD:             # <<<<<<<<<<<<<<
@@ -2681,7 +2681,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xCD) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":97
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":97
  *             return self.read(size).tobytes()
  *         elif marker == 0xCD:
  *             size, = struct_unpack(">H", self.read(2))             # <<<<<<<<<<<<<<
@@ -2692,7 +2692,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = 2;
-    __pyx_t_4 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 97, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_7 = NULL;
     __pyx_t_8 = 0;
@@ -2784,7 +2784,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_v_size = __pyx_t_8;
 
-    /* "neobolt/packstream/_unpacker.pyx":98
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":98
  *         elif marker == 0xCD:
  *             size, = struct_unpack(">H", self.read(2))
  *             return self.read(size).tobytes()             # <<<<<<<<<<<<<<
@@ -2794,7 +2794,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = __pyx_v_size;
-    __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 98, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
@@ -2821,7 +2821,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":96
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":96
  *             size, = struct_unpack(">B", self.read(1))
  *             return self.read(size).tobytes()
  *         elif marker == 0xCD:             # <<<<<<<<<<<<<<
@@ -2830,7 +2830,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":99
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":99
  *             size, = struct_unpack(">H", self.read(2))
  *             return self.read(size).tobytes()
  *         elif marker == 0xCE:             # <<<<<<<<<<<<<<
@@ -2840,7 +2840,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __pyx_t_1 = ((__pyx_v_marker == 0xCE) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":100
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":100
  *             return self.read(size).tobytes()
  *         elif marker == 0xCE:
  *             size, = struct_unpack(">I", self.read(4))             # <<<<<<<<<<<<<<
@@ -2851,7 +2851,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = 4;
-    __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_4 = NULL;
     __pyx_t_8 = 0;
@@ -2943,7 +2943,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_v_size = __pyx_t_8;
 
-    /* "neobolt/packstream/_unpacker.pyx":101
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":101
  *         elif marker == 0xCE:
  *             size, = struct_unpack(">I", self.read(4))
  *             return self.read(size).tobytes()             # <<<<<<<<<<<<<<
@@ -2953,7 +2953,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.n = __pyx_v_size;
-    __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
@@ -2980,7 +2980,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":99
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":99
  *             size, = struct_unpack(">H", self.read(2))
  *             return self.read(size).tobytes()
  *         elif marker == 0xCE:             # <<<<<<<<<<<<<<
@@ -2989,7 +2989,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":104
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":104
  * 
  *         else:
  *             marker_high = marker & 0xF0             # <<<<<<<<<<<<<<
@@ -2999,7 +2999,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   /*else*/ {
     __pyx_v_marker_high = (__pyx_v_marker & 0xF0);
 
-    /* "neobolt/packstream/_unpacker.pyx":106
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":106
  *             marker_high = marker & 0xF0
  *             # String
  *             if marker_high == 0x80:  # TINY_STRING             # <<<<<<<<<<<<<<
@@ -3009,7 +3009,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_1 = ((__pyx_v_marker_high == 0x80) != 0);
     if (__pyx_t_1) {
 
-      /* "neobolt/packstream/_unpacker.pyx":107
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":107
  *             # String
  *             if marker_high == 0x80:  # TINY_STRING
  *                 return decode(self.read(marker & 0x0F), "utf-8")             # <<<<<<<<<<<<<<
@@ -3021,7 +3021,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_6.__pyx_n = 1;
       __pyx_t_6.n = (__pyx_v_marker & 0x0F);
-      __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 107, __pyx_L1_error)
+      __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 107, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_5 = NULL;
       __pyx_t_8 = 0;
@@ -3074,7 +3074,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __pyx_t_2 = 0;
       goto __pyx_L0;
 
-      /* "neobolt/packstream/_unpacker.pyx":106
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":106
  *             marker_high = marker & 0xF0
  *             # String
  *             if marker_high == 0x80:  # TINY_STRING             # <<<<<<<<<<<<<<
@@ -3083,7 +3083,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":108
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":108
  *             if marker_high == 0x80:  # TINY_STRING
  *                 return decode(self.read(marker & 0x0F), "utf-8")
  *             elif marker == 0xD0:  # STRING_8:             # <<<<<<<<<<<<<<
@@ -3093,7 +3093,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_1 = ((__pyx_v_marker == 0xD0) != 0);
     if (__pyx_t_1) {
 
-      /* "neobolt/packstream/_unpacker.pyx":109
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":109
  *                 return decode(self.read(marker & 0x0F), "utf-8")
  *             elif marker == 0xD0:  # STRING_8:
  *                 size, = struct_unpack(">B", self.read(1))             # <<<<<<<<<<<<<<
@@ -3104,7 +3104,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_6.__pyx_n = 1;
       __pyx_t_6.n = 1;
-      __pyx_t_4 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
+      __pyx_t_4 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_9 = NULL;
       __pyx_t_8 = 0;
@@ -3196,7 +3196,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_v_size = __pyx_t_8;
 
-      /* "neobolt/packstream/_unpacker.pyx":110
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":110
  *             elif marker == 0xD0:  # STRING_8:
  *                 size, = struct_unpack(">B", self.read(1))
  *                 return decode(self.read(size), "utf-8")             # <<<<<<<<<<<<<<
@@ -3208,7 +3208,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_6.__pyx_n = 1;
       __pyx_t_6.n = __pyx_v_size;
-      __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 110, __pyx_L1_error)
+      __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 110, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_4 = NULL;
       __pyx_t_8 = 0;
@@ -3261,7 +3261,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __pyx_t_2 = 0;
       goto __pyx_L0;
 
-      /* "neobolt/packstream/_unpacker.pyx":108
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":108
  *             if marker_high == 0x80:  # TINY_STRING
  *                 return decode(self.read(marker & 0x0F), "utf-8")
  *             elif marker == 0xD0:  # STRING_8:             # <<<<<<<<<<<<<<
@@ -3270,7 +3270,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":111
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":111
  *                 size, = struct_unpack(">B", self.read(1))
  *                 return decode(self.read(size), "utf-8")
  *             elif marker == 0xD1:  # STRING_16:             # <<<<<<<<<<<<<<
@@ -3280,7 +3280,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_1 = ((__pyx_v_marker == 0xD1) != 0);
     if (__pyx_t_1) {
 
-      /* "neobolt/packstream/_unpacker.pyx":112
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":112
  *                 return decode(self.read(size), "utf-8")
  *             elif marker == 0xD1:  # STRING_16:
  *                 size, = struct_unpack(">H", self.read(2))             # <<<<<<<<<<<<<<
@@ -3291,7 +3291,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_6.__pyx_n = 1;
       __pyx_t_6.n = 2;
-      __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 112, __pyx_L1_error)
+      __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 112, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_5 = NULL;
       __pyx_t_8 = 0;
@@ -3383,7 +3383,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_v_size = __pyx_t_8;
 
-      /* "neobolt/packstream/_unpacker.pyx":113
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":113
  *             elif marker == 0xD1:  # STRING_16:
  *                 size, = struct_unpack(">H", self.read(2))
  *                 return decode(self.read(size), "utf-8")             # <<<<<<<<<<<<<<
@@ -3395,7 +3395,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_6.__pyx_n = 1;
       __pyx_t_6.n = __pyx_v_size;
-      __pyx_t_4 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+      __pyx_t_4 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_9 = NULL;
       __pyx_t_8 = 0;
@@ -3448,7 +3448,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __pyx_t_2 = 0;
       goto __pyx_L0;
 
-      /* "neobolt/packstream/_unpacker.pyx":111
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":111
  *                 size, = struct_unpack(">B", self.read(1))
  *                 return decode(self.read(size), "utf-8")
  *             elif marker == 0xD1:  # STRING_16:             # <<<<<<<<<<<<<<
@@ -3457,7 +3457,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":114
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":114
  *                 size, = struct_unpack(">H", self.read(2))
  *                 return decode(self.read(size), "utf-8")
  *             elif marker == 0xD2:  # STRING_32:             # <<<<<<<<<<<<<<
@@ -3467,7 +3467,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_1 = ((__pyx_v_marker == 0xD2) != 0);
     if (__pyx_t_1) {
 
-      /* "neobolt/packstream/_unpacker.pyx":115
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":115
  *                 return decode(self.read(size), "utf-8")
  *             elif marker == 0xD2:  # STRING_32:
  *                 size, = struct_unpack(">I", self.read(4))             # <<<<<<<<<<<<<<
@@ -3478,7 +3478,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_6.__pyx_n = 1;
       __pyx_t_6.n = 4;
-      __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 115, __pyx_L1_error)
+      __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 115, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_4 = NULL;
       __pyx_t_8 = 0;
@@ -3570,7 +3570,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_v_size = __pyx_t_8;
 
-      /* "neobolt/packstream/_unpacker.pyx":116
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":116
  *             elif marker == 0xD2:  # STRING_32:
  *                 size, = struct_unpack(">I", self.read(4))
  *                 return decode(self.read(size), "utf-8")             # <<<<<<<<<<<<<<
@@ -3582,7 +3582,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_6.__pyx_n = 1;
       __pyx_t_6.n = __pyx_v_size;
-      __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 116, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_5 = NULL;
       __pyx_t_8 = 0;
@@ -3635,7 +3635,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __pyx_t_2 = 0;
       goto __pyx_L0;
 
-      /* "neobolt/packstream/_unpacker.pyx":114
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":114
  *                 size, = struct_unpack(">H", self.read(2))
  *                 return decode(self.read(size), "utf-8")
  *             elif marker == 0xD2:  # STRING_32:             # <<<<<<<<<<<<<<
@@ -3644,7 +3644,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":119
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":119
  * 
  *             # List
  *             elif 0x90 <= marker <= 0x9F or 0xD4 <= marker <= 0xD7:             # <<<<<<<<<<<<<<
@@ -3670,7 +3670,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_L20_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "neobolt/packstream/_unpacker.pyx":120
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":120
  *             # List
  *             elif 0x90 <= marker <= 0x9F or 0xD4 <= marker <= 0xD7:
  *                 return self._unpack_list(marker)             # <<<<<<<<<<<<<<
@@ -3678,13 +3678,13 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  *             # Map
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_list(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_list(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_r = __pyx_t_2;
       __pyx_t_2 = 0;
       goto __pyx_L0;
 
-      /* "neobolt/packstream/_unpacker.pyx":119
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":119
  * 
  *             # List
  *             elif 0x90 <= marker <= 0x9F or 0xD4 <= marker <= 0xD7:             # <<<<<<<<<<<<<<
@@ -3693,7 +3693,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":123
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":123
  * 
  *             # Map
  *             elif 0xA0 <= marker <= 0xAF or 0xD8 <= marker <= 0xDB:             # <<<<<<<<<<<<<<
@@ -3719,7 +3719,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_L22_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "neobolt/packstream/_unpacker.pyx":124
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":124
  *             # Map
  *             elif 0xA0 <= marker <= 0xAF or 0xD8 <= marker <= 0xDB:
  *                 return self._unpack_map(marker)             # <<<<<<<<<<<<<<
@@ -3727,13 +3727,13 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  *             # Structure
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_map(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_map(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_r = __pyx_t_2;
       __pyx_t_2 = 0;
       goto __pyx_L0;
 
-      /* "neobolt/packstream/_unpacker.pyx":123
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":123
  * 
  *             # Map
  *             elif 0xA0 <= marker <= 0xAF or 0xD8 <= marker <= 0xDB:             # <<<<<<<<<<<<<<
@@ -3742,7 +3742,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":127
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":127
  * 
  *             # Structure
  *             elif 0xB0 <= marker <= 0xBF or 0xDC <= marker <= 0xDD:             # <<<<<<<<<<<<<<
@@ -3768,14 +3768,14 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_L24_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "neobolt/packstream/_unpacker.pyx":128
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":128
  *             # Structure
  *             elif 0xB0 <= marker <= 0xBF or 0xDC <= marker <= 0xDD:
  *                 size, tag = self._unpack_structure_header(marker)             # <<<<<<<<<<<<<<
  *                 value = Structure(tag, *([None] * size))
  *                 for i in range(len(value)):
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_structure_header(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_structure_header(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
         PyObject* sequence = __pyx_t_2;
@@ -3829,7 +3829,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __pyx_v_tag = __pyx_t_4;
       __pyx_t_4 = 0;
 
-      /* "neobolt/packstream/_unpacker.pyx":129
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":129
  *             elif 0xB0 <= marker <= 0xBF or 0xDC <= marker <= 0xDD:
  *                 size, tag = self._unpack_structure_header(marker)
  *                 value = Structure(tag, *([None] * size))             # <<<<<<<<<<<<<<
@@ -3866,7 +3866,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __pyx_v_value = __pyx_t_9;
       __pyx_t_9 = 0;
 
-      /* "neobolt/packstream/_unpacker.pyx":130
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":130
  *                 size, tag = self._unpack_structure_header(marker)
  *                 value = Structure(tag, *([None] * size))
  *                 for i in range(len(value)):             # <<<<<<<<<<<<<<
@@ -3878,20 +3878,20 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_13; __pyx_t_8+=1) {
         __pyx_v_i = __pyx_t_8;
 
-        /* "neobolt/packstream/_unpacker.pyx":131
+        /* "neobolt/impl/python/packstream/_unpacker.pyx":131
  *                 value = Structure(tag, *([None] * size))
  *                 for i in range(len(value)):
  *                     value[i] = self._unpack()             # <<<<<<<<<<<<<<
  *                 return value
  * 
  */
-        __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 131, __pyx_L1_error)
+        __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         if (unlikely(__Pyx_SetItemInt(__pyx_v_value, __pyx_v_i, __pyx_t_9, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       }
 
-      /* "neobolt/packstream/_unpacker.pyx":132
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":132
  *                 for i in range(len(value)):
  *                     value[i] = self._unpack()
  *                 return value             # <<<<<<<<<<<<<<
@@ -3903,7 +3903,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __pyx_r = __pyx_v_value;
       goto __pyx_L0;
 
-      /* "neobolt/packstream/_unpacker.pyx":127
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":127
  * 
  *             # Structure
  *             elif 0xB0 <= marker <= 0xBF or 0xDC <= marker <= 0xDD:             # <<<<<<<<<<<<<<
@@ -3912,7 +3912,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":134
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":134
  *                 return value
  * 
  *             elif marker == 0xDF:  # END_OF_STREAM:             # <<<<<<<<<<<<<<
@@ -3922,7 +3922,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     __pyx_t_1 = ((__pyx_v_marker == 0xDF) != 0);
     if (likely(__pyx_t_1)) {
 
-      /* "neobolt/packstream/_unpacker.pyx":135
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":135
  * 
  *             elif marker == 0xDF:  # END_OF_STREAM:
  *                 return EndOfStream             # <<<<<<<<<<<<<<
@@ -3936,7 +3936,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
       __pyx_t_9 = 0;
       goto __pyx_L0;
 
-      /* "neobolt/packstream/_unpacker.pyx":134
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":134
  *                 return value
  * 
  *             elif marker == 0xDF:  # END_OF_STREAM:             # <<<<<<<<<<<<<<
@@ -3945,7 +3945,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  */
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":138
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":138
  * 
  *             else:
  *                 raise RuntimeError("Unknown PackStream marker %02X" % marker)             # <<<<<<<<<<<<<<
@@ -3967,7 +3967,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
     }
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":50
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":50
  *         return self._unpack()
  * 
  *     cdef _unpack(self):             # <<<<<<<<<<<<<<
@@ -3982,7 +3982,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker._unpack", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker._unpack", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_value);
@@ -3992,7 +3992,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":140
+/* "neobolt/impl/python/packstream/_unpacker.pyx":140
  *                 raise RuntimeError("Unknown PackStream marker %02X" % marker)
  * 
  *     cpdef list unpack_list(self):             # <<<<<<<<<<<<<<
@@ -4000,8 +4000,8 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack(stru
  * 
  */
 
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_7unpack_list(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_list(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_7unpack_list(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_list(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch) {
   int __pyx_v_marker;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -4016,7 +4016,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_list(
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_unpack_list); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_7unpack_list)) {
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_7unpack_list)) {
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -4046,16 +4046,16 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_list(
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":143
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":143
  *         cdef int marker
  * 
  *         marker = self.read_int()             # <<<<<<<<<<<<<<
  *         return self._unpack_list(marker)
  * 
  */
-  __pyx_v_marker = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read_int(__pyx_v_self);
+  __pyx_v_marker = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read_int(__pyx_v_self);
 
-  /* "neobolt/packstream/_unpacker.pyx":144
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":144
  * 
  *         marker = self.read_int()
  *         return self._unpack_list(marker)             # <<<<<<<<<<<<<<
@@ -4063,13 +4063,13 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_list(
  *     cdef list _unpack_list(self, int marker):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_list(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_list(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "neobolt/packstream/_unpacker.pyx":140
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":140
  *                 raise RuntimeError("Unknown PackStream marker %02X" % marker)
  * 
  *     cpdef list unpack_list(self):             # <<<<<<<<<<<<<<
@@ -4083,7 +4083,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_list(
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.unpack_list", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.unpack_list", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4092,25 +4092,25 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_list(
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_7unpack_list(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_7unpack_list(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_7unpack_list(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_7unpack_list(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("unpack_list (wrapper)", 0);
-  __pyx_r = __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_6unpack_list(((struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_6unpack_list(((struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_6unpack_list(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_6unpack_list(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("unpack_list", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_list(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_list(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4119,7 +4119,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_6unpack_lis
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.unpack_list", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.unpack_list", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4127,7 +4127,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_6unpack_lis
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":146
+/* "neobolt/impl/python/packstream/_unpacker.pyx":146
  *         return self._unpack_list(marker)
  * 
  *     cdef list _unpack_list(self, int marker):             # <<<<<<<<<<<<<<
@@ -4135,7 +4135,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_6unpack_lis
  *         cdef int size
  */
 
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker) {
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack_list(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker) {
   int __pyx_v_marker_high;
   int __pyx_v_size;
   PyObject *__pyx_v_value = 0;
@@ -4150,7 +4150,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
   int __pyx_t_5;
   int __pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
-  struct __pyx_opt_args_7neobolt_10packstream_9_unpacker_8Unpacker_read __pyx_t_8;
+  struct __pyx_opt_args_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read __pyx_t_8;
   PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
   PyObject *(*__pyx_t_11)(PyObject *);
@@ -4158,7 +4158,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
   int __pyx_t_13;
   __Pyx_RefNannySetupContext("_unpack_list", 0);
 
-  /* "neobolt/packstream/_unpacker.pyx":151
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":151
  *         cdef list value
  * 
  *         marker_high = marker & 0xF0             # <<<<<<<<<<<<<<
@@ -4167,7 +4167,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  */
   __pyx_v_marker_high = (__pyx_v_marker & 0xF0);
 
-  /* "neobolt/packstream/_unpacker.pyx":152
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":152
  * 
  *         marker_high = marker & 0xF0
  *         if marker_high == 0x90:             # <<<<<<<<<<<<<<
@@ -4177,7 +4177,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
   __pyx_t_1 = ((__pyx_v_marker_high == 0x90) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":153
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":153
  *         marker_high = marker & 0xF0
  *         if marker_high == 0x90:
  *             size = marker & 0x0F             # <<<<<<<<<<<<<<
@@ -4186,7 +4186,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  */
     __pyx_v_size = (__pyx_v_marker & 0x0F);
 
-    /* "neobolt/packstream/_unpacker.pyx":154
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":154
  *         if marker_high == 0x90:
  *             size = marker & 0x0F
  *             if size == 0:             # <<<<<<<<<<<<<<
@@ -4196,7 +4196,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     switch (__pyx_v_size) {
       case 0:
 
-      /* "neobolt/packstream/_unpacker.pyx":155
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":155
  *             size = marker & 0x0F
  *             if size == 0:
  *                 return []             # <<<<<<<<<<<<<<
@@ -4210,7 +4210,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
       __pyx_t_2 = 0;
       goto __pyx_L0;
 
-      /* "neobolt/packstream/_unpacker.pyx":154
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":154
  *         if marker_high == 0x90:
  *             size = marker & 0x0F
  *             if size == 0:             # <<<<<<<<<<<<<<
@@ -4219,7 +4219,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  */
       break;
 
-      /* "neobolt/packstream/_unpacker.pyx":156
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":156
  *             if size == 0:
  *                 return []
  *             elif size == 1:             # <<<<<<<<<<<<<<
@@ -4228,7 +4228,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  */
       case 1:
 
-      /* "neobolt/packstream/_unpacker.pyx":157
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":157
  *                 return []
  *             elif size == 1:
  *                 return [self._unpack()]             # <<<<<<<<<<<<<<
@@ -4236,7 +4236,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  *                 return [self._unpack() for _ in range(size)]
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 157, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
@@ -4247,7 +4247,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
       __pyx_t_3 = 0;
       goto __pyx_L0;
 
-      /* "neobolt/packstream/_unpacker.pyx":156
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":156
  *             if size == 0:
  *                 return []
  *             elif size == 1:             # <<<<<<<<<<<<<<
@@ -4257,7 +4257,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
       break;
       default:
 
-      /* "neobolt/packstream/_unpacker.pyx":159
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":159
  *                 return [self._unpack()]
  *             else:
  *                 return [self._unpack() for _ in range(size)]             # <<<<<<<<<<<<<<
@@ -4271,7 +4271,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
       __pyx_t_5 = __pyx_t_4;
       for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
         __pyx_v__ = __pyx_t_6;
-        __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+        __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_2))) __PYX_ERR(0, 159, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4282,7 +4282,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
       break;
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":152
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":152
  * 
  *         marker_high = marker & 0xF0
  *         if marker_high == 0x90:             # <<<<<<<<<<<<<<
@@ -4291,7 +4291,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":160
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":160
  *             else:
  *                 return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD4:  # LIST_8:             # <<<<<<<<<<<<<<
@@ -4301,7 +4301,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
   __pyx_t_1 = ((__pyx_v_marker == 0xD4) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":161
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":161
  *                 return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD4:  # LIST_8:
  *             size, = struct_unpack(">B", self.read(1))             # <<<<<<<<<<<<<<
@@ -4312,7 +4312,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_8.__pyx_n = 1;
     __pyx_t_8.n = 1;
-    __pyx_t_7 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_7 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 161, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_9 = NULL;
     __pyx_t_4 = 0;
@@ -4404,7 +4404,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_size = __pyx_t_4;
 
-    /* "neobolt/packstream/_unpacker.pyx":162
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":162
  *         elif marker == 0xD4:  # LIST_8:
  *             size, = struct_unpack(">B", self.read(1))
  *             return [self._unpack() for _ in range(size)]             # <<<<<<<<<<<<<<
@@ -4418,7 +4418,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __pyx_t_5 = __pyx_t_4;
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
       __pyx_v__ = __pyx_t_6;
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_2))) __PYX_ERR(0, 162, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4427,7 +4427,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":160
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":160
  *             else:
  *                 return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD4:  # LIST_8:             # <<<<<<<<<<<<<<
@@ -4436,7 +4436,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":163
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":163
  *             size, = struct_unpack(">B", self.read(1))
  *             return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD5:  # LIST_16:             # <<<<<<<<<<<<<<
@@ -4446,7 +4446,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
   __pyx_t_1 = ((__pyx_v_marker == 0xD5) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":164
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":164
  *             return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD5:  # LIST_16:
  *             size, = struct_unpack(">H", self.read(2))             # <<<<<<<<<<<<<<
@@ -4457,7 +4457,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_8.__pyx_n = 1;
     __pyx_t_8.n = 2;
-    __pyx_t_10 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_10 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __pyx_t_7 = NULL;
     __pyx_t_4 = 0;
@@ -4549,7 +4549,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_size = __pyx_t_4;
 
-    /* "neobolt/packstream/_unpacker.pyx":165
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":165
  *         elif marker == 0xD5:  # LIST_16:
  *             size, = struct_unpack(">H", self.read(2))
  *             return [self._unpack() for _ in range(size)]             # <<<<<<<<<<<<<<
@@ -4563,7 +4563,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __pyx_t_5 = __pyx_t_4;
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
       __pyx_v__ = __pyx_t_6;
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_2))) __PYX_ERR(0, 165, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4572,7 +4572,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":163
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":163
  *             size, = struct_unpack(">B", self.read(1))
  *             return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD5:  # LIST_16:             # <<<<<<<<<<<<<<
@@ -4581,7 +4581,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":166
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":166
  *             size, = struct_unpack(">H", self.read(2))
  *             return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD6:  # LIST_32:             # <<<<<<<<<<<<<<
@@ -4591,7 +4591,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
   __pyx_t_1 = ((__pyx_v_marker == 0xD6) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":167
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":167
  *             return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD6:  # LIST_32:
  *             size, = struct_unpack(">I", self.read(4))             # <<<<<<<<<<<<<<
@@ -4602,7 +4602,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_8.__pyx_n = 1;
     __pyx_t_8.n = 4;
-    __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 167, __pyx_L1_error)
+    __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_10 = NULL;
     __pyx_t_4 = 0;
@@ -4694,7 +4694,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_size = __pyx_t_4;
 
-    /* "neobolt/packstream/_unpacker.pyx":168
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":168
  *         elif marker == 0xD6:  # LIST_32:
  *             size, = struct_unpack(">I", self.read(4))
  *             return [self._unpack() for _ in range(size)]             # <<<<<<<<<<<<<<
@@ -4708,7 +4708,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __pyx_t_5 = __pyx_t_4;
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
       __pyx_v__ = __pyx_t_6;
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_2))) __PYX_ERR(0, 168, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4717,7 +4717,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":166
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":166
  *             size, = struct_unpack(">H", self.read(2))
  *             return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD6:  # LIST_32:             # <<<<<<<<<<<<<<
@@ -4726,7 +4726,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":169
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":169
  *             size, = struct_unpack(">I", self.read(4))
  *             return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD7:  # LIST_STREAM:             # <<<<<<<<<<<<<<
@@ -4736,7 +4736,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
   __pyx_t_1 = ((__pyx_v_marker == 0xD7) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":170
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":170
  *             return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD7:  # LIST_STREAM:
  *             value = []             # <<<<<<<<<<<<<<
@@ -4748,7 +4748,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __pyx_v_value = ((PyObject*)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "neobolt/packstream/_unpacker.pyx":171
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":171
  *         elif marker == 0xD7:  # LIST_STREAM:
  *             value = []
  *             item = None             # <<<<<<<<<<<<<<
@@ -4758,7 +4758,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __Pyx_INCREF(Py_None);
     __pyx_v_item = Py_None;
 
-    /* "neobolt/packstream/_unpacker.pyx":172
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":172
  *             value = []
  *             item = None
  *             while item is not EndOfStream:             # <<<<<<<<<<<<<<
@@ -4773,19 +4773,19 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
       __pyx_t_12 = (__pyx_t_1 != 0);
       if (!__pyx_t_12) break;
 
-      /* "neobolt/packstream/_unpacker.pyx":173
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":173
  *             item = None
  *             while item is not EndOfStream:
  *                 item = self._unpack()             # <<<<<<<<<<<<<<
  *                 if item is not EndOfStream:
  *                     value.append(item)
  */
-      __pyx_t_3 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 173, __pyx_L1_error)
+      __pyx_t_3 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 173, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "neobolt/packstream/_unpacker.pyx":174
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":174
  *             while item is not EndOfStream:
  *                 item = self._unpack()
  *                 if item is not EndOfStream:             # <<<<<<<<<<<<<<
@@ -4799,7 +4799,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
       __pyx_t_1 = (__pyx_t_12 != 0);
       if (__pyx_t_1) {
 
-        /* "neobolt/packstream/_unpacker.pyx":175
+        /* "neobolt/impl/python/packstream/_unpacker.pyx":175
  *                 item = self._unpack()
  *                 if item is not EndOfStream:
  *                     value.append(item)             # <<<<<<<<<<<<<<
@@ -4808,7 +4808,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  */
         __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_value, __pyx_v_item); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 175, __pyx_L1_error)
 
-        /* "neobolt/packstream/_unpacker.pyx":174
+        /* "neobolt/impl/python/packstream/_unpacker.pyx":174
  *             while item is not EndOfStream:
  *                 item = self._unpack()
  *                 if item is not EndOfStream:             # <<<<<<<<<<<<<<
@@ -4818,7 +4818,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
       }
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":176
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":176
  *                 if item is not EndOfStream:
  *                     value.append(item)
  *             return value             # <<<<<<<<<<<<<<
@@ -4830,7 +4830,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     __pyx_r = __pyx_v_value;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":169
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":169
  *             size, = struct_unpack(">I", self.read(4))
  *             return [self._unpack() for _ in range(size)]
  *         elif marker == 0xD7:  # LIST_STREAM:             # <<<<<<<<<<<<<<
@@ -4839,7 +4839,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":178
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":178
  *             return value
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -4852,7 +4852,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
     goto __pyx_L0;
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":146
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":146
  *         return self._unpack_list(marker)
  * 
  *     cdef list _unpack_list(self, int marker):             # <<<<<<<<<<<<<<
@@ -4867,7 +4867,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker._unpack_list", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker._unpack_list", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_value);
@@ -4877,7 +4877,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":180
+/* "neobolt/impl/python/packstream/_unpacker.pyx":180
  *             return None
  * 
  *     cpdef dict unpack_map(self):             # <<<<<<<<<<<<<<
@@ -4885,8 +4885,8 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list
  *         return self._unpack_map(marker)
  */
 
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_9unpack_map(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_map(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_9unpack_map(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_map(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch) {
   int __pyx_v_marker;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -4901,7 +4901,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_map(s
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_unpack_map); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_9unpack_map)) {
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_9unpack_map)) {
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -4931,16 +4931,16 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_map(s
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":181
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":181
  * 
  *     cpdef dict unpack_map(self):
  *         marker = self.read_int()             # <<<<<<<<<<<<<<
  *         return self._unpack_map(marker)
  * 
  */
-  __pyx_v_marker = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read_int(__pyx_v_self);
+  __pyx_v_marker = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read_int(__pyx_v_self);
 
-  /* "neobolt/packstream/_unpacker.pyx":182
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":182
  *     cpdef dict unpack_map(self):
  *         marker = self.read_int()
  *         return self._unpack_map(marker)             # <<<<<<<<<<<<<<
@@ -4948,13 +4948,13 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_map(s
  *     cdef dict _unpack_map(self, int marker):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_map(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 182, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_map(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 182, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "neobolt/packstream/_unpacker.pyx":180
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":180
  *             return None
  * 
  *     cpdef dict unpack_map(self):             # <<<<<<<<<<<<<<
@@ -4968,7 +4968,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_map(s
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.unpack_map", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.unpack_map", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4977,25 +4977,25 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_map(s
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_9unpack_map(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_9unpack_map(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_9unpack_map(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_9unpack_map(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("unpack_map (wrapper)", 0);
-  __pyx_r = __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_8unpack_map(((struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_8unpack_map(((struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_8unpack_map(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_8unpack_map(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("unpack_map", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_map(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_map(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5004,7 +5004,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_8unpack_map
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.unpack_map", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.unpack_map", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5012,7 +5012,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_8unpack_map
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":184
+/* "neobolt/impl/python/packstream/_unpacker.pyx":184
  *         return self._unpack_map(marker)
  * 
  *     cdef dict _unpack_map(self, int marker):             # <<<<<<<<<<<<<<
@@ -5020,7 +5020,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_8unpack_map
  *         cdef int marker_high
  */
 
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker) {
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack_map(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker) {
   int __pyx_v_size;
   int __pyx_v_marker_high;
   PyObject *__pyx_v_value = 0;
@@ -5035,14 +5035,14 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
   int __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
-  struct __pyx_opt_args_7neobolt_10packstream_9_unpacker_8Unpacker_read __pyx_t_8;
+  struct __pyx_opt_args_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read __pyx_t_8;
   PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
   PyObject *(*__pyx_t_11)(PyObject *);
   int __pyx_t_12;
   __Pyx_RefNannySetupContext("_unpack_map", 0);
 
-  /* "neobolt/packstream/_unpacker.pyx":189
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":189
  *         cdef dict value
  * 
  *         marker_high = marker & 0xF0             # <<<<<<<<<<<<<<
@@ -5051,7 +5051,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
  */
   __pyx_v_marker_high = (__pyx_v_marker & 0xF0);
 
-  /* "neobolt/packstream/_unpacker.pyx":190
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":190
  * 
  *         marker_high = marker & 0xF0
  *         if marker_high == 0xA0:             # <<<<<<<<<<<<<<
@@ -5061,7 +5061,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
   __pyx_t_1 = ((__pyx_v_marker_high == 0xA0) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":191
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":191
  *         marker_high = marker & 0xF0
  *         if marker_high == 0xA0:
  *             size = marker & 0x0F             # <<<<<<<<<<<<<<
@@ -5070,7 +5070,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
  */
     __pyx_v_size = (__pyx_v_marker & 0x0F);
 
-    /* "neobolt/packstream/_unpacker.pyx":192
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":192
  *         if marker_high == 0xA0:
  *             size = marker & 0x0F
  *             value = {}             # <<<<<<<<<<<<<<
@@ -5082,7 +5082,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __pyx_v_value = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "neobolt/packstream/_unpacker.pyx":193
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":193
  *             size = marker & 0x0F
  *             value = {}
  *             for _ in range(size):             # <<<<<<<<<<<<<<
@@ -5094,32 +5094,32 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
       __pyx_v__ = __pyx_t_5;
 
-      /* "neobolt/packstream/_unpacker.pyx":194
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":194
  *             value = {}
  *             for _ in range(size):
  *                 key = self._unpack()             # <<<<<<<<<<<<<<
  *                 value[key] = self._unpack()
  *             return value
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 194, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 194, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_XDECREF_SET(__pyx_v_key, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "neobolt/packstream/_unpacker.pyx":195
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":195
  *             for _ in range(size):
  *                 key = self._unpack()
  *                 value[key] = self._unpack()             # <<<<<<<<<<<<<<
  *             return value
  *         elif marker == 0xD8:  # MAP_8:
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (unlikely(PyDict_SetItem(__pyx_v_value, __pyx_v_key, __pyx_t_2) < 0)) __PYX_ERR(0, 195, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":196
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":196
  *                 key = self._unpack()
  *                 value[key] = self._unpack()
  *             return value             # <<<<<<<<<<<<<<
@@ -5131,7 +5131,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __pyx_r = __pyx_v_value;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":190
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":190
  * 
  *         marker_high = marker & 0xF0
  *         if marker_high == 0xA0:             # <<<<<<<<<<<<<<
@@ -5140,7 +5140,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":197
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":197
  *                 value[key] = self._unpack()
  *             return value
  *         elif marker == 0xD8:  # MAP_8:             # <<<<<<<<<<<<<<
@@ -5150,7 +5150,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
   __pyx_t_1 = ((__pyx_v_marker == 0xD8) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":198
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":198
  *             return value
  *         elif marker == 0xD8:  # MAP_8:
  *             size, = struct_unpack(">B", self.read(1))             # <<<<<<<<<<<<<<
@@ -5161,7 +5161,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_8.__pyx_n = 1;
     __pyx_t_8.n = 1;
-    __pyx_t_7 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 198, __pyx_L1_error)
+    __pyx_t_7 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 198, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_9 = NULL;
     __pyx_t_3 = 0;
@@ -5253,7 +5253,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_v_size = __pyx_t_3;
 
-    /* "neobolt/packstream/_unpacker.pyx":199
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":199
  *         elif marker == 0xD8:  # MAP_8:
  *             size, = struct_unpack(">B", self.read(1))
  *             value = {}             # <<<<<<<<<<<<<<
@@ -5265,7 +5265,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __pyx_v_value = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "neobolt/packstream/_unpacker.pyx":200
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":200
  *             size, = struct_unpack(">B", self.read(1))
  *             value = {}
  *             for _ in range(size):             # <<<<<<<<<<<<<<
@@ -5277,32 +5277,32 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
       __pyx_v__ = __pyx_t_5;
 
-      /* "neobolt/packstream/_unpacker.pyx":201
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":201
  *             value = {}
  *             for _ in range(size):
  *                 key = self._unpack()             # <<<<<<<<<<<<<<
  *                 value[key] = self._unpack()
  *             return value
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 201, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 201, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_XDECREF_SET(__pyx_v_key, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "neobolt/packstream/_unpacker.pyx":202
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":202
  *             for _ in range(size):
  *                 key = self._unpack()
  *                 value[key] = self._unpack()             # <<<<<<<<<<<<<<
  *             return value
  *         elif marker == 0xD9:  # MAP_16:
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 202, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 202, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (unlikely(PyDict_SetItem(__pyx_v_value, __pyx_v_key, __pyx_t_2) < 0)) __PYX_ERR(0, 202, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":203
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":203
  *                 key = self._unpack()
  *                 value[key] = self._unpack()
  *             return value             # <<<<<<<<<<<<<<
@@ -5314,7 +5314,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __pyx_r = __pyx_v_value;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":197
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":197
  *                 value[key] = self._unpack()
  *             return value
  *         elif marker == 0xD8:  # MAP_8:             # <<<<<<<<<<<<<<
@@ -5323,7 +5323,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":204
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":204
  *                 value[key] = self._unpack()
  *             return value
  *         elif marker == 0xD9:  # MAP_16:             # <<<<<<<<<<<<<<
@@ -5333,7 +5333,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
   __pyx_t_1 = ((__pyx_v_marker == 0xD9) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":205
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":205
  *             return value
  *         elif marker == 0xD9:  # MAP_16:
  *             size, = struct_unpack(">H", self.read(2))             # <<<<<<<<<<<<<<
@@ -5344,7 +5344,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_8.__pyx_n = 1;
     __pyx_t_8.n = 2;
-    __pyx_t_10 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 205, __pyx_L1_error)
+    __pyx_t_10 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 205, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __pyx_t_7 = NULL;
     __pyx_t_3 = 0;
@@ -5436,7 +5436,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_v_size = __pyx_t_3;
 
-    /* "neobolt/packstream/_unpacker.pyx":206
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":206
  *         elif marker == 0xD9:  # MAP_16:
  *             size, = struct_unpack(">H", self.read(2))
  *             value = {}             # <<<<<<<<<<<<<<
@@ -5448,7 +5448,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __pyx_v_value = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "neobolt/packstream/_unpacker.pyx":207
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":207
  *             size, = struct_unpack(">H", self.read(2))
  *             value = {}
  *             for _ in range(size):             # <<<<<<<<<<<<<<
@@ -5460,32 +5460,32 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
       __pyx_v__ = __pyx_t_5;
 
-      /* "neobolt/packstream/_unpacker.pyx":208
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":208
  *             value = {}
  *             for _ in range(size):
  *                 key = self._unpack()             # <<<<<<<<<<<<<<
  *                 value[key] = self._unpack()
  *             return value
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 208, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 208, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_XDECREF_SET(__pyx_v_key, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "neobolt/packstream/_unpacker.pyx":209
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":209
  *             for _ in range(size):
  *                 key = self._unpack()
  *                 value[key] = self._unpack()             # <<<<<<<<<<<<<<
  *             return value
  *         elif marker == 0xDA:  # MAP_32:
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (unlikely(PyDict_SetItem(__pyx_v_value, __pyx_v_key, __pyx_t_2) < 0)) __PYX_ERR(0, 209, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":210
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":210
  *                 key = self._unpack()
  *                 value[key] = self._unpack()
  *             return value             # <<<<<<<<<<<<<<
@@ -5497,7 +5497,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __pyx_r = __pyx_v_value;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":204
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":204
  *                 value[key] = self._unpack()
  *             return value
  *         elif marker == 0xD9:  # MAP_16:             # <<<<<<<<<<<<<<
@@ -5506,7 +5506,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":211
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":211
  *                 value[key] = self._unpack()
  *             return value
  *         elif marker == 0xDA:  # MAP_32:             # <<<<<<<<<<<<<<
@@ -5516,7 +5516,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
   __pyx_t_1 = ((__pyx_v_marker == 0xDA) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":212
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":212
  *             return value
  *         elif marker == 0xDA:  # MAP_32:
  *             size, = struct_unpack(">I", self.read(4))             # <<<<<<<<<<<<<<
@@ -5527,7 +5527,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_8.__pyx_n = 1;
     __pyx_t_8.n = 4;
-    __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 212, __pyx_L1_error)
+    __pyx_t_9 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_10 = NULL;
     __pyx_t_3 = 0;
@@ -5619,7 +5619,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_v_size = __pyx_t_3;
 
-    /* "neobolt/packstream/_unpacker.pyx":213
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":213
  *         elif marker == 0xDA:  # MAP_32:
  *             size, = struct_unpack(">I", self.read(4))
  *             value = {}             # <<<<<<<<<<<<<<
@@ -5631,7 +5631,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __pyx_v_value = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "neobolt/packstream/_unpacker.pyx":214
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":214
  *             size, = struct_unpack(">I", self.read(4))
  *             value = {}
  *             for _ in range(size):             # <<<<<<<<<<<<<<
@@ -5643,32 +5643,32 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
       __pyx_v__ = __pyx_t_5;
 
-      /* "neobolt/packstream/_unpacker.pyx":215
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":215
  *             value = {}
  *             for _ in range(size):
  *                 key = self._unpack()             # <<<<<<<<<<<<<<
  *                 value[key] = self._unpack()
  *             return value
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_XDECREF_SET(__pyx_v_key, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "neobolt/packstream/_unpacker.pyx":216
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":216
  *             for _ in range(size):
  *                 key = self._unpack()
  *                 value[key] = self._unpack()             # <<<<<<<<<<<<<<
  *             return value
  *         elif marker == 0xDB:  # MAP_STREAM:
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (unlikely(PyDict_SetItem(__pyx_v_value, __pyx_v_key, __pyx_t_2) < 0)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":217
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":217
  *                 key = self._unpack()
  *                 value[key] = self._unpack()
  *             return value             # <<<<<<<<<<<<<<
@@ -5680,7 +5680,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __pyx_r = __pyx_v_value;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":211
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":211
  *                 value[key] = self._unpack()
  *             return value
  *         elif marker == 0xDA:  # MAP_32:             # <<<<<<<<<<<<<<
@@ -5689,7 +5689,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":218
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":218
  *                 value[key] = self._unpack()
  *             return value
  *         elif marker == 0xDB:  # MAP_STREAM:             # <<<<<<<<<<<<<<
@@ -5699,7 +5699,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
   __pyx_t_1 = ((__pyx_v_marker == 0xDB) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":219
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":219
  *             return value
  *         elif marker == 0xDB:  # MAP_STREAM:
  *             value = {}             # <<<<<<<<<<<<<<
@@ -5711,7 +5711,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __pyx_v_value = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "neobolt/packstream/_unpacker.pyx":220
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":220
  *         elif marker == 0xDB:  # MAP_STREAM:
  *             value = {}
  *             key = None             # <<<<<<<<<<<<<<
@@ -5721,7 +5721,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __Pyx_INCREF(Py_None);
     __pyx_v_key = Py_None;
 
-    /* "neobolt/packstream/_unpacker.pyx":221
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":221
  *             value = {}
  *             key = None
  *             while key is not EndOfStream:             # <<<<<<<<<<<<<<
@@ -5736,19 +5736,19 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
       __pyx_t_12 = (__pyx_t_1 != 0);
       if (!__pyx_t_12) break;
 
-      /* "neobolt/packstream/_unpacker.pyx":222
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":222
  *             key = None
  *             while key is not EndOfStream:
  *                 key = self._unpack()             # <<<<<<<<<<<<<<
  *                 if key is not EndOfStream:
  *                     value[key] = self._unpack()
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v_key, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "neobolt/packstream/_unpacker.pyx":223
+      /* "neobolt/impl/python/packstream/_unpacker.pyx":223
  *             while key is not EndOfStream:
  *                 key = self._unpack()
  *                 if key is not EndOfStream:             # <<<<<<<<<<<<<<
@@ -5762,19 +5762,19 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
       __pyx_t_1 = (__pyx_t_12 != 0);
       if (__pyx_t_1) {
 
-        /* "neobolt/packstream/_unpacker.pyx":224
+        /* "neobolt/impl/python/packstream/_unpacker.pyx":224
  *                 key = self._unpack()
  *                 if key is not EndOfStream:
  *                     value[key] = self._unpack()             # <<<<<<<<<<<<<<
  *             return value
  *         else:
  */
-        __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
+        __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         if (unlikely(PyDict_SetItem(__pyx_v_value, __pyx_v_key, __pyx_t_2) < 0)) __PYX_ERR(0, 224, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "neobolt/packstream/_unpacker.pyx":223
+        /* "neobolt/impl/python/packstream/_unpacker.pyx":223
  *             while key is not EndOfStream:
  *                 key = self._unpack()
  *                 if key is not EndOfStream:             # <<<<<<<<<<<<<<
@@ -5784,7 +5784,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
       }
     }
 
-    /* "neobolt/packstream/_unpacker.pyx":225
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":225
  *                 if key is not EndOfStream:
  *                     value[key] = self._unpack()
  *             return value             # <<<<<<<<<<<<<<
@@ -5796,7 +5796,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     __pyx_r = __pyx_v_value;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":218
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":218
  *                 value[key] = self._unpack()
  *             return value
  *         elif marker == 0xDB:  # MAP_STREAM:             # <<<<<<<<<<<<<<
@@ -5805,7 +5805,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":227
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":227
  *             return value
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -5818,7 +5818,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
     goto __pyx_L0;
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":184
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":184
  *         return self._unpack_map(marker)
  * 
  *     cdef dict _unpack_map(self, int marker):             # <<<<<<<<<<<<<<
@@ -5833,7 +5833,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker._unpack_map", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker._unpack_map", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_value);
@@ -5843,7 +5843,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":229
+/* "neobolt/impl/python/packstream/_unpacker.pyx":229
  *             return None
  * 
  *     cpdef unpack_structure_header(self):             # <<<<<<<<<<<<<<
@@ -5851,8 +5851,8 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map(
  * 
  */
 
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_11unpack_structure_header(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_structure_header(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_11unpack_structure_header(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_structure_header(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_skip_dispatch) {
   int __pyx_v_marker;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -5868,7 +5868,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_struc
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_unpack_structure_header); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_11unpack_structure_header)) {
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_11unpack_structure_header)) {
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -5897,16 +5897,16 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_struc
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":232
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":232
  *         cdef int marker
  * 
  *         marker = self.read_int()             # <<<<<<<<<<<<<<
  *         if marker == -1:
  *             return None, None
  */
-  __pyx_v_marker = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read_int(__pyx_v_self);
+  __pyx_v_marker = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read_int(__pyx_v_self);
 
-  /* "neobolt/packstream/_unpacker.pyx":233
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":233
  * 
  *         marker = self.read_int()
  *         if marker == -1:             # <<<<<<<<<<<<<<
@@ -5916,7 +5916,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_struc
   __pyx_t_5 = ((__pyx_v_marker == -1L) != 0);
   if (__pyx_t_5) {
 
-    /* "neobolt/packstream/_unpacker.pyx":234
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":234
  *         marker = self.read_int()
  *         if marker == -1:
  *             return None, None             # <<<<<<<<<<<<<<
@@ -5928,7 +5928,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_struc
     __pyx_r = __pyx_tuple__2;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":233
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":233
  * 
  *         marker = self.read_int()
  *         if marker == -1:             # <<<<<<<<<<<<<<
@@ -5937,7 +5937,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_struc
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":236
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":236
  *             return None, None
  *         else:
  *             return self._unpack_structure_header(marker)             # <<<<<<<<<<<<<<
@@ -5946,14 +5946,14 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_struc
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_structure_header(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 236, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->_unpack_structure_header(__pyx_v_self, __pyx_v_marker); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 236, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":229
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":229
  *             return None
  * 
  *     cpdef unpack_structure_header(self):             # <<<<<<<<<<<<<<
@@ -5967,7 +5967,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_struc
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.unpack_structure_header", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.unpack_structure_header", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5976,25 +5976,25 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_struc
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_11unpack_structure_header(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_11unpack_structure_header(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_11unpack_structure_header(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_11unpack_structure_header(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("unpack_structure_header (wrapper)", 0);
-  __pyx_r = __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_10unpack_structure_header(((struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_10unpack_structure_header(((struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_10unpack_structure_header(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_10unpack_structure_header(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("unpack_structure_header", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_structure_header(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_structure_header(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6003,7 +6003,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_10unpack_st
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.unpack_structure_header", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.unpack_structure_header", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -6011,7 +6011,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_10unpack_st
   return __pyx_r;
 }
 
-/* "neobolt/packstream/_unpacker.pyx":238
+/* "neobolt/impl/python/packstream/_unpacker.pyx":238
  *             return self._unpack_structure_header(marker)
  * 
  *     cdef _unpack_structure_header(self, int marker):             # <<<<<<<<<<<<<<
@@ -6019,7 +6019,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_10unpack_st
  *         cdef int marker_high
  */
 
-static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_structure_header(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker) {
+static PyObject *__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack_structure_header(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, int __pyx_v_marker) {
   int __pyx_v_size;
   int __pyx_v_marker_high;
   PyObject *__pyx_v_signature = NULL;
@@ -6028,7 +6028,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
-  struct __pyx_opt_args_7neobolt_10packstream_9_unpacker_8Unpacker_read __pyx_t_4;
+  struct __pyx_opt_args_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
   int __pyx_t_7;
@@ -6036,7 +6036,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
   PyObject *(*__pyx_t_9)(PyObject *);
   __Pyx_RefNannySetupContext("_unpack_structure_header", 0);
 
-  /* "neobolt/packstream/_unpacker.pyx":242
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":242
  *         cdef int marker_high
  * 
  *         marker_high = marker & 0xF0             # <<<<<<<<<<<<<<
@@ -6045,7 +6045,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
  */
   __pyx_v_marker_high = (__pyx_v_marker & 0xF0);
 
-  /* "neobolt/packstream/_unpacker.pyx":243
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":243
  * 
  *         marker_high = marker & 0xF0
  *         if marker_high == 0xB0:  # TINY_STRUCT             # <<<<<<<<<<<<<<
@@ -6055,7 +6055,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
   __pyx_t_1 = ((__pyx_v_marker_high == 0xB0) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":244
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":244
  *         marker_high = marker & 0xF0
  *         if marker_high == 0xB0:  # TINY_STRUCT
  *             signature = self.read(1).tobytes()             # <<<<<<<<<<<<<<
@@ -6064,7 +6064,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
  */
     __pyx_t_4.__pyx_n = 1;
     __pyx_t_4.n = 1;
-    __pyx_t_3 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
@@ -6090,7 +6090,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __pyx_v_signature = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "neobolt/packstream/_unpacker.pyx":245
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":245
  *         if marker_high == 0xB0:  # TINY_STRUCT
  *             signature = self.read(1).tobytes()
  *             return marker & 0x0F, signature             # <<<<<<<<<<<<<<
@@ -6112,7 +6112,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __pyx_t_5 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":243
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":243
  * 
  *         marker_high = marker & 0xF0
  *         if marker_high == 0xB0:  # TINY_STRUCT             # <<<<<<<<<<<<<<
@@ -6121,7 +6121,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":246
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":246
  *             signature = self.read(1).tobytes()
  *             return marker & 0x0F, signature
  *         elif marker == 0xDC:  # STRUCT_8:             # <<<<<<<<<<<<<<
@@ -6131,7 +6131,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
   __pyx_t_1 = ((__pyx_v_marker == 0xDC) != 0);
   if (__pyx_t_1) {
 
-    /* "neobolt/packstream/_unpacker.pyx":247
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":247
  *             return marker & 0x0F, signature
  *         elif marker == 0xDC:  # STRUCT_8:
  *             size, = struct_unpack(">B", self.read(1))             # <<<<<<<<<<<<<<
@@ -6142,7 +6142,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_4.__pyx_n = 1;
     __pyx_t_4.n = 1;
-    __pyx_t_3 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 247, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_6 = NULL;
     __pyx_t_7 = 0;
@@ -6234,7 +6234,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_size = __pyx_t_7;
 
-    /* "neobolt/packstream/_unpacker.pyx":248
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":248
  *         elif marker == 0xDC:  # STRUCT_8:
  *             size, = struct_unpack(">B", self.read(1))
  *             signature = self.read(1).tobytes()             # <<<<<<<<<<<<<<
@@ -6243,7 +6243,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
  */
     __pyx_t_4.__pyx_n = 1;
     __pyx_t_4.n = 1;
-    __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 248, __pyx_L1_error)
+    __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 248, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 248, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
@@ -6269,7 +6269,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __pyx_v_signature = __pyx_t_5;
     __pyx_t_5 = 0;
 
-    /* "neobolt/packstream/_unpacker.pyx":249
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":249
  *             size, = struct_unpack(">B", self.read(1))
  *             signature = self.read(1).tobytes()
  *             return size, signature             # <<<<<<<<<<<<<<
@@ -6291,7 +6291,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __pyx_t_8 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":246
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":246
  *             signature = self.read(1).tobytes()
  *             return marker & 0x0F, signature
  *         elif marker == 0xDC:  # STRUCT_8:             # <<<<<<<<<<<<<<
@@ -6300,7 +6300,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":250
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":250
  *             signature = self.read(1).tobytes()
  *             return size, signature
  *         elif marker == 0xDD:  # STRUCT_16:             # <<<<<<<<<<<<<<
@@ -6310,7 +6310,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
   __pyx_t_1 = ((__pyx_v_marker == 0xDD) != 0);
   if (likely(__pyx_t_1)) {
 
-    /* "neobolt/packstream/_unpacker.pyx":251
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":251
  *             return size, signature
  *         elif marker == 0xDD:  # STRUCT_16:
  *             size, = struct_unpack(">H", self.read(2))             # <<<<<<<<<<<<<<
@@ -6321,7 +6321,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_4.__pyx_n = 1;
     __pyx_t_4.n = 2;
-    __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 251, __pyx_L1_error)
+    __pyx_t_2 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 251, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     __pyx_t_7 = 0;
@@ -6413,7 +6413,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_v_size = __pyx_t_7;
 
-    /* "neobolt/packstream/_unpacker.pyx":252
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":252
  *         elif marker == 0xDD:  # STRUCT_16:
  *             size, = struct_unpack(">H", self.read(2))
  *             signature = self.read(1).tobytes()             # <<<<<<<<<<<<<<
@@ -6422,7 +6422,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
  */
     __pyx_t_4.__pyx_n = 1;
     __pyx_t_4.n = 1;
-    __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 252, __pyx_L1_error)
+    __pyx_t_5 = ((struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self->__pyx_vtab)->read(__pyx_v_self, &__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 252, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 252, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
@@ -6448,7 +6448,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __pyx_v_signature = __pyx_t_8;
     __pyx_t_8 = 0;
 
-    /* "neobolt/packstream/_unpacker.pyx":253
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":253
  *             size, = struct_unpack(">H", self.read(2))
  *             signature = self.read(1).tobytes()
  *             return size, signature             # <<<<<<<<<<<<<<
@@ -6470,7 +6470,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __pyx_t_6 = 0;
     goto __pyx_L0;
 
-    /* "neobolt/packstream/_unpacker.pyx":250
+    /* "neobolt/impl/python/packstream/_unpacker.pyx":250
  *             signature = self.read(1).tobytes()
  *             return size, signature
  *         elif marker == 0xDD:  # STRUCT_16:             # <<<<<<<<<<<<<<
@@ -6479,7 +6479,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
  */
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":255
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":255
  *             return size, signature
  *         else:
  *             raise RuntimeError("Expected structure, found marker %02X" % marker)             # <<<<<<<<<<<<<<
@@ -6498,7 +6498,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
     __PYX_ERR(0, 255, __pyx_L1_error)
   }
 
-  /* "neobolt/packstream/_unpacker.pyx":238
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":238
  *             return self._unpack_structure_header(marker)
  * 
  *     cdef _unpack_structure_header(self, int marker):             # <<<<<<<<<<<<<<
@@ -6513,7 +6513,7 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker._unpack_structure_header", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker._unpack_structure_header", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_signature);
@@ -6529,19 +6529,19 @@ static PyObject *__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_stru
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_12__reduce_cython__(((struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_12__reduce_cython__(((struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_12__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_12__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6568,7 +6568,7 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_12__reduce_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -6583,19 +6583,19 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_12__reduce_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_14__setstate_cython__(((struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_14__setstate_cython__(((struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_14__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_14__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6622,16 +6622,16 @@ static PyObject *__pyx_pf_7neobolt_10packstream_9_unpacker_8Unpacker_14__setstat
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("neobolt.packstream._unpacker.Unpacker.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("neobolt.impl.python.packstream._unpacker.Unpacker.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-static struct __pyx_vtabstruct_7neobolt_10packstream_9_unpacker_Unpacker __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker;
+static struct __pyx_vtabstruct_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker;
 
-static PyObject *__pyx_tp_new_7neobolt_10packstream_9_unpacker_Unpacker(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *p;
+static PyObject *__pyx_tp_new_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -6639,18 +6639,18 @@ static PyObject *__pyx_tp_new_7neobolt_10packstream_9_unpacker_Unpacker(PyTypeOb
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)o);
-  p->__pyx_vtab = __pyx_vtabptr_7neobolt_10packstream_9_unpacker_Unpacker;
+  p = ((struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)o);
+  p->__pyx_vtab = __pyx_vtabptr_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker;
   p->source = Py_None; Py_INCREF(Py_None);
-  if (unlikely(__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_1__cinit__(o, __pyx_empty_tuple, NULL) < 0)) goto bad;
+  if (unlikely(__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_1__cinit__(o, __pyx_empty_tuple, NULL) < 0)) goto bad;
   return o;
   bad:
   Py_DECREF(o); o = 0;
   return NULL;
 }
 
-static void __pyx_tp_dealloc_7neobolt_10packstream_9_unpacker_Unpacker(PyObject *o) {
-  struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *p = (struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)o;
+static void __pyx_tp_dealloc_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker(PyObject *o) {
+  struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *p = (struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -6661,41 +6661,41 @@ static void __pyx_tp_dealloc_7neobolt_10packstream_9_unpacker_Unpacker(PyObject 
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static int __pyx_tp_traverse_7neobolt_10packstream_9_unpacker_Unpacker(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *p = (struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)o;
+  struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *p = (struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)o;
   if (p->source) {
     e = (*v)(p->source, a); if (e) return e;
   }
   return 0;
 }
 
-static int __pyx_tp_clear_7neobolt_10packstream_9_unpacker_Unpacker(PyObject *o) {
+static int __pyx_tp_clear_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *p = (struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *)o;
+  struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *p = (struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *)o;
   tmp = ((PyObject*)p->source);
   p->source = Py_None; Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   return 0;
 }
 
-static PyMethodDef __pyx_methods_7neobolt_10packstream_9_unpacker_Unpacker[] = {
-  {"attach", (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_3attach, METH_O, 0},
-  {"unpack", (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_5unpack, METH_NOARGS, 0},
-  {"unpack_list", (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_7unpack_list, METH_NOARGS, 0},
-  {"unpack_map", (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_9unpack_map, METH_NOARGS, 0},
-  {"unpack_structure_header", (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_11unpack_structure_header, METH_NOARGS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_13__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_7neobolt_10packstream_9_unpacker_8Unpacker_15__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker[] = {
+  {"attach", (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_3attach, METH_O, 0},
+  {"unpack", (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_5unpack, METH_NOARGS, 0},
+  {"unpack_list", (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_7unpack_list, METH_NOARGS, 0},
+  {"unpack_map", (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_9unpack_map, METH_NOARGS, 0},
+  {"unpack_structure_header", (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_11unpack_structure_header, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_13__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_15__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_7neobolt_10packstream_9_unpacker_Unpacker = {
+static PyTypeObject __pyx_type_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker = {
   PyVarObject_HEAD_INIT(0, 0)
-  "neobolt.packstream._unpacker.Unpacker", /*tp_name*/
-  sizeof(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker), /*tp_basicsize*/
+  "neobolt.impl.python.packstream._unpacker.Unpacker", /*tp_name*/
+  sizeof(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_7neobolt_10packstream_9_unpacker_Unpacker, /*tp_dealloc*/
+  __pyx_tp_dealloc_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -6717,13 +6717,13 @@ static PyTypeObject __pyx_type_7neobolt_10packstream_9_unpacker_Unpacker = {
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   0, /*tp_doc*/
-  __pyx_tp_traverse_7neobolt_10packstream_9_unpacker_Unpacker, /*tp_traverse*/
-  __pyx_tp_clear_7neobolt_10packstream_9_unpacker_Unpacker, /*tp_clear*/
+  __pyx_tp_traverse_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker, /*tp_traverse*/
+  __pyx_tp_clear_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_7neobolt_10packstream_9_unpacker_Unpacker, /*tp_methods*/
+  __pyx_methods_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker, /*tp_methods*/
   0, /*tp_members*/
   0, /*tp_getset*/
   0, /*tp_base*/
@@ -6733,7 +6733,7 @@ static PyTypeObject __pyx_type_7neobolt_10packstream_9_unpacker_Unpacker = {
   0, /*tp_dictoffset*/
   0, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_7neobolt_10packstream_9_unpacker_Unpacker, /*tp_new*/
+  __pyx_tp_new_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -6795,6 +6795,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Structure, __pyx_k_Structure, sizeof(__pyx_k_Structure), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_kp_s_Unknown_PackStream_marker_02X, __pyx_k_Unknown_PackStream_marker_02X, sizeof(__pyx_k_Unknown_PackStream_marker_02X), 0, 0, 1, 0},
+  {&__pyx_n_s__5, __pyx_k__5, sizeof(__pyx_k__5), 0, 0, 1, 1},
   {&__pyx_n_s_attach, __pyx_k_attach, sizeof(__pyx_k_attach), 0, 0, 1, 1},
   {&__pyx_kp_s_b, __pyx_k_b, sizeof(__pyx_k_b), 0, 0, 1, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
@@ -6807,7 +6808,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
-  {&__pyx_n_s_neobolt_packstream, __pyx_k_neobolt_packstream, sizeof(__pyx_k_neobolt_packstream), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
   {&__pyx_n_s_object, __pyx_k_object, sizeof(__pyx_k_object), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
@@ -6845,7 +6845,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "neobolt/packstream/_unpacker.pyx":59
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":59
  * 
  *         if marker == -1:
  *             raise RuntimeError("Nothing to unpack")             # <<<<<<<<<<<<<<
@@ -6856,7 +6856,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "neobolt/packstream/_unpacker.pyx":234
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":234
  *         marker = self.read_int()
  *         if marker == -1:
  *             return None, None             # <<<<<<<<<<<<<<
@@ -6935,27 +6935,27 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  __pyx_vtabptr_7neobolt_10packstream_9_unpacker_Unpacker = &__pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker.attach = (PyObject *(*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, PyObject *, int __pyx_skip_dispatch))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_attach;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker.read = (PyObject *(*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, struct __pyx_opt_args_7neobolt_10packstream_9_unpacker_8Unpacker_read *__pyx_optional_args))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker.read_int = (int (*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_read_int;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker.unpack = (PyObject *(*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker._unpack = (PyObject *(*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker.unpack_list = (PyObject *(*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_list;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker._unpack_list = (PyObject *(*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_list;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker.unpack_map = (PyObject *(*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_map;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker._unpack_map = (PyObject *(*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_map;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker.unpack_structure_header = (PyObject *(*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker_unpack_structure_header;
-  __pyx_vtable_7neobolt_10packstream_9_unpacker_Unpacker._unpack_structure_header = (PyObject *(*)(struct __pyx_obj_7neobolt_10packstream_9_unpacker_Unpacker *, int))__pyx_f_7neobolt_10packstream_9_unpacker_8Unpacker__unpack_structure_header;
-  if (PyType_Ready(&__pyx_type_7neobolt_10packstream_9_unpacker_Unpacker) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
-  __pyx_type_7neobolt_10packstream_9_unpacker_Unpacker.tp_print = 0;
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7neobolt_10packstream_9_unpacker_Unpacker.tp_dictoffset && __pyx_type_7neobolt_10packstream_9_unpacker_Unpacker.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_7neobolt_10packstream_9_unpacker_Unpacker.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  __pyx_vtabptr_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker = &__pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.attach = (PyObject *(*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, PyObject *, int __pyx_skip_dispatch))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_attach;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.read = (PyObject *(*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, struct __pyx_opt_args_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read *__pyx_optional_args))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.read_int = (int (*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_read_int;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.unpack = (PyObject *(*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker._unpack = (PyObject *(*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.unpack_list = (PyObject *(*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_list;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker._unpack_list = (PyObject *(*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack_list;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.unpack_map = (PyObject *(*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_map;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker._unpack_map = (PyObject *(*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack_map;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.unpack_structure_header = (PyObject *(*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int __pyx_skip_dispatch))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker_unpack_structure_header;
+  __pyx_vtable_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker._unpack_structure_header = (PyObject *(*)(struct __pyx_obj_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker *, int))__pyx_f_7neobolt_4impl_6python_10packstream_9_unpacker_8Unpacker__unpack_structure_header;
+  if (PyType_Ready(&__pyx_type_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_type_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.tp_print = 0;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.tp_dictoffset && __pyx_type_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_7neobolt_10packstream_9_unpacker_Unpacker.tp_dict, __pyx_vtabptr_7neobolt_10packstream_9_unpacker_Unpacker) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "Unpacker", (PyObject *)&__pyx_type_7neobolt_10packstream_9_unpacker_Unpacker) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7neobolt_10packstream_9_unpacker_Unpacker) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
-  __pyx_ptype_7neobolt_10packstream_9_unpacker_Unpacker = &__pyx_type_7neobolt_10packstream_9_unpacker_Unpacker;
+  if (__Pyx_SetVtable(__pyx_type_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker.tp_dict, __pyx_vtabptr_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "Unpacker", (PyObject *)&__pyx_type_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_ptype_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker = &__pyx_type_7neobolt_4impl_6python_10packstream_9_unpacker_Unpacker;
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -7133,14 +7133,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_neobolt__packstream___unpacker) {
+  if (__pyx_module_is_main_neobolt__impl__python__packstream___unpacker) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "neobolt.packstream._unpacker")) {
-      if (unlikely(PyDict_SetItemString(modules, "neobolt.packstream._unpacker", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "neobolt.impl.python.packstream._unpacker")) {
+      if (unlikely(PyDict_SetItemString(modules, "neobolt.impl.python.packstream._unpacker", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -7161,7 +7161,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "neobolt/packstream/_unpacker.pyx":22
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":22
  * 
  * 
  * from codecs import decode             # <<<<<<<<<<<<<<
@@ -7182,12 +7182,12 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "neobolt/packstream/_unpacker.pyx":23
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":23
  * 
  * from codecs import decode
  * from struct import unpack as struct_unpack             # <<<<<<<<<<<<<<
  * 
- * from neobolt.packstream import Structure
+ * from . import Structure
  */
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -7203,10 +7203,10 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "neobolt/packstream/_unpacker.pyx":25
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":25
  * from struct import unpack as struct_unpack
  * 
- * from neobolt.packstream import Structure             # <<<<<<<<<<<<<<
+ * from . import Structure             # <<<<<<<<<<<<<<
  * 
  * 
  */
@@ -7215,7 +7215,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_Structure);
   __Pyx_GIVEREF(__pyx_n_s_Structure);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_Structure);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_neobolt_packstream, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s__5, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Structure); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
@@ -7224,7 +7224,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "neobolt/packstream/_unpacker.pyx":28
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":28
  * 
  * 
  * EndOfStream = object()             # <<<<<<<<<<<<<<
@@ -7236,7 +7236,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_EndOfStream, __pyx_t_2) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "neobolt/packstream/_unpacker.pyx":1
+  /* "neobolt/impl/python/packstream/_unpacker.pyx":1
  * #!/usr/bin/env python             # <<<<<<<<<<<<<<
  * # -*- encoding: utf-8 -*-
  * 
@@ -7254,11 +7254,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init neobolt.packstream._unpacker", 0, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init neobolt.impl.python.packstream._unpacker", 0, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init neobolt.packstream._unpacker");
+    PyErr_SetString(PyExc_ImportError, "init neobolt.impl.python.packstream._unpacker");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

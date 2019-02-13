@@ -22,37 +22,30 @@
 from codecs import decode
 from struct import unpack as struct_unpack
 
-from neobolt.packstream import Structure
+from . import Structure
 
 
 EndOfStream = object()
 
 
-cdef class Unpacker(object):
+class Unpacker(object):
 
-    cdef source
-
-    def __cinit__(self):
+    def __init__(self):
         self.source = None
 
-    cpdef attach(self, source):
+    def attach(self, source):
         self.source = source
 
-    cdef read(self, int n=1):
+    def read(self, n=1):
         return self.source.read(n)
 
-    cdef int read_int(self):
+    def read_int(self):
         return self.source.read_int()
 
-    cpdef unpack(self):
+    def unpack(self):
         return self._unpack()
 
-    cdef _unpack(self):
-        cdef int size
-        cdef int i
-        cdef int marker
-        cdef int marker_high
-
+    def _unpack(self):
         marker = self.read_int()
 
         if marker == -1:
@@ -137,17 +130,11 @@ cdef class Unpacker(object):
             else:
                 raise RuntimeError("Unknown PackStream marker %02X" % marker)
 
-    cpdef list unpack_list(self):
-        cdef int marker
-
+    def unpack_list(self):
         marker = self.read_int()
         return self._unpack_list(marker)
 
-    cdef list _unpack_list(self, int marker):
-        cdef int marker_high
-        cdef int size
-        cdef list value
-
+    def _unpack_list(self, marker):
         marker_high = marker & 0xF0
         if marker_high == 0x90:
             size = marker & 0x0F
@@ -177,15 +164,11 @@ cdef class Unpacker(object):
         else:
             return None
 
-    cpdef dict unpack_map(self):
+    def unpack_map(self):
         marker = self.read_int()
         return self._unpack_map(marker)
 
-    cdef dict _unpack_map(self, int marker):
-        cdef int size
-        cdef int marker_high
-        cdef dict value
-
+    def _unpack_map(self, marker):
         marker_high = marker & 0xF0
         if marker_high == 0xA0:
             size = marker & 0x0F
@@ -226,19 +209,14 @@ cdef class Unpacker(object):
         else:
             return None
 
-    cpdef unpack_structure_header(self):
-        cdef int marker
-
+    def unpack_structure_header(self):
         marker = self.read_int()
         if marker == -1:
             return None, None
         else:
             return self._unpack_structure_header(marker)
 
-    cdef _unpack_structure_header(self, int marker):
-        cdef int size
-        cdef int marker_high
-
+    def _unpack_structure_header(self, marker):
         marker_high = marker & 0xF0
         if marker_high == 0xB0:  # TINY_STRUCT
             signature = self.read(1).tobytes()

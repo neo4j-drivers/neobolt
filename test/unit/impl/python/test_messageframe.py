@@ -23,7 +23,7 @@ from unittest import TestCase
 
 from neobolt.meta import import_best
 
-MessageFrame = import_best("neobolt.bolt._io", "neobolt.bolt.io").MessageFrame
+MessageFrame = import_best("neobolt.impl.python.bolt._io", "neobolt.impl.python.bolt.io").MessageFrame
 
 
 class MessageFrameTestCase(TestCase):

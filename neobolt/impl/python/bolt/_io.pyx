@@ -21,28 +21,28 @@
 
 from struct import pack as struct_pack, unpack as struct_unpack
 
-from neobolt.compat import memoryview_at
+
+cdef _empty_view = memoryview(b"")
 
 
-_empty_view = memoryview(b"")
+cdef class MessageFrame(object):
 
+    cdef _view
+    cdef list _panes
+    cdef int _current_pane
+    cdef int _current_offset
 
-class MessageFrame(object):
-
-    _current_pane = -1
-    _current_offset = -1
-
-    def __init__(self, view, panes):
+    def __cinit__(self, view, list panes):
         self._view = view
         self._panes = panes
         if panes:
             self._current_pane = 0
             self._current_offset = 0
+        else:
+            self._current_pane = -1
+            self._current_offset = -1
 
-    def close(self):
-         self._view = None
-
-    def _next_pane(self):
+    cdef _next_pane(self):
         self._current_pane += 1
         if self._current_pane < len(self._panes):
             self._current_offset = 0
@@ -50,62 +50,69 @@ class MessageFrame(object):
             self._current_pane = -1
             self._current_offset = -1
 
-    def panes(self):
+    cpdef panes(self):
         return self._panes
 
-    def read_int(self):
+    cpdef read_int(self):
+        cdef int p
+        cdef int q
+        cdef int size
+        cdef int value
+
         if self._current_pane == -1:
             return -1
         p, q = self._panes[self._current_pane]
         size = q - p
-        value = memoryview_at(self._view, p + self._current_offset)
+        value = self._view[p + self._current_offset]
         self._current_offset += 1
         if self._current_offset == size:
             self._next_pane()
         return value
 
-    def read(self, n):
+    cpdef read(self, int n):
+        cdef int p
+        cdef int q
+        cdef int size
+        cdef int start
+        cdef int end
+        cdef int remaining
+        cdef bytearray value
+
         if n == 0 or self._current_pane == -1:
             return _empty_view
-        value = None
-        is_memoryview = False
-        offset = 0
-
-        to_read = n
-        while to_read > 0 and self._current_pane >= 0:
-            p, q = self._panes[self._current_pane]
-            size = q - p
-            remaining = size - self._current_offset
+        p, q = self._panes[self._current_pane]
+        size = q - p
+        remaining = size - self._current_offset
+        if n <= remaining:
             start = p + self._current_offset
-            if to_read <= remaining:
-                end = start + to_read
-                if to_read < remaining:
-                    self._current_offset += to_read
-                else:
-                    self._next_pane()
+            end = start + n
+            if n < remaining:
+                self._current_offset += n
             else:
-                end = q
                 self._next_pane()
-
-            read = end - start
-            if value:
-                if is_memoryview:
-                    new_value = bytearray(n)
-                    new_value[:offset] = value[:offset]
-                    value = new_value
-                    is_memoryview = False
-                value[offset:offset+read] = self._view[start:end]
-            else:
-                value = memoryview(self._view[start:end])
-                is_memoryview = True
-            offset += read
-            to_read -= read
+            return memoryview(self._view[start:end])
+        start = p + self._current_offset
+        end = q
+        value = bytearray(self._view[start:end])
+        self._next_pane()
+        if len(value) < n and self._current_pane >= 0:
+            value.extend(self.read(n - (end - start)))
         return memoryview(value)
 
+    cpdef close(self):
+        self._view = None
 
-class ChunkedInputBuffer(object):
 
-    def __init__(self, capacity=524288):
+cdef class ChunkedInputBuffer(object):
+
+    cdef bytearray _data
+    cdef _view
+    cdef int _extent
+    cdef int _origin
+    cdef int _limit
+    cdef MessageFrame _frame
+
+    def __cinit__(self, capacity=524288):
         self._data = bytearray(capacity)
         self._view = memoryview(self._data)
         self._extent = 0    # end position of all loaded data
@@ -116,13 +123,13 @@ class ChunkedInputBuffer(object):
     def __repr__(self):
         return repr(self.view().tobytes())
 
-    def capacity(self):
+    cpdef capacity(self):
         return len(self._view)
 
-    def view(self):
+    cpdef view(self):
         return memoryview(self._view[:self._extent])
 
-    def load(self, b):
+    cpdef load(self, b):
         """
 
         Note: may modify buffer size
@@ -141,11 +148,16 @@ class ChunkedInputBuffer(object):
             self._view[self._extent:new_extent] = b
         self._extent = new_extent
 
-    def receive(self, socket, n):
+    cpdef int receive(self, socket, int n):
         """
 
         Note: may modify buffer size, should error if frame exists
         """
+        cdef int new_extent
+        cdef int overflow
+        cdef bytes data
+        cdef int data_size
+
         try:
             new_extent = self._extent + n
             overflow = new_extent - len(self._data)
@@ -166,24 +178,31 @@ class ChunkedInputBuffer(object):
         except KeyboardInterrupt:
             return -1
 
-    def receive_message(self, socket, n):
+    cpdef int receive_message(self, socket, int n):
         """
 
         :param socket:
         :param n:
         :return:
         """
-        while not self.frame_message():
-            received = self.receive(socket, n)
+        cdef int received
+
+        frame_message = self.frame_message
+        receive = self.receive
+        while not frame_message():
+            received = receive(socket, n)
             if received <= 0:
                 return received
         return 1
 
-    def _recycle(self):
+    cdef _recycle(self):
         """ Reclaim buffer space before the origin.
 
         Note: modifies buffer size
         """
+        cdef int origin
+        cdef int available
+
         origin = self._origin
         if origin == 0:
             return False
@@ -194,12 +213,20 @@ class ChunkedInputBuffer(object):
         #log_debug("Recycled %d bytes" % origin)
         return True
 
-    def frame(self):
+    cpdef frame(self):
         return self._frame
 
-    def frame_message(self):
+    cpdef bint frame_message(self):
         """ Construct a frame around the first complete message in the buffer.
         """
+        cdef list panes
+        cdef int origin
+        cdef int p
+        cdef int extent
+        cdef int available
+        cdef int chunk_size
+        cdef int q
+
         if self._frame is not None:
             self.discard_message()
         panes = []
@@ -220,7 +247,7 @@ class ChunkedInputBuffer(object):
             p = q
         return False
 
-    def discard_message(self):
+    cpdef discard_message(self):
         if self._frame is not None:
             self._frame.close()
             self._origin = self._limit
@@ -228,50 +255,66 @@ class ChunkedInputBuffer(object):
             self._frame = None
 
 
-class ChunkedOutputBuffer(object):
+cdef class ChunkedOutputBuffer(object):
 
-    def __init__(self, capacity=1048576, max_chunk_size=16384):
+    cdef int _max_chunk_size
+    cdef bytearray _data
+    cdef int _header
+    cdef int _start
+    cdef int _end
+
+    def __cinit__(self, int capacity=1048576, int max_chunk_size=16384):
         self._max_chunk_size = max_chunk_size
         self._header = 0
         self._start = 2
         self._end = 2
         self._data = bytearray(capacity)
 
-    def max_chunk_size(self):
+    cpdef int max_chunk_size(self):
         return self._max_chunk_size
 
-    def clear(self):
+    cpdef clear(self):
         self._header = 0
         self._start = 2
         self._end = 2
         self._data[0:2] = b"\x00\x00"
 
-    def write(self, b):
-        to_write = len(b)
-        max_chunk_size = self._max_chunk_size
-        pos = 0
-        while to_write > 0:
-            chunk_size = self._end - self._start
-            remaining = max_chunk_size - chunk_size
-            if remaining == 0 or remaining < to_write <= max_chunk_size:
-                self.chunk()
-            else:
-                wrote = min(to_write, remaining)
-                new_end = self._end + wrote
-                self._data[self._end:new_end] = b[pos:pos+wrote]
-                self._end = new_end
-                pos += wrote
-                new_chunk_size = self._end - self._start
-                self._data[self._header:(self._header + 2)] = struct_pack(">H", new_chunk_size)
-                to_write -= wrote
+    cpdef write(self, bytes b):
+        cdef bytearray data
+        cdef int new_data_size
+        cdef int chunk_size
+        cdef int chunk_remaining
+        cdef int new_end
+        cdef int new_chunk_size
 
-    def chunk(self):
+        data = self._data
+        new_data_size = len(b)
+        chunk_size = self._end - self._start
+        max_chunk_size = self._max_chunk_size
+        chunk_remaining = max_chunk_size - chunk_size
+        if new_data_size > max_chunk_size:
+            self.write(b[:chunk_remaining])
+            self.chunk()
+            self.write(b[chunk_remaining:])
+            return
+        if new_data_size > chunk_remaining:
+            self.chunk()
+        new_end = self._end + new_data_size
+        new_chunk_size = new_end - self._start
+        data[self._end:new_end] = b
+        self._end = new_end
+        data[self._header:(self._header + 2)] = struct_pack(">H", new_chunk_size)
+
+    cpdef chunk(self):
         self._header = self._end
         self._start = self._header + 2
         self._end = self._start
         self._data[self._header:self._start] = b"\x00\x00"
 
-    def view(self):
+    cpdef view(self):
+        cdef int end
+        cdef int chunk_size
+
         end = self._end
         chunk_size = end - self._start
         if chunk_size == 0:

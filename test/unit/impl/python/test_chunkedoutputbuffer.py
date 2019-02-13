@@ -21,7 +21,7 @@
 
 from unittest import TestCase
 
-from neobolt.bolt.io import ChunkedOutputBuffer as PyChunkedOutputBuffer
+from neobolt.impl.python.bolt.io import ChunkedOutputBuffer as PyChunkedOutputBuffer
 
 
 class ChunkedOutputBufferTestCase(TestCase):

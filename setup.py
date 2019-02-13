@@ -34,9 +34,9 @@ try:
     from Cython.Distutils import build_ext
 except ImportError:
     ext_modules = [
-        Extension("neobolt.bolt._io", ["neobolt/bolt/_io.c"]),
-        Extension("neobolt.packstream._packer", ["neobolt/packstream/_packer.c"]),
-        Extension("neobolt.packstream._unpacker", ["neobolt/packstream/_unpacker.c"]),
+        Extension("neobolt.impl.python.bolt._io", ["neobolt/impl/python/bolt/_io.c"]),
+        Extension("neobolt.impl.python.packstream._packer", ["neobolt/impl/python/packstream/_packer.c"]),
+        Extension("neobolt.impl.python.packstream._unpacker", ["neobolt/impl/python/packstream/_unpacker.c"]),
     ]
 else:
     ext_modules = cythonize([Extension("*", ["**/*.pyx"])])
@@ -57,12 +57,14 @@ classifiers = [
 ]
 packages = [
     "neobolt",
-    "neobolt.bolt",
-    "neobolt.packstream",
+    "neobolt.impl",
+    "neobolt.impl.python",
+    "neobolt.impl.python.bolt",
+    "neobolt.impl.python.packstream",
 ]
 package_data = {
-    "neobolt.bolt": ["*.pyx"],
-    "neobolt.packstream": ["*.pyx"],
+    "neobolt.impl.python.bolt": ["*.pyx"],
+    "neobolt.impl.python.packstream": ["*.pyx"],
 }
 setup_args = {
     "name": package,

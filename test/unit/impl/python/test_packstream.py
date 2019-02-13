@@ -26,10 +26,10 @@ from math import pi
 from unittest import TestCase
 from uuid import uuid4
 
-from neobolt.bolt.io import MessageFrame as PyMessageFrame
-from neobolt.packstream import Structure
-from neobolt.packstream.packer import Packer as PyPacker
-from neobolt.packstream.unpacker import Unpacker as PyUnpacker
+from neobolt.impl.python.bolt.io import MessageFrame as PyMessageFrame
+from neobolt.impl.python.packstream import Structure
+from neobolt.impl.python.packstream.packer import Packer as PyPacker
+from neobolt.impl.python.packstream.unpacker import Unpacker as PyUnpacker
 
 
 class PackStreamTestCase(TestCase):
@@ -289,9 +289,9 @@ class PackStreamTestCase(TestCase):
             self.assert_packable(uuid4(), b"\xB0XXX")
 
 try:
-    from neo4j.bolt._io import MessageFrame as CMessageFrame
-    from neo4j.packstream._packer import Packer as CPacker
-    from neo4j.packstream._unpacker import Unpacker as CUnpacker
+    from neo4j.impl.python.bolt._io import MessageFrame as CMessageFrame
+    from neo4j.impl.python.packstream._packer import Packer as CPacker
+    from neo4j.impl.python.packstream._unpacker import Unpacker as CUnpacker
 except ImportError:
     pass
 else:

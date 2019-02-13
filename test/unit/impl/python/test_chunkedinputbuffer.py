@@ -21,7 +21,7 @@
 
 from unittest import TestCase
 
-from neobolt.bolt.io import ChunkedInputBuffer as PyChunkedInputBuffer
+from neobolt.impl.python.bolt.io import ChunkedInputBuffer as PyChunkedInputBuffer
 
 
 class ChunkedInputBufferTestCase(TestCase):

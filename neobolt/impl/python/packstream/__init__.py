@@ -57,5 +57,5 @@ class Structure(object):
         self.fields[key] = value
 
 
-Packer = import_best("neobolt.packstream._packer", "neobolt.packstream.packer").Packer
-Unpacker = import_best("neobolt.packstream._unpacker", "neobolt.packstream.unpacker").Unpacker
+Packer = import_best("neobolt.impl.python.packstream._packer", "neobolt.impl.python.packstream.packer").Packer
+Unpacker = import_best("neobolt.impl.python.packstream._unpacker", "neobolt.impl.python.packstream.unpacker").Unpacker

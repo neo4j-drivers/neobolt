@@ -21,8 +21,7 @@
 
 from struct import pack as struct_pack
 
-from neobolt.compat import integer, string
-from neobolt.packstream import Structure
+from . import Structure
 
 
 NULL_ = b"\xC0"
@@ -40,25 +39,29 @@ UNPACKED_MARKERS.update({bytes(bytearray([z])): z for z in range(0x00, 0x80)})
 UNPACKED_MARKERS.update({bytes(bytearray([z + 256])): z for z in range(-0x10, 0x00)})
 
 
-INT64_HI = 2 ** 63
-INT64_LO = -(2 ** 63)
+cdef INT64_HI = 2 ** 63
+cdef INT64_LO = -(2 ** 63)
 
 
-class Packer(object):
+cdef class Packer(object):
 
-    supports_bytes = False
+    cdef public bint supports_bytes
 
-    def __init__(self, stream):
+    cdef stream
+    cdef _write
+
+    def __cinit__(self, stream):
+        self.supports_bytes = False
         self.stream = stream
         self._write = self.stream.write
 
-    def pack_raw(self, data):
+    cdef pack_raw(self, data):
         self._write(data)
 
-    def pack(self, value):
+    cpdef pack(self, value):
         return self._pack(value)
 
-    def _pack(self, value):
+    cdef _pack(self, value):
         write = self._write
 
         # None
@@ -77,7 +80,7 @@ class Packer(object):
             write(struct_pack(">d", value))
 
         # Integer
-        elif isinstance(value, integer):
+        elif isinstance(value, int):
             if -0x10 <= value < 0x80:
                 write(PACKED_UINT_8[value % 0x100])
             elif -0x80 <= value < -0x10:
@@ -96,7 +99,7 @@ class Packer(object):
                 raise OverflowError("Integer %s out of range" % value)
 
         # String
-        elif isinstance(value, string):
+        elif isinstance(value, str):
             if isinstance(value, bytes):
                 value_bytes = value
             else:
@@ -134,7 +137,7 @@ class Packer(object):
         else:
             raise ValueError("Values of type %s are not supported" % type(value))
 
-    def pack_bytes_header(self, size):
+    cdef pack_bytes_header(self, int size):
         if not self.supports_bytes:
             raise TypeError("This PackSteam channel does not support BYTES (consider upgrading to Neo4j 3.2+)")
         write = self._write
@@ -150,7 +153,7 @@ class Packer(object):
         else:
             raise OverflowError("Bytes header size out of range")
 
-    def pack_string_header(self, size):
+    cdef pack_string_header(self, int size):
         write = self._write
         if size == 0x00:
             write(b"\x80")
@@ -196,7 +199,7 @@ class Packer(object):
         else:
             raise OverflowError("String header size out of range")
 
-    def pack_list_header(self, size):
+    cdef pack_list_header(self, int size):
         write = self._write
         if size == 0x00:
             write(b"\x90")
@@ -242,10 +245,10 @@ class Packer(object):
         else:
             raise OverflowError("List header size out of range")
 
-    def pack_list_stream_header(self):
+    cpdef pack_list_stream_header(self):
         self._write(b"\xD7")
 
-    def pack_map_header(self, size):
+    cdef pack_map_header(self, int size):
         write = self._write
         if size == 0x00:
             write(b"\xA0")
@@ -291,11 +294,11 @@ class Packer(object):
         else:
             raise OverflowError("Map header size out of range")
 
-    def pack_map_stream_header(self):
+    cpdef pack_map_stream_header(self):
         self._write(b"\xDB")
 
-    def pack_struct(self, signature, fields):
-        if len(signature) != 1 or not isinstance(signature, bytes):
+    cpdef pack_struct(self, bytes signature, fields):
+        if len(signature) != 1:
             raise ValueError("Structure signature must be a single byte value")
         write = self._write
         size = len(fields)
@@ -343,5 +346,5 @@ class Packer(object):
         for field in fields:
             self._pack(field)
 
-    def pack_end_of_stream(self):
+    cpdef pack_end_of_stream(self):
         self._write(b"\xDF")
