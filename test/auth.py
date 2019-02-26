@@ -21,9 +21,8 @@
 
 from sys import argv
 
-from neo4j.v1 import basic_auth
-from neo4j.v1.api import GraphDatabase
-from neo4j.util import Watcher
+from neobolt.direct import connect
+from neobolt.diagnostics import watch
 
 
 def update_password(user, password, new_password):
@@ -34,11 +33,18 @@ def update_password(user, password, new_password):
     :param new_password: new password
     """
 
-    token = basic_auth(user, password)
-    setattr(token, "new-credentials", new_password)  # TODO: hopefully switch hyphen to underscore on server
-    GraphDatabase.driver("bolt://localhost:7687", auth=token).session().close()
+    class AuthToken(object):
+
+        def __init__(self):
+            self.scheme = "basic"
+            self.principal = user
+            self.credentials = password
+
+    auth = AuthToken()
+    setattr(auth, "new-credentials", new_password)  # TODO: hopefully switch hyphen to underscore on server
+    connect(("localhost", 7687), auth=auth).close()
 
 
 if __name__ == "__main__":
-    Watcher("neobolt").watch()
+    watch("neobolt")
     update_password("neo4j", "neo4j", argv[1])
