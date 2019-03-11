@@ -63,6 +63,7 @@ packages = [
     "neobolt.impl.python",
     "neobolt.impl.python.bolt",
     "neobolt.impl.python.packstream",
+    "neobolt.types",
 ]
 package_data = {
     "neobolt.impl.python.bolt": ["*.pyx"],
