@@ -31,6 +31,8 @@ from neobolt.meta import package, version
 
 
 install_requires = [
+    "neotime",
+    "pytz",
 ]
 classifiers = [
     "Intended Audience :: Developers",
@@ -47,6 +49,7 @@ classifiers = [
 packages = [
     "neobolt",
     "neobolt.packstream",
+    "neobolt.types",
 ]
 setup_args = {
     "name": package,

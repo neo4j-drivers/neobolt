@@ -28,7 +28,7 @@ then
         echo "Running integration tests against Neo4j ${VERSION}"
         NEO4J_SERVER_PACKAGE="http://dist.neo4j.org/neo4j-enterprise-${VERSION}-unix.tar.gz" coverage run -a -m pytest -v ${ARGS} test/integration
         STATUS="$?"
-        if [ ${STATUS} -ne 0 ]
+        if [[ ${STATUS} -ne 0 ]]
         then
             exit ${STATUS}
         fi

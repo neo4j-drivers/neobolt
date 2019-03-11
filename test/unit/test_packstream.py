@@ -26,9 +26,9 @@ from math import pi
 from unittest import TestCase
 from uuid import uuid4
 
-from neobolt.packstream import Structure
 from neobolt.packstream.packer import Packer
 from neobolt.packstream.unpacker import UnpackableBuffer, Unpacker
+from neobolt.types import Structure
 
 
 class PackStreamTestCase(TestCase):

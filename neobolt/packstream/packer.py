@@ -21,7 +21,7 @@
 
 from struct import pack as struct_pack
 
-from neobolt.packstream import Structure
+from neobolt.types import Structure
 
 
 NULL_ = b"\xC0"
