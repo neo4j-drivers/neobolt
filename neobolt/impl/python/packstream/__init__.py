@@ -21,40 +21,11 @@
 
 __all__ = [
     "Packer",
-    "Structure",
     "Unpacker",
 ]
 
 
 from neobolt.meta import import_best
-
-
-class Structure(object):
-
-    def __init__(self, tag, *fields):
-        self.tag = tag
-        self.fields = list(fields)
-
-    def __repr__(self):
-        return "Structure<%s>(%s)" % (self.tag, ", ".join(map(repr, self.fields)))
-
-    def __eq__(self, other):
-        try:
-            return self.tag == other.tag and self.fields == other.fields
-        except AttributeError:
-            return False
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-    def __len__(self):
-        return len(self.fields)
-
-    def __getitem__(self, key):
-        return self.fields[key]
-
-    def __setitem__(self, key, value):
-        self.fields[key] = value
 
 
 Packer = import_best("neobolt.impl.python.packstream._packer", "neobolt.impl.python.packstream.packer").Packer

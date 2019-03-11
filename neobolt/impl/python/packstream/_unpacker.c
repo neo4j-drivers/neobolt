@@ -5,7 +5,7 @@
     "distutils": {
         "name": "neobolt.impl.python.packstream._unpacker",
         "sources": [
-            "neobolt/impl/python/packstream/_unpacker.pyx"
+            "/home/technige/work/neobolt/neobolt/impl/python/packstream/_unpacker.pyx"
         ]
     },
     "module_name": "neobolt.impl.python.packstream._unpacker"
@@ -777,7 +777,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "neobolt/impl/python/packstream/_unpacker.pyx",
+  "_unpacker.pyx",
   "stringsource",
 };
 
@@ -1187,7 +1187,6 @@ static const char __pyx_k_d[] = ">d";
 static const char __pyx_k_h[] = ">h";
 static const char __pyx_k_i[] = ">i";
 static const char __pyx_k_q[] = ">q";
-static const char __pyx_k__5[] = "";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_read[] = "read";
@@ -1214,6 +1213,7 @@ static const char __pyx_k_unpack_map[] = "unpack_map";
 static const char __pyx_k_EndOfStream[] = "EndOfStream";
 static const char __pyx_k_unpack_list[] = "unpack_list";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
+static const char __pyx_k_neobolt_types[] = "neobolt.types";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_struct_unpack[] = "struct_unpack";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
@@ -1233,7 +1233,6 @@ static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_n_s_Structure;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_s_Unknown_PackStream_marker_02X;
-static PyObject *__pyx_n_s__5;
 static PyObject *__pyx_n_s_attach;
 static PyObject *__pyx_kp_s_b;
 static PyObject *__pyx_n_s_cline_in_traceback;
@@ -1246,6 +1245,7 @@ static PyObject *__pyx_kp_s_i;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
+static PyObject *__pyx_n_s_neobolt_types;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_n_s_object;
 static PyObject *__pyx_n_s_pyx_vtable;
@@ -6795,7 +6795,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Structure, __pyx_k_Structure, sizeof(__pyx_k_Structure), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_kp_s_Unknown_PackStream_marker_02X, __pyx_k_Unknown_PackStream_marker_02X, sizeof(__pyx_k_Unknown_PackStream_marker_02X), 0, 0, 1, 0},
-  {&__pyx_n_s__5, __pyx_k__5, sizeof(__pyx_k__5), 0, 0, 1, 1},
   {&__pyx_n_s_attach, __pyx_k_attach, sizeof(__pyx_k_attach), 0, 0, 1, 1},
   {&__pyx_kp_s_b, __pyx_k_b, sizeof(__pyx_k_b), 0, 0, 1, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
@@ -6808,6 +6807,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
+  {&__pyx_n_s_neobolt_types, __pyx_k_neobolt_types, sizeof(__pyx_k_neobolt_types), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
   {&__pyx_n_s_object, __pyx_k_object, sizeof(__pyx_k_object), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
@@ -7187,7 +7187,7 @@ if (!__Pyx_RefNanny) {
  * from codecs import decode
  * from struct import unpack as struct_unpack             # <<<<<<<<<<<<<<
  * 
- * from . import Structure
+ * from neobolt.types import Structure
  */
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -7206,7 +7206,7 @@ if (!__Pyx_RefNanny) {
   /* "neobolt/impl/python/packstream/_unpacker.pyx":25
  * from struct import unpack as struct_unpack
  * 
- * from . import Structure             # <<<<<<<<<<<<<<
+ * from neobolt.types import Structure             # <<<<<<<<<<<<<<
  * 
  * 
  */
@@ -7215,7 +7215,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_Structure);
   __Pyx_GIVEREF(__pyx_n_s_Structure);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_Structure);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s__5, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_neobolt_types, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Structure); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
