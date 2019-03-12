@@ -40,19 +40,21 @@ from collections import deque
 from logging import getLogger
 from select import select
 from socket import socket, SOL_SOCKET, SO_KEEPALIVE, SHUT_RDWR, error as SocketError, timeout as SocketTimeout, AF_INET, AF_INET6
+from ssl import HAS_SNI, SSLSocket, SSLError
 from struct import pack as struct_pack, unpack as struct_unpack
 from threading import RLock, Condition
 from time import perf_counter
 
 from neobolt.addressing import SocketAddress, Resolver
 from neobolt.direct import DEFAULT_CONNECTION_TIMEOUT, DEFAULT_MAX_CONNECTION_LIFETIME, \
-    DEFAULT_MAX_CONNECTION_POOL_SIZE, DEFAULT_CONNECTION_ACQUISITION_TIMEOUT, DEFAULT_KEEP_ALIVE, ServerInfo
+    DEFAULT_MAX_CONNECTION_POOL_SIZE, DEFAULT_CONNECTION_ACQUISITION_TIMEOUT, DEFAULT_KEEP_ALIVE, \
+    AuthToken, ServerInfo
 from neobolt.exceptions import ClientError, ProtocolError, SecurityError, ServiceUnavailable, AuthError, CypherError
 from neobolt.meta import get_user_agent, import_best
 
 from .packstream import Packer, Unpacker
-from .security import SSL_AVAILABLE, HAS_SNI, SSLSocket, SSLError, AuthToken,\
-    TRUST_DEFAULT, TRUST_ON_FIRST_USE, KNOWN_HOSTS, PersonalCertificateStore, SecurityPlan
+from .security import make_ssl_context
+
 
 ChunkedInputBuffer = import_best("neobolt.impl.python.bolt._io", "neobolt.impl.python.bolt.io").ChunkedInputBuffer
 ChunkedOutputBuffer = import_best("neobolt.impl.python.bolt._io", "neobolt.impl.python.bolt.io").ChunkedOutputBuffer
@@ -64,26 +66,6 @@ MAGIC_PREAMBLE = 0x6060B017
 # Set up logger
 log = getLogger("neobolt")
 log_debug = log.debug
-
-
-class ConnectionErrorHandler(object):
-    """ A handler for send and receive errors.
-    """
-
-    def __init__(self, handlers_by_error_class=None):
-        if handlers_by_error_class is None:
-            handlers_by_error_class = {}
-
-        self.handlers_by_error_class = handlers_by_error_class
-        self.known_errors = tuple(handlers_by_error_class.keys())
-
-    def handle(self, error, address):
-        try:
-            error_class = error.__class__
-            handler = self.handlers_by_error_class[error_class]
-            handler(address)
-        except KeyError:
-            pass
 
 
 class Connection(object):
@@ -161,7 +143,7 @@ class Connection(object):
 
     @property
     def secure(self):
-        return SSL_AVAILABLE and isinstance(self.socket, SSLSocket)
+        return isinstance(self.socket, SSLSocket)
 
     @property
     def local_port(self):
@@ -764,10 +746,10 @@ def _connect(resolved_address, **config):
         return s
 
 
-def _secure(s, host, ssl_context, **config):
+def _secure(s, host, ssl_context):
     local_port = s.getsockname()[1]
     # Secure the connection if an SSL context has been provided
-    if ssl_context and SSL_AVAILABLE:
+    if ssl_context:
         log_debug("[#%04X]  C: <SECURE> %s", local_port, host)
         try:
             s = ssl_context.wrap_socket(s, server_hostname=host if HAS_SNI and host else None)
@@ -783,13 +765,6 @@ def _secure(s, host, ssl_context, **config):
                 s.close()
                 raise ProtocolError("When using a secure socket, the server should always "
                                     "provide a certificate")
-            trust = config.get("trust", TRUST_DEFAULT)
-            if trust == TRUST_ON_FIRST_USE:
-                store = PersonalCertificateStore()
-                if not store.match_or_trust(host, der_encoded_server_certificate):
-                    s.close()
-                    raise ProtocolError("Server certificate does not match known certificate "
-                                        "for %r; check details in file %r" % (host, KNOWN_HOSTS))
     else:
         der_encoded_server_certificate = None
     return s, der_encoded_server_certificate
@@ -865,7 +840,7 @@ def connect(address, **config):
     """ Connect and perform a handshake and return a valid Connection object, assuming
     a protocol version can be agreed.
     """
-    security_plan = SecurityPlan.build(**config)
+    ssl_context = make_ssl_context(**config)
     last_error = None
     # Establish a connection to the host and port specified
     # Catches refused connections see:
@@ -878,7 +853,7 @@ def connect(address, **config):
     for resolved_address in resolver.addresses:
         try:
             s = _connect(resolved_address, **config)
-            s, der_encoded_server_certificate = _secure(s, address[0], security_plan.ssl_context, **config)
+            s, der_encoded_server_certificate = _secure(s, address[0], ssl_context)
             connection = _handshake(s, resolved_address, der_encoded_server_certificate, **config)
         except Exception as error:
             last_error = error

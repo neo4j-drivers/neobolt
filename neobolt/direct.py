@@ -32,6 +32,23 @@ DEFAULT_KEEP_ALIVE = True
 DEFAULT_CONNECTION_ACQUISITION_TIMEOUT = 60  # 1m
 
 
+class AuthToken(object):
+    """ Container for auth information
+    """
+
+    #: By default we should not send any realm
+    realm = None
+
+    def __init__(self, scheme, principal, credentials, realm=None, **parameters):
+        self.scheme = scheme
+        self.principal = principal
+        self.credentials = credentials
+        if realm:
+            self.realm = realm
+        if parameters:
+            self.parameters = parameters
+
+
 class ServerInfo(object):
 
     address = None
