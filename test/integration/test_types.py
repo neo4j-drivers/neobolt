@@ -21,25 +21,18 @@
 
 from datetime import date
 from math import isnan
-from unittest import SkipTest
-
-from pytz import FixedOffset, timezone, utc
 
 from neobolt.direct import connect
-from neobolt.exceptions import CypherTypeError
 from neobolt.types import Structure
-from neobolt.types.graph import Node, Relationship, Path, hydrate_path
-from neobolt.types.spatial import CartesianPoint, WGS84Point, hydrate_point, dehydrate_point
-from neobolt.types.temporal import Duration, Date, Time, DateTime, dehydrate_date
+from neobolt.types.spatial import point_type, hydrate_point, dehydrate_point
+from neobolt.types.temporal import Date, dehydrate_date
 
 from .tools import IntegrationTestCase
 
 
-# def run_and_rollback(tx, statement, **parameters):
-#     result = tx.run(statement, **parameters)
-#     value = result.single().value()
-#     tx.success = False
-#     return value
+# Point subclass definitions
+CartesianPoint = point_type("CartesianPoint", ["x", "y", "z"], {2: 7203, 3: 9157})
+WGS84Point = point_type("WGS84Point", ["longitude", "latitude", "height"], {2: 4326, 3: 4979})
 
 
 class TypeSystemIntegrationTestCase(IntegrationTestCase):
