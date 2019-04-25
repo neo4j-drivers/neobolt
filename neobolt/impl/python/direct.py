@@ -184,6 +184,7 @@ class Connection(object):
         self.close()
 
     def run(self, statement, parameters=None, bookmarks=None, metadata=None, timeout=None, **handlers):
+        # TODO 2.0: remove statement_reuse feature
         if self.server.supports("statement_reuse"):
             if statement.upper() not in (u"BEGIN", u"COMMIT", u"ROLLBACK"):
                 if statement == self._last_run_statement:
