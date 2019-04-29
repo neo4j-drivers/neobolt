@@ -20,7 +20,7 @@
 
 
 from neobolt.direct import connect, Connection
-from neobolt.exceptions import ServiceUnavailable
+from neobolt.exceptions import ServiceUnavailable, IncompleteCommitError
 
 from test.stub.tools import StubTestCase, StubCluster
 
@@ -195,4 +195,32 @@ class ConnectionV3TestCase(StubTestCase):
                 with self.assertRaises(ServiceUnavailable):
                     metadata = {}
                     cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
+                    cx.sync()
+
+    def test_fail_on_commit(self):
+        with StubCluster({9001: "v3/fail_on_commit.script"}):
+            address = ("127.0.0.1", 9001)
+            with connect(address, auth=self.auth_token, encrypted=False) as cx:
+                metadata = {}
+                records = []
+                cx.begin(on_success=metadata.update)
+                cx.run("CREATE (a) RETURN id(a)", on_success=metadata.update)
+                cx.pull_all(on_success=metadata.update, on_records=records.extend)
+                cx.sync()
+                cx.commit(on_success=metadata.update)
+                with self.assertRaises(ServiceUnavailable):
+                    cx.sync()
+
+    def test_connection_error_on_commit(self):
+        with StubCluster({9001: "v3/connection_error_on_commit.script"}):
+            address = ("127.0.0.1", 9001)
+            with connect(address, auth=self.auth_token, encrypted=False) as cx:
+                metadata = {}
+                records = []
+                cx.begin(on_success=metadata.update)
+                cx.run("CREATE (a) RETURN id(a)", on_success=metadata.update)
+                cx.pull_all(on_success=metadata.update, on_records=records.extend)
+                cx.sync()
+                cx.commit(on_success=metadata.update)
+                with self.assertRaises(IncompleteCommitError):
                     cx.sync()

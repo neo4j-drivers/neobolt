@@ -49,7 +49,8 @@ from neobolt.addressing import SocketAddress, Resolver
 from neobolt.direct import DEFAULT_CONNECTION_TIMEOUT, DEFAULT_MAX_CONNECTION_LIFETIME, \
     DEFAULT_MAX_CONNECTION_POOL_SIZE, DEFAULT_CONNECTION_ACQUISITION_TIMEOUT, DEFAULT_KEEP_ALIVE, \
     AuthToken, ServerInfo
-from neobolt.exceptions import ClientError, ProtocolError, SecurityError, ServiceUnavailable, AuthError, CypherError
+from neobolt.exceptions import ClientError, ProtocolError, SecurityError, \
+    ServiceUnavailable, AuthError, CypherError, IncompleteCommitError
 from neobolt.meta import get_user_agent, import_best
 
 from .packstream import Packer, Unpacker
@@ -218,7 +219,10 @@ class Connection(object):
                 raise NotImplementedError("Transaction timeouts are not supported in Bolt v%d" % self.protocol_version)
             fields = (statement, parameters)
         log_debug("[#%04X]  C: RUN %s", self.local_port, " ".join(map(repr, fields)))
-        self._append(b"\x10", fields, Response(self, **handlers))
+        if statement.upper() == u"COMMIT":
+            self._append(b"\x10", fields, CommitResponse(self, **handlers))
+        else:
+            self._append(b"\x10", fields, Response(self, **handlers))
 
     def discard_all(self, **handlers):
         log_debug("[#%04X]  C: DISCARD_ALL", self.local_port)
@@ -268,7 +272,7 @@ class Connection(object):
     def commit(self, **handlers):
         if self.protocol_version >= 3:
             log_debug("[#%04X]  C: COMMIT", self.local_port)
-            self._append(b"\x12", (), Response(self, **handlers))
+            self._append(b"\x12", (), CommitResponse(self, **handlers))
         else:
             self.run(u"COMMIT", {}, **handlers)
             self.discard_all(**handlers)
@@ -385,9 +389,18 @@ class Connection(object):
             if received == -1:
                 raise KeyboardInterrupt()
         if not received:
+            # We were expecting to be able to receive data but the connection
+            # has unexpectedly terminated.
             self._defunct = True
             self.close()
-            raise self.Error("Failed to read from defunct connection {!r}".format(self.server.address))
+            # Iterate through the outstanding responses, and if any correspond
+            # to COMMIT requests then raise an error to signal that we are
+            # unable to confirm that the COMMIT completed successfully.
+            for response in self.responses:
+                if isinstance(response, CommitResponse):
+                    raise IncompleteCommitError()
+            raise self.Error("Failed to read from defunct connection "
+                             "{!r}".format(self.server.address))
 
     def _unpack(self):
         unpacker = self.unpacker
@@ -681,6 +694,11 @@ class InitResponse(Response):
             raise AuthError(message)
         else:
             raise ServiceUnavailable(message)
+
+
+class CommitResponse(Response):
+
+    pass
 
 
 # TODO: remove in 2.0
