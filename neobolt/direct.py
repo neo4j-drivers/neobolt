@@ -462,7 +462,7 @@ class Connection(object):
             received = self.input_buffer.receive_message(self.socket, 8192)
         except SocketError as error:
             log.error("Error on socket read "
-                      "({!r})".format("; ".join(error.args)))
+                      "({})".format("; ".join(map(repr, error.args))))
             received = 0
         else:
             if received == -1:
