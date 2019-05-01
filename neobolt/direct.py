@@ -85,8 +85,6 @@ class ServerInfo(object):
             return self.version_info() >= (3, 1)
         elif feature == "bytes":
             return self.version_info() >= (3, 2)
-        elif feature == "statement_reuse":
-            return self.version_info() >= (3, 2)
         elif feature == "spatial_types":
             return self.protocol_version >= 2
         elif feature == "temporal_types":
