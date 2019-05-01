@@ -20,6 +20,7 @@
 
 
 from abc import abstractmethod
+from logging import getLogger
 from sys import maxsize
 from threading import Lock
 
@@ -44,6 +45,9 @@ DEFAULT_MAX_RETRY_TIME = 30.0  # 30s
 LOAD_BALANCING_STRATEGY_LEAST_CONNECTED = 0
 LOAD_BALANCING_STRATEGY_ROUND_ROBIN = 1
 DEFAULT_LOAD_BALANCING_STRATEGY = LOAD_BALANCING_STRATEGY_LEAST_CONNECTED
+
+
+log = getLogger("neobolt")
 
 
 class OrderedSet(MutableSet):
@@ -341,12 +345,17 @@ class RoutingConnectionPool(AbstractConnectionPool):
     def update_routing_table_from(self, *routers):
         """ Try to update routing tables with the given routers.
 
-        :return: True if the routing table is successfully updated, otherwise False
+        :return: True if the routing table is successfully updated,
+        otherwise False
         """
+        log.debug("Attempting to update routing table from "
+                  "{}".format(", ".join(map(repr, routers))))
         for router in routers:
             new_routing_table = self.fetch_routing_table(router)
             if new_routing_table is not None:
                 self.routing_table.update(new_routing_table)
+                log.debug("Successfully updated routing table from "
+                          "{!r} ({!r})".format(router, self.routing_table))
                 return True
         return False
 
@@ -371,6 +380,7 @@ class RoutingConnectionPool(AbstractConnectionPool):
                 return
 
         # None of the routers have been successful, so just fail
+        log.error("Unable to retrieve routing information")
         raise ServiceUnavailable("Unable to retrieve routing information")
 
     def update_connection_pool(self):

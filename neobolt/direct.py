@@ -397,10 +397,18 @@ class Connection(object):
         if not data:
             return
         if self.closed():
-            raise self.Error("Failed to write to closed connection {!r}".format(self.server.address))
+            raise self.Error("Failed to write to closed connection "
+                             "{!r}".format(self.server.address))
         if self.defunct():
-            raise self.Error("Failed to write to defunct connection {!r}".format(self.server.address))
-        self.socket.sendall(data)
+            raise self.Error("Failed to write to defunct connection "
+                             "{!r}".format(self.server.address))
+        try:
+            self.socket.sendall(data)
+        except SocketError as error:
+            log.error("Failed to write data to connection {!r} "
+                      "({!r})".format(self.server.address,
+                                      "; ".join(error.args)))
+            raise
         self.output_buffer.clear()
 
     def fetch(self):
@@ -452,12 +460,17 @@ class Connection(object):
     def _receive(self):
         try:
             received = self.input_buffer.receive_message(self.socket, 8192)
-        except SocketError:
+        except SocketError as error:
+            log.error("Error on socket read "
+                      "({!r})".format("; ".join(error.args)))
             received = 0
         else:
             if received == -1:
                 raise KeyboardInterrupt()
         if not received:
+            message = ("Failed to read from defunct connection " 
+                       "{!r}".format(self.server.address))
+            log.error(message)
             # We were expecting to be able to receive data but the connection
             # has unexpectedly terminated.
             self._defunct = True
@@ -467,9 +480,8 @@ class Connection(object):
             # unable to confirm that the COMMIT completed successfully.
             for response in self.responses:
                 if isinstance(response, CommitResponse):
-                    raise IncompleteCommitError()
-            raise self.Error("Failed to read from defunct connection "
-                             "{!r}".format(self.server.address))
+                    raise IncompleteCommitError(message)
+            raise self.Error(message)
 
     def _unpack(self):
         unpacker = self.unpacker
