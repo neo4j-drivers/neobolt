@@ -121,8 +121,6 @@ class ServerInfo(object):
             return None
         if feature == "bytes":
             return self.version_info() >= (3, 2)
-        elif feature == "statement_reuse":
-            return self.version_info() >= (3, 2)
         elif feature == "run_metadata":
             return self.protocol_version >= 3
         else:
@@ -176,8 +174,6 @@ class Connection(object):
 
     #: Error class used for raising connection errors
     Error = ServiceUnavailable
-
-    _last_run_statement = None
 
     def __init__(self, protocol_version, address, sock, **config):
         self.protocol_version = protocol_version
@@ -266,12 +262,6 @@ class Connection(object):
         self.close()
 
     def run(self, statement, parameters=None, mode=None, bookmarks=None, metadata=None, timeout=None, **handlers):
-        if self.server.supports("statement_reuse"):
-            if statement.upper() not in (u"BEGIN", u"COMMIT", u"ROLLBACK"):
-                if statement == self._last_run_statement:
-                    statement = ""
-                else:
-                    self._last_run_statement = statement
         if not parameters:
             parameters = {}
         if self.protocol_version >= 3:
@@ -449,15 +439,12 @@ class Connection(object):
             log_debug("[#%04X]  S: SUCCESS %r", self.local_port, summary_metadata)
             response.on_success(summary_metadata or {})
         elif summary_signature == b"\x7E":
-            self._last_run_statement = None
             log_debug("[#%04X]  S: IGNORED", self.local_port)
             response.on_ignored(summary_metadata or {})
         elif summary_signature == b"\x7F":
-            self._last_run_statement = None
             log_debug("[#%04X]  S: FAILURE %r", self.local_port, summary_metadata)
             response.on_failure(summary_metadata or {})
         else:
-            self._last_run_statement = None
             raise ProtocolError("Unexpected response message with signature %02X" % summary_signature)
 
         return len(details), 1
