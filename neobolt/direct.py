@@ -458,20 +458,12 @@ class Connection(object):
         return len(details), 1
 
     def _receive(self):
-        try:
-            received = self.input_buffer.receive_message(self.socket, 8192)
-        except SocketError as error:
-            log.error("Error on socket read "
-                      "({})".format("; ".join(map(repr, error.args))))
-            received = 0
-        else:
-            if received == -1:
-                raise KeyboardInterrupt()
-        if not received:
+        received = self.input_buffer.receive_message(self.socket, 8192)
+        if received == 0:
             message = ("Failed to read from defunct connection " 
                        "{!r}".format(self.server.address))
             log.error(message)
-            # We were expecting to be able to receive data but the connection
+            # We were attempting to receive data but the connection
             # has unexpectedly terminated.
             self._defunct = True
             self.close()
@@ -482,6 +474,8 @@ class Connection(object):
                 if isinstance(response, CommitResponse):
                     raise IncompleteCommitError(message)
             raise self.Error(message)
+        elif received == -1:
+            raise KeyboardInterrupt()
 
     def _unpack(self):
         unpacker = self.unpacker
