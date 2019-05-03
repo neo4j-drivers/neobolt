@@ -177,6 +177,8 @@ cdef class ChunkedInputBuffer(object):
                 new_extent = self._extent + data_size
             self._extent = new_extent
             return data_size
+        except OSError:
+            return 0
         except KeyboardInterrupt:
             return -1
 
