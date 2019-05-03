@@ -407,7 +407,7 @@ class Connection(object):
         except SocketError as error:
             log.error("Failed to write data to connection {!r} "
                       "({!r})".format(self.server.address,
-                                      "; ".join(error.args)))
+                                      "; ".join(map(repr, error.args))))
             raise
         self.output_buffer.clear()
 
