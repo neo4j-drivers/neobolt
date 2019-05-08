@@ -1300,6 +1300,7 @@ int __pyx_module_is_main_neobolt__bolt___io = 0;
 
 /* Implementation of 'neobolt.bolt._io' */
 static PyObject *__pyx_builtin_TypeError;
+static PyObject *__pyx_builtin_IOError;
 static PyObject *__pyx_builtin_OSError;
 static PyObject *__pyx_builtin_KeyboardInterrupt;
 static const char __pyx_k_H[] = ">H";
@@ -1326,6 +1327,7 @@ static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_socket[] = "socket";
 static const char __pyx_k_struct[] = "struct";
 static const char __pyx_k_unpack[] = "unpack";
+static const char __pyx_k_IOError[] = "IOError";
 static const char __pyx_k_OSError[] = "OSError";
 static const char __pyx_k_receive[] = "receive";
 static const char __pyx_k_tobytes[] = "tobytes";
@@ -1352,6 +1354,7 @@ static const char __pyx_k_KeyboardInterrupt[] = "KeyboardInterrupt";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static PyObject *__pyx_kp_s_H;
+static PyObject *__pyx_n_s_IOError;
 static PyObject *__pyx_n_s_KeyboardInterrupt;
 static PyObject *__pyx_n_s_OSError;
 static PyObject *__pyx_n_s_TypeError;
@@ -4162,7 +4165,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive(struct __pyx
  *                 new_extent = self._extent + data_size
  *             self._extent = new_extent             # <<<<<<<<<<<<<<
  *             return data_size
- *         except OSError:
+ *         except (IOError, OSError):  # TODO 2.0: remove IOError
  */
       __pyx_v_self->_extent = __pyx_v_new_extent;
 
@@ -4170,7 +4173,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive(struct __pyx
  *                 new_extent = self._extent + data_size
  *             self._extent = new_extent
  *             return data_size             # <<<<<<<<<<<<<<
- *         except OSError:
+ *         except (IOError, OSError):  # TODO 2.0: remove IOError
  *             return 0
  */
       __pyx_r = __pyx_v_data_size;
@@ -4195,11 +4198,11 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive(struct __pyx
     /* "neobolt/bolt/_io.pyx":180
  *             self._extent = new_extent
  *             return data_size
- *         except OSError:             # <<<<<<<<<<<<<<
+ *         except (IOError, OSError):  # TODO 2.0: remove IOError             # <<<<<<<<<<<<<<
  *             return 0
  *         except KeyboardInterrupt:
  */
-    __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_OSError);
+    __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IOError) || __Pyx_PyErr_ExceptionMatches(__pyx_builtin_OSError);
     if (__pyx_t_6) {
       __Pyx_AddTraceback("neobolt.bolt._io.ChunkedInputBuffer.receive", __pyx_clineno, __pyx_lineno, __pyx_filename);
       if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_1, &__pyx_t_7) < 0) __PYX_ERR(1, 180, __pyx_L5_except_error)
@@ -4209,7 +4212,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive(struct __pyx
 
       /* "neobolt/bolt/_io.pyx":181
  *             return data_size
- *         except OSError:
+ *         except (IOError, OSError):  # TODO 2.0: remove IOError
  *             return 0             # <<<<<<<<<<<<<<
  *         except KeyboardInterrupt:
  *             return -1
@@ -4222,7 +4225,7 @@ static int __pyx_f_7neobolt_4bolt_3_io_18ChunkedInputBuffer_receive(struct __pyx
     }
 
     /* "neobolt/bolt/_io.pyx":182
- *         except OSError:
+ *         except (IOError, OSError):  # TODO 2.0: remove IOError
  *             return 0
  *         except KeyboardInterrupt:             # <<<<<<<<<<<<<<
  *             return -1
@@ -7489,6 +7492,7 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_H, __pyx_k_H, sizeof(__pyx_k_H), 0, 0, 1, 0},
+  {&__pyx_n_s_IOError, __pyx_k_IOError, sizeof(__pyx_k_IOError), 0, 0, 1, 1},
   {&__pyx_n_s_KeyboardInterrupt, __pyx_k_KeyboardInterrupt, sizeof(__pyx_k_KeyboardInterrupt), 0, 0, 1, 1},
   {&__pyx_n_s_OSError, __pyx_k_OSError, sizeof(__pyx_k_OSError), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
@@ -7541,6 +7545,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_builtin_IOError = __Pyx_GetBuiltinName(__pyx_n_s_IOError); if (!__pyx_builtin_IOError) __PYX_ERR(1, 180, __pyx_L1_error)
   __pyx_builtin_OSError = __Pyx_GetBuiltinName(__pyx_n_s_OSError); if (!__pyx_builtin_OSError) __PYX_ERR(1, 180, __pyx_L1_error)
   __pyx_builtin_KeyboardInterrupt = __Pyx_GetBuiltinName(__pyx_n_s_KeyboardInterrupt); if (!__pyx_builtin_KeyboardInterrupt) __PYX_ERR(1, 182, __pyx_L1_error)
   return 0;
