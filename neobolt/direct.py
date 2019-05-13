@@ -138,11 +138,11 @@ class ConnectionErrorHandler(object):
         self.handlers_by_error_class = handlers_by_error_class
         self.known_errors = tuple(handlers_by_error_class.keys())
 
-    def handle(self, error, address):
+    def handle(self, error, unresolved_address):
         try:
             error_class = error.__class__
             handler = self.handlers_by_error_class[error_class]
-            handler(address)
+            handler(unresolved_address)
         except KeyError:
             pass
 
@@ -175,9 +175,9 @@ class Connection(object):
     #: Error class used for raising connection errors
     Error = ServiceUnavailable
 
-    def __init__(self, protocol_version, address, sock, **config):
+    def __init__(self, protocol_version, unresolved_address, sock, **config):
         self.protocol_version = protocol_version
-        self.address = address
+        self.unresolved_address = unresolved_address
         self.socket = sock
         self.error_handler = config.get("error_handler", ConnectionErrorHandler())
         self.server = ServerInfo(SocketAddress.from_socket(sock), protocol_version)
@@ -387,7 +387,7 @@ class Connection(object):
         try:
             self._send()
         except self.error_handler.known_errors as error:
-            self.error_handler.handle(error, self.address)
+            self.error_handler.handle(error, self.unresolved_address)
             raise error
 
     def _send(self):
@@ -398,16 +398,22 @@ class Connection(object):
             return
         if self.closed():
             raise self.Error("Failed to write to closed connection "
-                             "{!r}".format(self.server.address))
+                             "{!r} ({!r})".format(self.unresolved_address,
+                                                  self.server.address))
         if self.defunct():
             raise self.Error("Failed to write to defunct connection "
-                             "{!r}".format(self.server.address))
+                             "{!r} ({!r})".format(self.unresolved_address,
+                                                  self.server.address))
         try:
             self.socket.sendall(data)
         except SocketError as error:
-            log.error("Failed to write data to connection {!r} "
-                      "({!r})".format(self.server.address,
-                                      "; ".join(map(repr, error.args))))
+            log.error("Failed to write data to connection "
+                      "{!r} ({!r}); ({!r})".
+                      format(self.unresolved_address,
+                             self.server.address,
+                             "; ".join(map(repr, error.args))))
+            if self.pool:
+                self.pool.deactivate(self.unresolved_address)
             raise
         self.output_buffer.clear()
 
@@ -415,7 +421,7 @@ class Connection(object):
         try:
             return self._fetch()
         except self.error_handler.known_errors as error:
-            self.error_handler.handle(error, self.address)
+            self.error_handler.handle(error, self.unresolved_address)
             raise error
 
     def _fetch(self):
@@ -424,9 +430,13 @@ class Connection(object):
         :return: 2-tuple of number of detail messages and number of summary messages fetched
         """
         if self.closed():
-            raise self.Error("Failed to read from closed connection {!r}".format(self.server.address))
+            raise self.Error("Failed to read from closed connection "
+                             "{!r} ({!r})".format(self.unresolved_address,
+                                                  self.server.address))
         if self.defunct():
-            raise self.Error("Failed to read from defunct connection {!r}".format(self.server.address))
+            raise self.Error("Failed to read from defunct connection "
+                             "{!r} ({!r})".format(self.unresolved_address,
+                                                  self.server.address))
         if not self.responses:
             return 0, 0
 
@@ -461,12 +471,17 @@ class Connection(object):
         received = self.input_buffer.receive_message(self.socket, 8192)
         if received == 0:
             message = ("Failed to read from defunct connection " 
-                       "{!r}".format(self.server.address))
+                       "{!r} ({!r})".format(self.unresolved_address,
+                                            self.server.address))
             log.error(message)
             # We were attempting to receive data but the connection
-            # has unexpectedly terminated.
+            # has unexpectedly terminated. So, we need to close the
+            # connection from the client side, and remove the address
+            # from the connection pool.
             self._defunct = True
             self.close()
+            if self.pool:
+                self.pool.deactivate(self.unresolved_address)
             # Iterate through the outstanding responses, and if any correspond
             # to COMMIT requests then raise an error to signal that we are
             # unable to confirm that the COMMIT completed successfully.
@@ -947,9 +962,10 @@ def connect(address, **config):
     resolver.dns_resolve()
     for resolved_address in resolver.addresses:
         try:
+            host = address[0]
             s = _connect(resolved_address, **config)
-            s, der_encoded_server_certificate = _secure(s, address[0], security_plan.ssl_context, **config)
-            connection = _handshake(s, resolved_address, der_encoded_server_certificate, **config)
+            s, der_encoded_server_certificate = _secure(s, host, security_plan.ssl_context, **config)
+            connection = _handshake(s, address, der_encoded_server_certificate, **config)
         except Exception as error:
             last_error = error
         else:
