@@ -21,9 +21,7 @@
 
 from unittest import TestCase
 
-from neobolt.meta import import_best
-
-MessageFrame = import_best("neobolt.bolt._io", "neobolt.bolt.io").MessageFrame
+from neobolt.bolt.io import MessageFrame
 
 
 class MessageFrameTestCase(TestCase):

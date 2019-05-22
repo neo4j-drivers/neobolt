@@ -114,7 +114,8 @@ class IntegrationTestCase(TestCase):
         with connect(cls.bolt_address, auth=cls.auth_token) as cx:
             cx.run("MATCH (a) DETACH DELETE a")
             cx.discard_all()
-            cx.sync()
+            cx.send()
+            cx.fetch_all()
 
     @classmethod
     def server_version_info(cls):

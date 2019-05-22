@@ -26,9 +26,6 @@ __all__ = [
 ]
 
 
-from neobolt.meta import import_best
-
-
 class Structure(object):
 
     def __init__(self, tag, *fields):
@@ -57,5 +54,5 @@ class Structure(object):
         self.fields[key] = value
 
 
-Packer = import_best("neobolt.packstream._packer", "neobolt.packstream.packer").Packer
-Unpacker = import_best("neobolt.packstream._unpacker", "neobolt.packstream.unpacker").Unpacker
+from neobolt.packstream.packer import Packer
+from neobolt.packstream.unpacker import Unpacker

@@ -51,7 +51,8 @@ class ConnectionTestCase(IntegrationTestCase):
             metadata = {}
             cx.run("RETURN 1", {}, on_success=metadata.update)
             cx.pull_all(on_records=records.extend, on_success=metadata.update)
-            cx.sync()
+            cx.send()
+            cx.fetch_all()
         self.assertEqual(records, [[1]])
 
     def test_fail_nicely_when_using_http_port(self):
@@ -77,7 +78,8 @@ class ConnectionTestCase(IntegrationTestCase):
             metadata = {}
             cx.run("CREATE (a) SET a.foo = $x RETURN a", {"x": b}, on_success=metadata.update)
             cx.pull_all(on_records=records.extend, on_success=metadata.update)
-            cx.sync()
+            cx.send()
+            cx.fetch_all()
         foo = records[0][0][2]["foo"]
         self.assertEqual(b, foo)
 
@@ -94,7 +96,8 @@ class ConnectionV3IntegrationTestCase(IntegrationTestCase):
             records = []
             cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
             cx.pull_all(on_success=metadata.update, on_records=records.extend)
-            cx.sync()
+            cx.send()
+            cx.fetch_all()
             self.assertEqual([[1]], records)
 
     def test_return_1_in_tx(self):
@@ -105,7 +108,8 @@ class ConnectionV3IntegrationTestCase(IntegrationTestCase):
             cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
             cx.pull_all(on_success=metadata.update, on_records=records.extend)
             cx.commit(on_success=metadata.update)
-            cx.sync()
+            cx.send()
+            cx.fetch_all()
             self.assertEqual([[1]], records)
             self.assertTrue(metadata["bookmark"].startswith("neo4j:bookmark:"))
             self.assertEqual(metadata["fields"], ["$x"])
@@ -121,7 +125,8 @@ class ConnectionV3IntegrationTestCase(IntegrationTestCase):
             cx.run("CALL dbms.getTXMetaData", on_success=metadata.update)
             cx.pull_all(on_success=metadata.update, on_records=records.extend)
             cx.commit()
-            cx.sync()
+            cx.send()
+            cx.fetch_all()
             self.assertEqual([[{"foo": "bar"}]], records)
 
     def test_begin_with_timeout(self):
@@ -129,15 +134,18 @@ class ConnectionV3IntegrationTestCase(IntegrationTestCase):
             with connect(self.bolt_address, auth=self.auth_token) as cx1:
                 cx1.run("CREATE (a:Node)")
                 cx1.discard_all()
-                cx1.sync()
+                cx1.send()
+                cx1.fetch_all()
                 with connect(self.bolt_address, auth=self.auth_token) as cx2:
                     cx1.begin()
                     cx1.run("MATCH (a:Node) SET a.property = 1")
-                    cx1.sync()
+                    cx1.send()
+                    cx1.fetch_all()
                     cx2.begin(timeout=0.25)
                     cx2.run("MATCH (a:Node) SET a.property = 2")
                     with self.assertRaises(TransientError):
-                        cx2.sync()
+                        cx2.send()
+                        cx2.fetch_all()
         finally:
             self.delete_all()
 
@@ -147,7 +155,8 @@ class ConnectionV3IntegrationTestCase(IntegrationTestCase):
             records = []
             cx.run("CALL dbms.getTXMetaData", metadata={"foo": "bar"}, on_success=metadata.update)
             cx.pull_all(on_success=metadata.update, on_records=records.extend)
-            cx.sync()
+            cx.send()
+            cx.fetch_all()
             self.assertEqual([[{"foo": "bar"}]], records)
 
     def test_run_with_timeout(self):
@@ -155,14 +164,17 @@ class ConnectionV3IntegrationTestCase(IntegrationTestCase):
             with connect(self.bolt_address, auth=self.auth_token) as cx1:
                 cx1.run("CREATE (a:Node)")
                 cx1.discard_all()
-                cx1.sync()
+                cx1.send()
+                cx1.fetch_all()
                 with connect(self.bolt_address, auth=self.auth_token) as cx2:
                     cx1.begin()
                     cx1.run("MATCH (a:Node) SET a.property = 1")
-                    cx1.sync()
+                    cx1.send()
+                    cx1.fetch_all()
                     cx2.run("MATCH (a:Node) SET a.property = 2", timeout=0.25)
                     with self.assertRaises(TransientError):
-                        cx2.sync()
+                        cx2.send()
+                        cx2.fetch_all()
         finally:
             self.delete_all()
 

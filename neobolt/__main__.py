@@ -70,7 +70,8 @@ def main():
                 try:
                     cx.run(statement, parameters, on_success=metadata.update)
                     cx.pull_all(on_records=records.extend, on_success=metadata.update)
-                    cx.sync()
+                    cx.send()
+                    cx.fetch_all()
                 except CypherError as error:
                     stderr.write("%s: %s\r\n" % (error.code, error.message))
                 else:

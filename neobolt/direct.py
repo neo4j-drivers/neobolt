@@ -47,17 +47,15 @@ from threading import RLock, Condition
 from sys import platform, version_info
 
 from neobolt.addressing import SocketAddress, Resolver
+from neobolt.bolt.io import ChunkedInputBuffer, ChunkedOutputBuffer
 from neobolt.compat import perf_counter
 from neobolt.compat.ssl import SSL_AVAILABLE, HAS_SNI, SSLSocket, SSLError
 from neobolt.exceptions import ClientError, ProtocolError, SecurityError, \
     ServiceUnavailable, AuthError, CypherError, IncompleteCommitError
-from neobolt.meta import version, import_best
+from neobolt.meta import version
 from neobolt.packstream import Packer, Unpacker
 from neobolt.security import AuthToken, TRUST_DEFAULT, TRUST_ON_FIRST_USE, KNOWN_HOSTS, PersonalCertificateStore, \
     SecurityPlan
-
-ChunkedInputBuffer = import_best("neobolt.bolt._io", "neobolt.bolt.io").ChunkedInputBuffer
-ChunkedOutputBuffer = import_best("neobolt.bolt._io", "neobolt.bolt.io").ChunkedOutputBuffer
 
 
 DEFAULT_PORT = 7687
@@ -234,7 +232,8 @@ class Connection(object):
         log_debug("[#%04X]  C: INIT %r {...}", self.local_port, self.user_agent)
         self._append(b"\x01", (self.user_agent, self.auth_dict),
                      response=InitResponse(self, on_success=self.server.metadata.update))
-        self.sync()
+        self.send()
+        self.fetch_all()
         self.packer.supports_bytes = self.server.supports("bytes")
 
     def hello(self):
@@ -246,7 +245,8 @@ class Connection(object):
         log_debug("[#%04X]  C: HELLO %r", self.local_port, logged_headers)
         self._append(b"\x01", (headers,),
                      response=InitResponse(self, on_success=self.server.metadata.update))
-        self.sync()
+        self.send()
+        self.fetch_all()
         self.packer.supports_bytes = self.server.supports("bytes")
 
     def __del__(self):
@@ -381,7 +381,8 @@ class Connection(object):
 
         log_debug("[#%04X]  C: RESET", self.local_port)
         self._append(b"\x0F", response=Response(self, on_failure=fail))
-        self.sync()
+        self.send()
+        self.fetch_all()
 
     def send(self):
         try:
@@ -417,30 +418,35 @@ class Connection(object):
             raise
         self.output_buffer.clear()
 
-    def fetch(self):
-        try:
-            return self._fetch()
-        except self.error_handler.known_errors as error:
-            self.error_handler.handle(error, self.unresolved_address)
-            raise error
-
-    def _fetch(self):
+    def fetch_more(self):
         """ Receive at least one message from the server, if available.
 
-        :return: 2-tuple of number of detail messages and number of summary messages fetched
+        :return: 2-tuple of number of detail messages and number of summary
+                 messages fetched
         """
-        if self.closed():
+        if self._closed:
             raise self.Error("Failed to read from closed connection "
                              "{!r} ({!r})".format(self.unresolved_address,
                                                   self.server.address))
-        if self.defunct():
+        if self._defunct:
             raise self.Error("Failed to read from defunct connection "
                              "{!r} ({!r})".format(self.unresolved_address,
                                                   self.server.address))
         if not self.responses:
             return 0, 0
 
-        self._receive()
+        # Receive at least one message
+        try:
+            try:
+                while not self.input_buffer.frame_message():
+                    received = self.input_buffer.receive(self.socket, 8192)
+                    if received == 0:
+                        self._set_defunct()
+            except (IOError, OSError) as error:     # TODO 2.0: remove IOError
+                self._set_defunct(error)
+        except self.error_handler.known_errors as error:
+            self.error_handler.handle(error, self.unresolved_address)
+            raise error
 
         details, summary_signature, summary_metadata = self._unpack()
 
@@ -463,34 +469,31 @@ class Connection(object):
             log_debug("[#%04X]  S: FAILURE %r", self.local_port, summary_metadata)
             response.on_failure(summary_metadata or {})
         else:
-            raise ProtocolError("Unexpected response message with signature %02X" % summary_signature)
+            raise ProtocolError("Unexpected response message with "
+                                "signature %02X" % summary_signature)
 
         return len(details), 1
 
-    def _receive(self):
-        received = self.input_buffer.receive_message(self.socket, 8192)
-        if received == 0:
-            message = ("Failed to read from defunct connection " 
-                       "{!r} ({!r})".format(self.unresolved_address,
-                                            self.server.address))
-            log.error(message)
-            # We were attempting to receive data but the connection
-            # has unexpectedly terminated. So, we need to close the
-            # connection from the client side, and remove the address
-            # from the connection pool.
-            self._defunct = True
-            self.close()
-            if self.pool:
-                self.pool.deactivate(self.unresolved_address)
-            # Iterate through the outstanding responses, and if any correspond
-            # to COMMIT requests then raise an error to signal that we are
-            # unable to confirm that the COMMIT completed successfully.
-            for response in self.responses:
-                if isinstance(response, CommitResponse):
-                    raise IncompleteCommitError(message)
-            raise self.Error(message)
-        elif received == -1:
-            raise KeyboardInterrupt()
+    def _set_defunct(self, error=None):
+        message = ("Failed to read from defunct connection " 
+                   "{!r} ({!r})".format(self.unresolved_address,
+                                        self.server.address))
+        log.error(message)
+        # We were attempting to receive data but the connection
+        # has unexpectedly terminated. So, we need to close the
+        # connection from the client side, and remove the address
+        # from the connection pool.
+        self._defunct = True
+        self.close()
+        if self.pool:
+            self.pool.deactivate(self.unresolved_address)
+        # Iterate through the outstanding responses, and if any correspond
+        # to COMMIT requests then raise an error to signal that we are
+        # unable to confirm that the COMMIT completed successfully.
+        for response in self.responses:
+            if isinstance(response, CommitResponse):
+                raise IncompleteCommitError(message)
+        raise self.Error(message)
 
     def _unpack(self):
         unpacker = self.unpacker
@@ -506,7 +509,7 @@ class Connection(object):
             if size > 1:
                 raise ProtocolError("Expected one field")
             if signature == b"\x71":
-                data = unpacker.unpack_list()
+                data = unpacker.unpack()
                 details.append(data)
                 more = input_buffer.frame_message()
             else:
@@ -518,20 +521,30 @@ class Connection(object):
     def timedout(self):
         return 0 <= self._max_connection_lifetime <= perf_counter() - self._creation_timestamp
 
-    def sync(self):
-        """ Send and fetch all outstanding messages.
+    def fetch_all(self):
+        """ Fetch all outstanding messages.
 
-        :return: 2-tuple of number of detail messages and number of summary messages fetched
+        :return: 2-tuple of number of detail messages and number of summary
+                 messages fetched
         """
-        self.send()
         detail_count = summary_count = 0
         while self.responses:
             response = self.responses[0]
             while not response.complete:
-                detail_delta, summary_delta = self.fetch()
+                detail_delta, summary_delta = self.fetch_more()
                 detail_count += detail_delta
                 summary_count += summary_delta
         return detail_count, summary_count
+
+    def sync(self):
+        """ Send and fetch all outstanding messages.
+
+        :return: 2-tuple of number of detail messages and number of summary
+                 messages fetched
+        """
+        # TODO: remove this method and use the methods below instead
+        self.send()
+        return self.fetch_all()
 
     def close(self):
         """ Close the connection.

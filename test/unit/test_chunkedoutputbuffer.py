@@ -21,29 +21,28 @@
 
 from unittest import TestCase
 
-from neobolt.bolt.io import ChunkedOutputBuffer as PyChunkedOutputBuffer
+from neobolt.bolt.io import ChunkedOutputBuffer
 
 
 class ChunkedOutputBufferTestCase(TestCase):
-    ChunkedOutputBuffer = PyChunkedOutputBuffer
 
     def test_should_start_empty(self):
         # Given
-        buffer = self.ChunkedOutputBuffer()
+        buffer = ChunkedOutputBuffer()
 
         # Then
         assert buffer.view().tobytes() == b""
 
     def test_should_be_able_to_set_max_chunk_size(self):
         # Given
-        buffer = self.ChunkedOutputBuffer(max_chunk_size=4)
+        buffer = ChunkedOutputBuffer(max_chunk_size=4)
 
         # Then
         assert buffer.max_chunk_size() == 4
 
     def test_small_data_should_be_directly_appended(self):
         # Given
-        buffer = self.ChunkedOutputBuffer()
+        buffer = ChunkedOutputBuffer()
 
         # When
         buffer.write(b"hello")
@@ -53,7 +52,7 @@ class ChunkedOutputBufferTestCase(TestCase):
 
     def test_overflow_data_should_use_a_new_chunk(self):
         # Given
-        buffer = self.ChunkedOutputBuffer(max_chunk_size=6)
+        buffer = ChunkedOutputBuffer(max_chunk_size=6)
 
         # When
         buffer.write(b"over")
@@ -64,7 +63,7 @@ class ChunkedOutputBufferTestCase(TestCase):
 
     def test_big_data_should_be_split_across_chunks(self):
         # Given
-        buffer = self.ChunkedOutputBuffer(max_chunk_size=2)
+        buffer = ChunkedOutputBuffer(max_chunk_size=2)
 
         # When
         buffer.write(b"octopus")
@@ -74,7 +73,7 @@ class ChunkedOutputBufferTestCase(TestCase):
 
     def test_clear_should_clear_everything(self):
         # Given
-        buffer = self.ChunkedOutputBuffer()
+        buffer = ChunkedOutputBuffer()
 
         # When
         buffer.write(b"redacted")
@@ -85,7 +84,7 @@ class ChunkedOutputBufferTestCase(TestCase):
 
     def test_cleared_buffer_should_be_reusable(self):
         # Given
-        buffer = self.ChunkedOutputBuffer()
+        buffer = ChunkedOutputBuffer()
 
         # When
         buffer.write(b"Windows")
@@ -97,7 +96,7 @@ class ChunkedOutputBufferTestCase(TestCase):
 
     def test_should_be_able_to_force_chunks(self):
         # Given
-        buffer = self.ChunkedOutputBuffer()
+        buffer = ChunkedOutputBuffer()
 
         # When
         buffer.write(b"hello")
@@ -110,7 +109,7 @@ class ChunkedOutputBufferTestCase(TestCase):
 
     def test_should_be_able_to_force_empty_chunk(self):
         # Given
-        buffer = self.ChunkedOutputBuffer()
+        buffer = ChunkedOutputBuffer()
 
         # When
         buffer.write(b"hello")
@@ -119,12 +118,3 @@ class ChunkedOutputBufferTestCase(TestCase):
 
         # Then
         assert buffer.view().tobytes() == b"\x00\x05hello\x00\x00"
-
-
-try:
-    from neo4j.bolt._io import ChunkedOutputBuffer as CChunkedOutputBuffer
-except ImportError:
-    pass
-else:
-    class CChunkedOutputBufferTestCase(ChunkedOutputBufferTestCase):
-        ChunkedOutputBuffer = CChunkedOutputBuffer

@@ -41,7 +41,8 @@ class ConnectionV1TestCase(StubTestCase):
                 records = []
                 cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 self.assertEqual([[1]], records)
 
     def test_disconnect_on_run(self):
@@ -51,7 +52,8 @@ class ConnectionV1TestCase(StubTestCase):
                 with self.assertRaises(ServiceUnavailable):
                     metadata = {}
                     cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
-                    cx.sync()
+                    cx.send()
+                    cx.fetch_all()
 
     def test_disconnect_on_pull_all(self):
         with StubCluster({9001: "v1/disconnect_on_pull_all.script"}):
@@ -62,7 +64,8 @@ class ConnectionV1TestCase(StubTestCase):
                     records = []
                     cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
                     cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                    cx.sync()
+                    cx.send()
+                    cx.fetch_all()
 
     def test_disconnect_after_init(self):
         with StubCluster({9001: "v1/disconnect_after_init.script"}):
@@ -71,7 +74,8 @@ class ConnectionV1TestCase(StubTestCase):
                 with self.assertRaises(ServiceUnavailable):
                     metadata = {}
                     cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
-                    cx.sync()
+                    cx.send()
+                    cx.fetch_all()
 
 
 class ConnectionV3TestCase(StubTestCase):
@@ -90,7 +94,8 @@ class ConnectionV3TestCase(StubTestCase):
                 records = []
                 cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 self.assertEqual([[1]], records)
 
     def test_return_1_as_read(self):
@@ -101,7 +106,8 @@ class ConnectionV3TestCase(StubTestCase):
                 records = []
                 cx.run("RETURN $x", {"x": 1}, mode="r", on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 self.assertEqual([[1]], records)
 
     def test_return_1_in_tx(self):
@@ -114,7 +120,8 @@ class ConnectionV3TestCase(StubTestCase):
                 cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
                 cx.commit(on_success=metadata.update)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 self.assertEqual([[1]], records)
                 self.assertEqual({"fields": ["x"], "bookmark": "bookmark:1"}, metadata)
 
@@ -128,7 +135,8 @@ class ConnectionV3TestCase(StubTestCase):
                 cx.run("RETURN $x", {"x": 1}, mode="r", on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
                 cx.commit(on_success=metadata.update)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 self.assertEqual([[1]], records)
                 self.assertEqual({"fields": ["x"], "bookmark": "bookmark:1"}, metadata)
 
@@ -142,7 +150,8 @@ class ConnectionV3TestCase(StubTestCase):
                 cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
                 cx.commit(on_success=metadata.update)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 self.assertEqual([[1]], records)
                 self.assertEqual({"fields": ["x"], "bookmark": "bookmark:1"}, metadata)
 
@@ -156,7 +165,8 @@ class ConnectionV3TestCase(StubTestCase):
                 cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
                 cx.commit(on_success=metadata.update)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 self.assertEqual([[1]], records)
                 self.assertEqual({"fields": ["x"], "bookmark": "bookmark:1"}, metadata)
 
@@ -168,7 +178,8 @@ class ConnectionV3TestCase(StubTestCase):
                 records = []
                 cx.run("RETURN $x", {"x": 1}, bookmarks=["foo", "bar"], on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 self.assertEqual([[1]], records)
 
     def test_run_with_metadata(self):
@@ -179,7 +190,8 @@ class ConnectionV3TestCase(StubTestCase):
                 records = []
                 cx.run("RETURN $x", {"x": 1}, metadata={"mode": "r"}, on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 self.assertEqual([[1]], records)
 
     def test_run_with_timeout(self):
@@ -190,7 +202,8 @@ class ConnectionV3TestCase(StubTestCase):
                 records = []
                 cx.run("RETURN $x", {"x": 1}, timeout=12.34, on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 self.assertEqual([[1]], records)
 
     def test_disconnect_on_run(self):
@@ -200,7 +213,8 @@ class ConnectionV3TestCase(StubTestCase):
                 with self.assertRaises(ServiceUnavailable):
                     metadata = {}
                     cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
-                    cx.sync()
+                    cx.send()
+                    cx.fetch_all()
 
     def test_disconnect_on_pull_all(self):
         with StubCluster({9001: "v3/disconnect_on_pull_all.script"}):
@@ -211,7 +225,8 @@ class ConnectionV3TestCase(StubTestCase):
                     records = []
                     cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
                     cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                    cx.sync()
+                    cx.send()
+                    cx.fetch_all()
 
     def test_disconnect_after_init(self):
         with StubCluster({9001: "v3/disconnect_after_init.script"}):
@@ -220,7 +235,8 @@ class ConnectionV3TestCase(StubTestCase):
                 with self.assertRaises(ServiceUnavailable):
                     metadata = {}
                     cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
-                    cx.sync()
+                    cx.send()
+                    cx.fetch_all()
 
     def test_fail_on_commit(self):
         with StubCluster({9001: "v3/fail_on_commit.script"}):
@@ -231,10 +247,12 @@ class ConnectionV3TestCase(StubTestCase):
                 cx.begin(on_success=metadata.update)
                 cx.run("CREATE (a) RETURN id(a)", on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 cx.commit(on_success=metadata.update)
                 with self.assertRaises(ServiceUnavailable):
-                    cx.sync()
+                    cx.send()
+                    cx.fetch_all()
 
     def test_connection_error_on_commit(self):
         with StubCluster({9001: "v3/connection_error_on_commit.script"}):
@@ -245,7 +263,9 @@ class ConnectionV3TestCase(StubTestCase):
                 cx.begin(on_success=metadata.update)
                 cx.run("CREATE (a) RETURN id(a)", on_success=metadata.update)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
                 cx.commit(on_success=metadata.update)
                 with self.assertRaises(IncompleteCommitError):
-                    cx.sync()
+                    cx.send()
+                    cx.fetch_all()

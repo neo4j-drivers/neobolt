@@ -40,7 +40,7 @@ class MessageFrame(object):
             self._current_offset = 0
 
     def close(self):
-         self._view = None
+        self._view = None
 
     def _next_pane(self):
         self._current_pane += 1
@@ -112,6 +112,7 @@ class ChunkedInputBuffer(object):
         self._origin = 0    # start position of current frame
         self._limit = -1    # end position of current frame
         self._frame = None  # frame object
+        self._panes = []
 
     def __repr__(self):
         return repr(self.view().tobytes())
@@ -146,40 +147,22 @@ class ChunkedInputBuffer(object):
 
         Note: may modify buffer size, should error if frame exists
         """
-        try:
-            new_extent = self._extent + n
-            overflow = new_extent - len(self._data)
-            if overflow > 0:
-                if self._recycle():
-                    return self.receive(socket, n)
-                self._view = None
-                data = socket.recv(n)
-                data_size = len(data)
-                new_extent = self._extent + data_size
-                self._data[self._extent:new_extent] = data
-                self._view = memoryview(self._data)
-            else:
-                data_size = socket.recv_into(self._view[self._extent:new_extent])
-                new_extent = self._extent + data_size
-            self._extent = new_extent
-            return data_size
-        except (IOError, OSError):  # TODO 2.0: remove IOError
-            return 0
-        except KeyboardInterrupt:
-            return -1
-
-    def receive_message(self, socket, n):
-        """
-
-        :param socket:
-        :param n:
-        :return:
-        """
-        while not self.frame_message():
-            received = self.receive(socket, n)
-            if received <= 0:
-                return received
-        return 1
+        new_extent = self._extent + n
+        overflow = new_extent - len(self._data)
+        if overflow > 0:
+            if self._recycle():
+                return self.receive(socket, n)
+            self._view = None
+            data = socket.recv(n)
+            data_size = len(data)
+            new_extent = self._extent + data_size
+            self._data[self._extent:new_extent] = data
+            self._view = memoryview(self._data)
+        else:
+            data_size = socket.recv_into(self._view[self._extent:new_extent])
+            new_extent = self._extent + data_size
+        self._extent = new_extent
+        return data_size
 
     def _recycle(self):
         """ Reclaim buffer space before the origin.
@@ -204,7 +187,7 @@ class ChunkedInputBuffer(object):
         """
         if self._frame is not None:
             self.discard_message()
-        panes = []
+        self._panes[:] = ()
         p = origin = self._origin
         extent = self._extent
         while p < extent:
@@ -215,10 +198,10 @@ class ChunkedInputBuffer(object):
             p += 2
             if chunk_size == 0:
                 self._limit = p
-                self._frame = MessageFrame(memoryview(self._view[origin:self._limit]), panes)
+                self._frame = MessageFrame(memoryview(self._view[origin:self._limit]), self._panes)
                 return True
             q = p + chunk_size
-            panes.append((p - origin, q - origin))
+            self._panes.append((p - origin, q - origin))
             p = q
         return False
 

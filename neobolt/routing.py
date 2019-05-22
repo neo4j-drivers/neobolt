@@ -298,7 +298,8 @@ class RoutingConnectionPool(AbstractConnectionPool):
                 else:
                     cx.run("CALL dbms.cluster.routing.getServers", {}, on_success=metadata.update, on_failure=fail)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.sync()
+                cx.send()
+                cx.fetch_all()
         except RoutingProtocolError as error:
             raise ServiceUnavailable(*error.args)
         except ServiceUnavailable:

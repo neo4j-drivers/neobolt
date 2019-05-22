@@ -29,17 +29,6 @@ except ImportError:
 
 from neobolt.meta import package, version
 
-try:
-    from Cython.Build import cythonize
-    from Cython.Distutils import build_ext
-except ImportError:
-    ext_modules = [
-        Extension("neobolt.bolt._io", ["neobolt/bolt/_io.c"]),
-        Extension("neobolt.packstream._packer", ["neobolt/packstream/_packer.c"]),
-        Extension("neobolt.packstream._unpacker", ["neobolt/packstream/_unpacker.c"]),
-    ]
-else:
-    ext_modules = cythonize([Extension("*", ["**/*.pyx"])])
 
 install_requires = [
 ]
@@ -61,10 +50,6 @@ packages = [
     "neobolt.compat",
     "neobolt.packstream",
 ]
-package_data = {
-    "neobolt.bolt": ["*.pyx"],
-    "neobolt.packstream": ["*.pyx"],
-}
 setup_args = {
     "name": package,
     "version": version,
@@ -78,12 +63,6 @@ setup_args = {
     "install_requires": install_requires,
     "classifiers": classifiers,
     "packages": packages,
-    "ext_modules": ext_modules,
 }
 
-try:
-    setup(**setup_args)
-except SystemExit:
-    print("Compilation failed, falling back to pure Python.")
-    del setup_args["ext_modules"]
-    setup(**setup_args)
+setup(**setup_args)

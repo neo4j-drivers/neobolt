@@ -110,7 +110,7 @@ class Unpacker(object):
 
             # List
             elif 0x90 <= marker <= 0x9F or 0xD4 <= marker <= 0xD7:
-                return self._unpack_list(marker)
+                return list(self._unpack_list_items(marker))
 
             # Map
             elif 0xA0 <= marker <= 0xAF or 0xD8 <= marker <= 0xDB:
@@ -130,39 +130,37 @@ class Unpacker(object):
             else:
                 raise RuntimeError("Unknown PackStream marker %02X" % marker)
 
-    def unpack_list(self):
-        marker = self.read_int()
-        return self._unpack_list(marker)
-
-    def _unpack_list(self, marker):
+    def _unpack_list_items(self, marker):
         marker_high = marker & 0xF0
         if marker_high == 0x90:
             size = marker & 0x0F
             if size == 0:
-                return []
+                return
             elif size == 1:
-                return [self._unpack()]
+                yield self._unpack()
             else:
-                return [self._unpack() for _ in range(size)]
+                for _ in range(size):
+                    yield self._unpack()
         elif marker == 0xD4:  # LIST_8:
             size, = struct_unpack(">B", self.read(1))
-            return [self._unpack() for _ in range(size)]
+            for _ in range(size):
+                yield self._unpack()
         elif marker == 0xD5:  # LIST_16:
             size, = struct_unpack(">H", self.read(2))
-            return [self._unpack() for _ in range(size)]
+            for _ in range(size):
+                yield self._unpack()
         elif marker == 0xD6:  # LIST_32:
             size, = struct_unpack(">I", self.read(4))
-            return [self._unpack() for _ in range(size)]
+            for _ in range(size):
+                yield self._unpack()
         elif marker == 0xD7:  # LIST_STREAM:
-            value = []
             item = None
             while item is not EndOfStream:
                 item = self._unpack()
                 if item is not EndOfStream:
-                    value.append(item)
-            return value
+                    yield item
         else:
-            return None
+            return
 
     def unpack_map(self):
         marker = self.read_int()
