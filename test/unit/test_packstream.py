@@ -26,21 +26,17 @@ from math import pi
 from unittest import TestCase
 from uuid import uuid4
 
-from neobolt.bolt.io import MessageFrame as PyMessageFrame
 from neobolt.packstream import Structure
-from neobolt.packstream.packer import Packer as PyPacker
-from neobolt.packstream.unpacker import Unpacker as PyUnpacker
+from neobolt.packstream.packer import Packer
+from neobolt.packstream.unpacker import Unpackable, Unpacker
 
 
 class PackStreamTestCase(TestCase):
-    MessageFrame = PyMessageFrame
-    Packer = PyPacker
-    Unpacker = PyUnpacker
 
     @classmethod
     def packb(cls, *values):
         stream = BytesIO()
-        packer = cls.Packer(stream)
+        packer = Packer(stream)
         for value in values:
             packer.pack(value)
         return stream.getvalue()
@@ -48,7 +44,7 @@ class PackStreamTestCase(TestCase):
     @classmethod
     def assert_packable(cls, value, packed_value):
         stream_out = BytesIO()
-        packer = cls.Packer(stream_out)
+        packer = Packer(stream_out)
         packer.supports_bytes = True
         packer.pack(value)
         packed = stream_out.getvalue()
@@ -57,9 +53,7 @@ class PackStreamTestCase(TestCase):
         except AssertionError:
             raise AssertionError("Packed value %r is %r instead of expected %r" %
                                  (value, packed, packed_value))
-        unpacker = cls.Unpacker()
-        unpacker.attach(cls.MessageFrame(memoryview(packed), [(0, len(packed))]))
-        unpacked = unpacker.unpack()
+        unpacked = Unpacker(Unpackable(packed)).unpack()
         try:
             assert unpacked == value
         except AssertionError:
@@ -205,7 +199,7 @@ class PackStreamTestCase(TestCase):
         packed_value = b"\xD7\x01\x02\x03\xDF"
         unpacked_value = [1, 2, 3]
         stream_out = BytesIO()
-        packer = self.Packer(stream_out)
+        packer = Packer(stream_out)
         packer.pack_list_stream_header()
         packer.pack(1)
         packer.pack(2)
@@ -217,9 +211,7 @@ class PackStreamTestCase(TestCase):
         except AssertionError:
             raise AssertionError("Packed value is %r instead of expected %r" %
                                  (packed, packed_value))
-        unpacker = self.Unpacker()
-        unpacker.attach(self.MessageFrame(memoryview(packed), [(0, len(packed))]))
-        unpacked = unpacker.unpack()
+        unpacked = Unpacker(Unpackable(packed)).unpack()
         try:
             assert unpacked == unpacked_value
         except AssertionError:
@@ -252,7 +244,7 @@ class PackStreamTestCase(TestCase):
         packed_value = b"\xDB\x81A\x01\x81B\x02\xDF"
         unpacked_value = {u"A": 1, u"B": 2}
         stream_out = BytesIO()
-        packer = self.Packer(stream_out)
+        packer = Packer(stream_out)
         packer.pack_map_stream_header()
         packer.pack(u"A")
         packer.pack(1)
@@ -265,9 +257,7 @@ class PackStreamTestCase(TestCase):
         except AssertionError:
             raise AssertionError("Packed value is %r instead of expected %r" %
                                  (packed, packed_value))
-        unpacker = self.Unpacker()
-        unpacker.attach(self.MessageFrame(memoryview(packed), [(0, len(packed))]))
-        unpacked = unpacker.unpack()
+        unpacked = Unpacker(Unpackable(packed)).unpack()
         try:
             assert unpacked == unpacked_value
         except AssertionError:
@@ -287,15 +277,3 @@ class PackStreamTestCase(TestCase):
     def test_illegal_uuid(self):
         with self.assertRaises(ValueError):
             self.assert_packable(uuid4(), b"\xB0XXX")
-
-try:
-    from neo4j.bolt._io import MessageFrame as CMessageFrame
-    from neo4j.packstream._packer import Packer as CPacker
-    from neo4j.packstream._unpacker import Unpacker as CUnpacker
-except ImportError:
-    pass
-else:
-    class CPackStreamTestCase(PackStreamTestCase):
-        MessageFrame = CMessageFrame
-        Packer = CPacker
-        Unpacker = CUnpacker

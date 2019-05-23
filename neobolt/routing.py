@@ -27,9 +27,8 @@ from threading import Lock
 from neobolt.addressing import SocketAddress
 from neobolt.compat import perf_counter
 from neobolt.compat.collections import MutableSet, OrderedDict
-from neobolt.direct import AbstractConnectionPool, DEFAULT_PORT, ConnectionErrorHandler
-from neobolt.exceptions import ConnectionExpired, DatabaseUnavailableError, \
-    NotALeaderError, ForbiddenOnReadOnlyDatabaseError, ServiceUnavailable
+from neobolt.direct import AbstractConnectionPool, DEFAULT_PORT
+from neobolt.exceptions import ConnectionExpired, ServiceUnavailable
 from neobolt.versioning import Version
 
 
@@ -244,26 +243,12 @@ class LeastConnectedLoadBalancingStrategy(LoadBalancingStrategy):
                 return least_connected_address
 
 
-class RoutingConnectionErrorHandler(ConnectionErrorHandler):
-    """ Handler for errors in routing driver connections.
-    """
-
-    def __init__(self, pool):
-        super(RoutingConnectionErrorHandler, self).__init__({
-            ConnectionExpired: lambda address: pool.deactivate(address),
-            ServiceUnavailable: lambda address: pool.deactivate(address),
-            DatabaseUnavailableError: lambda address: pool.deactivate(address),
-            NotALeaderError: lambda address: pool.remove_writer(address),
-            ForbiddenOnReadOnlyDatabaseError: lambda address: pool.remove_writer(address)
-        })
-
-
 class RoutingConnectionPool(AbstractConnectionPool):
     """ Connection pool with routing table.
     """
 
     def __init__(self, connector, initial_address, routing_context, *routers, **config):
-        super(RoutingConnectionPool, self).__init__(connector, RoutingConnectionErrorHandler(self), **config)
+        super(RoutingConnectionPool, self).__init__(connector, **config)
         self.initial_address = initial_address
         self.routing_context = routing_context
         self.routing_table = RoutingTable(routers)
@@ -298,7 +283,7 @@ class RoutingConnectionPool(AbstractConnectionPool):
                 else:
                     cx.run("CALL dbms.cluster.routing.getServers", {}, on_success=metadata.update, on_failure=fail)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.send()
+                cx.send_all()
                 cx.fetch_all()
         except RoutingProtocolError as error:
             raise ServiceUnavailable(*error.args)

@@ -114,7 +114,7 @@ class IntegrationTestCase(TestCase):
         with connect(cls.bolt_address, auth=cls.auth_token) as cx:
             cx.run("MATCH (a) DETACH DELETE a")
             cx.discard_all()
-            cx.send()
+            cx.send_all()
             cx.fetch_all()
 
     @classmethod

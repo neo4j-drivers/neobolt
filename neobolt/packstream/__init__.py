@@ -23,6 +23,7 @@ __all__ = [
     "Packer",
     "Structure",
     "Unpacker",
+    "Unpackable",
 ]
 
 
@@ -55,4 +56,4 @@ class Structure(object):
 
 
 from neobolt.packstream.packer import Packer
-from neobolt.packstream.unpacker import Unpacker
+from neobolt.packstream.unpacker import Unpacker, Unpackable

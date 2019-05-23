@@ -41,19 +41,21 @@ __all__ = [
 from collections import deque
 from logging import getLogger
 from select import select
-from socket import socket, SOL_SOCKET, SO_KEEPALIVE, SHUT_RDWR, error as SocketError, timeout as SocketTimeout, AF_INET, AF_INET6
+from socket import socket, SOL_SOCKET, SO_KEEPALIVE, SHUT_RDWR, \
+    timeout as SocketTimeout, AF_INET, AF_INET6
 from struct import pack as struct_pack, unpack as struct_unpack
 from threading import RLock, Condition
 from sys import platform, version_info
 
 from neobolt.addressing import SocketAddress, Resolver
-from neobolt.bolt.io import ChunkedInputBuffer, ChunkedOutputBuffer
 from neobolt.compat import perf_counter
 from neobolt.compat.ssl import SSL_AVAILABLE, HAS_SNI, SSLSocket, SSLError
 from neobolt.exceptions import ClientError, ProtocolError, SecurityError, \
-    ServiceUnavailable, AuthError, CypherError, IncompleteCommitError
+    ServiceUnavailable, AuthError, CypherError, IncompleteCommitError, \
+    ConnectionExpired, DatabaseUnavailableError, NotALeaderError, \
+    ForbiddenOnReadOnlyDatabaseError
 from neobolt.meta import version
-from neobolt.packstream import Packer, Unpacker
+from neobolt.packstream import Packer, Unpacker, Unpackable
 from neobolt.security import AuthToken, TRUST_DEFAULT, TRUST_ON_FIRST_USE, KNOWN_HOSTS, PersonalCertificateStore, \
     SecurityPlan
 
@@ -125,24 +127,129 @@ class ServerInfo(object):
             return None
 
 
-class ConnectionErrorHandler(object):
-    """ A handler for send and receive errors.
-    """
+class Outbox(object):
 
-    def __init__(self, handlers_by_error_class=None):
-        if handlers_by_error_class is None:
-            handlers_by_error_class = {}
+    def __init__(self, capacity=8192, max_chunk_size=16384):
+        self._max_chunk_size = max_chunk_size
+        self._header = 0
+        self._start = 2
+        self._end = 2
+        self._data = bytearray(capacity)
 
-        self.handlers_by_error_class = handlers_by_error_class
-        self.known_errors = tuple(handlers_by_error_class.keys())
+    def max_chunk_size(self):
+        return self._max_chunk_size
 
-    def handle(self, error, unresolved_address):
+    def clear(self):
+        self._header = 0
+        self._start = 2
+        self._end = 2
+        self._data[0:2] = b"\x00\x00"
+
+    def write(self, b):
+        to_write = len(b)
+        max_chunk_size = self._max_chunk_size
+        pos = 0
+        while to_write > 0:
+            chunk_size = self._end - self._start
+            remaining = max_chunk_size - chunk_size
+            if remaining == 0 or remaining < to_write <= max_chunk_size:
+                self.chunk()
+            else:
+                wrote = min(to_write, remaining)
+                new_end = self._end + wrote
+                self._data[self._end:new_end] = b[pos:pos+wrote]
+                self._end = new_end
+                pos += wrote
+                new_chunk_size = self._end - self._start
+                self._data[self._header:(self._header + 2)] = struct_pack(">H", new_chunk_size)
+                to_write -= wrote
+
+    def chunk(self):
+        self._header = self._end
+        self._start = self._header + 2
+        self._end = self._start
+        self._data[self._header:self._start] = b"\x00\x00"
+
+    def view(self):
+        end = self._end
+        chunk_size = end - self._start
+        if chunk_size == 0:
+            return memoryview(self._data[:self._header])
+        else:
+            return memoryview(self._data[:end])
+
+
+class Inbox(object):
+
+    def __init__(self, s, on_error):
+        super(Inbox, self).__init__()
+        self.socket = s
+        self.on_error = on_error
+        self._messages = self._yield_messages()
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return next(self._messages)
+
+    def _load_chunks(self, buffer):
+
+        def receive(n_bytes):
+            end = buffer.used + n_bytes
+            recv_into = self.socket.recv_into
+            if end > len(buffer.data):
+                buffer.data += bytearray(end - len(buffer.data))
+            view = memoryview(buffer.data)
+            while buffer.used < end:
+                n = recv_into(view[buffer.used:end], end - buffer.used)
+                if n == 0:
+                    self.on_error()
+                buffer.used += n
+
+        def pop_u16():
+            if buffer.used >= 2:
+                value = 0x100 * buffer.data[buffer.used - 2] + buffer.data[buffer.used - 1]
+                buffer.used -= 2
+                return value
+            else:
+                return -1
+
         try:
-            error_class = error.__class__
-            handler = self.handlers_by_error_class[error_class]
-            handler(unresolved_address)
-        except KeyError:
-            pass
+            chunk_size = 0
+            while True:
+                if chunk_size == 0:
+                    receive(2)
+                chunk_size = pop_u16()
+                if chunk_size > 0:
+                    receive(chunk_size + 2)
+                yield chunk_size
+        except (IOError, OSError) as error:     # TODO 2.0: remove IOError
+            self.on_error(error)
+
+    def _yield_messages(self):
+        buffer = Unpackable()
+        chunk_loader = self._load_chunks(buffer)
+        unpacker = Unpacker(buffer)
+        details = []
+        while True:
+            unpacker.reset()
+            details[:] = ()
+            chunk_size = -1
+            while chunk_size != 0:
+                chunk_size = next(chunk_loader)
+            summary_signature = None
+            summary_metadata = None
+            size, signature = unpacker.unpack_structure_header()
+            if size > 1:
+                raise ProtocolError("Expected one field")
+            if signature == b"\x71":
+                data = unpacker.unpack()
+                details.append(data)
+            else:
+                summary_signature = signature
+                summary_metadata = unpacker.unpack_map()
+            yield details, summary_signature, summary_metadata
 
 
 class Connection(object):
@@ -171,18 +278,18 @@ class Connection(object):
     pool = None
 
     #: Error class used for raising connection errors
+    # TODO: separate errors for connector API
     Error = ServiceUnavailable
 
     def __init__(self, protocol_version, unresolved_address, sock, **config):
         self.protocol_version = protocol_version
         self.unresolved_address = unresolved_address
         self.socket = sock
-        self.error_handler = config.get("error_handler", ConnectionErrorHandler())
         self.server = ServerInfo(SocketAddress.from_socket(sock), protocol_version)
-        self.input_buffer = ChunkedInputBuffer()
-        self.output_buffer = ChunkedOutputBuffer()
-        self.packer = Packer(self.output_buffer)
-        self.unpacker = Unpacker()
+        self.outbox = Outbox()
+        self.inbox = Inbox(self.socket, on_error=self._set_defunct)
+        self.packer = Packer(self.outbox)
+        self.unpacker = Unpacker(self.inbox)
         self.responses = deque()
         self._max_connection_lifetime = config.get("max_connection_lifetime", DEFAULT_MAX_CONNECTION_LIFETIME)
         self._creation_timestamp = perf_counter()
@@ -232,7 +339,7 @@ class Connection(object):
         log_debug("[#%04X]  C: INIT %r {...}", self.local_port, self.user_agent)
         self._append(b"\x01", (self.user_agent, self.auth_dict),
                      response=InitResponse(self, on_success=self.server.metadata.update))
-        self.send()
+        self.send_all()
         self.fetch_all()
         self.packer.supports_bytes = self.server.supports("bytes")
 
@@ -245,7 +352,7 @@ class Connection(object):
         log_debug("[#%04X]  C: HELLO %r", self.local_port, logged_headers)
         self._append(b"\x01", (headers,),
                      response=InitResponse(self, on_success=self.server.metadata.update))
-        self.send()
+        self.send_all()
         self.fetch_all()
         self.packer.supports_bytes = self.server.supports("bytes")
 
@@ -367,8 +474,8 @@ class Connection(object):
         :arg response: a response object to handle callbacks
         """
         self.packer.pack_struct(signature, fields)
-        self.output_buffer.chunk()
-        self.output_buffer.chunk()
+        self.outbox.chunk()
+        self.outbox.chunk()
         self.responses.append(response)
 
     def reset(self):
@@ -381,20 +488,13 @@ class Connection(object):
 
         log_debug("[#%04X]  C: RESET", self.local_port)
         self._append(b"\x0F", response=Response(self, on_failure=fail))
-        self.send()
+        self.send_all()
         self.fetch_all()
 
-    def send(self):
-        try:
-            self._send()
-        except self.error_handler.known_errors as error:
-            self.error_handler.handle(error, self.unresolved_address)
-            raise error
-
-    def _send(self):
+    def send_all(self):
         """ Send all queued messages to the server.
         """
-        data = self.output_buffer.view()
+        data = self.outbox.view()
         if not data:
             return
         if self.closed():
@@ -407,7 +507,15 @@ class Connection(object):
                                                   self.server.address))
         try:
             self.socket.sendall(data)
-        except SocketError as error:
+        except (ConnectionExpired, ServiceUnavailable, DatabaseUnavailableError):
+            if self.pool:
+                self.pool.deactivate(self.unresolved_address),
+            raise
+        except (NotALeaderError, ForbiddenOnReadOnlyDatabaseError):
+            if self.pool:
+                self.pool.remove_writer(self.unresolved_address),
+            raise
+        except (IOError, OSError) as error:
             log.error("Failed to write data to connection "
                       "{!r} ({!r}); ({!r})".
                       format(self.unresolved_address,
@@ -416,9 +524,9 @@ class Connection(object):
             if self.pool:
                 self.pool.deactivate(self.unresolved_address)
             raise
-        self.output_buffer.clear()
+        self.outbox.clear()
 
-    def fetch_more(self):
+    def fetch_message(self):
         """ Receive at least one message from the server, if available.
 
         :return: 2-tuple of number of detail messages and number of summary
@@ -435,20 +543,26 @@ class Connection(object):
         if not self.responses:
             return 0, 0
 
-        # Receive at least one message
+        # Receive exactly one message
         try:
-            try:
-                while not self.input_buffer.frame_message():
-                    received = self.input_buffer.receive(self.socket, 8192)
-                    if received == 0:
-                        self._set_defunct()
-            except (IOError, OSError) as error:     # TODO 2.0: remove IOError
-                self._set_defunct(error)
-        except self.error_handler.known_errors as error:
-            self.error_handler.handle(error, self.unresolved_address)
-            raise error
-
-        details, summary_signature, summary_metadata = self._unpack()
+            details, summary_signature, summary_metadata = next(self.inbox)
+        except (ConnectionExpired, ServiceUnavailable, DatabaseUnavailableError):
+            if self.pool:
+                self.pool.deactivate(self.unresolved_address),
+            raise
+        except (NotALeaderError, ForbiddenOnReadOnlyDatabaseError):
+            if self.pool:
+                self.pool.remove_writer(self.unresolved_address),
+            raise
+        except (IOError, OSError) as error:
+            log.error("Failed to read data from connection "
+                      "{!r} ({!r}); ({!r})".
+                      format(self.unresolved_address,
+                             self.server.address,
+                             "; ".join(map(repr, error.args))))
+            if self.pool:
+                self.pool.deactivate(self.unresolved_address)
+            raise
 
         if details:
             log_debug("[#%04X]  S: RECORD * %d", self.local_port, len(details))  # TODO
@@ -495,29 +609,6 @@ class Connection(object):
                 raise IncompleteCommitError(message)
         raise self.Error(message)
 
-    def _unpack(self):
-        unpacker = self.unpacker
-        input_buffer = self.input_buffer
-
-        details = []
-        summary_signature = None
-        summary_metadata = None
-        more = True
-        while more:
-            unpacker.attach(input_buffer.frame())
-            size, signature = unpacker.unpack_structure_header()
-            if size > 1:
-                raise ProtocolError("Expected one field")
-            if signature == b"\x71":
-                data = unpacker.unpack()
-                details.append(data)
-                more = input_buffer.frame_message()
-            else:
-                summary_signature = signature
-                summary_metadata = unpacker.unpack_map()
-                more = False
-        return details, summary_signature, summary_metadata
-
     def timedout(self):
         return 0 <= self._max_connection_lifetime <= perf_counter() - self._creation_timestamp
 
@@ -531,7 +622,7 @@ class Connection(object):
         while self.responses:
             response = self.responses[0]
             while not response.complete:
-                detail_delta, summary_delta = self.fetch_more()
+                detail_delta, summary_delta = self.fetch_message()
                 detail_count += detail_delta
                 summary_count += summary_delta
         return detail_count, summary_count
@@ -543,7 +634,7 @@ class Connection(object):
                  messages fetched
         """
         # TODO: remove this method and use the methods below instead
-        self.send()
+        self.send_all()
         return self.fetch_all()
 
     def close(self):
@@ -554,7 +645,7 @@ class Connection(object):
                 log_debug("[#%04X]  C: GOODBYE", self.local_port)
                 self._append(b"\x02", ())
                 try:
-                    self.send()
+                    self.send_all()
                 except ServiceUnavailable:
                     pass
             log_debug("[#%04X]  C: <CLOSE>", self.local_port)
@@ -578,9 +669,8 @@ class AbstractConnectionPool(object):
 
     _closed = False
 
-    def __init__(self, connector, connection_error_handler, **config):
+    def __init__(self, connector, **config):
         self.connector = connector
-        self.connection_error_handler = connection_error_handler
         self.connections = {}
         self.lock = RLock()
         self.cond = Condition(self.lock)
@@ -622,7 +712,7 @@ class AbstractConnectionPool(object):
                 can_create_new_connection = self._max_connection_pool_size == INFINITE or len(connections) < self._max_connection_pool_size
                 if can_create_new_connection:
                     try:
-                        connection = self.connector(address, error_handler=self.connection_error_handler)
+                        connection = self.connector(address)
                     except ServiceUnavailable:
                         self.remove(address)
                         raise
@@ -725,7 +815,7 @@ class AbstractConnectionPool(object):
 class ConnectionPool(AbstractConnectionPool):
 
     def __init__(self, connector, address, **config):
-        super(ConnectionPool, self).__init__(connector, ConnectionErrorHandler(), **config)
+        super(ConnectionPool, self).__init__(connector, **config)
         self.address = address
 
     def acquire(self, access_mode=None):

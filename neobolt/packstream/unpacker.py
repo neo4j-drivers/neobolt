@@ -28,25 +28,58 @@ from neobolt.packstream import Structure
 EndOfStream = object()
 
 
-class Unpacker(object):
+class Unpackable(object):
 
-    def __init__(self):
-        self.source = None
+    initial_capacity = 8192
 
-    def attach(self, source):
-        self.source = source
+    def __init__(self, data=None):
+        if data is None:
+            self.data = bytearray(self.initial_capacity)
+            self.used = 0
+        else:
+            self.data = bytearray(data)
+            self.used = len(self.data)
+        self.p = 0
+
+    def reset(self):
+        self.used = 0
+        self.p = 0
 
     def read(self, n=1):
-        return self.source.read(n)
+        view = memoryview(self.data)
+        q = self.p + n
+        subview = view[self.p:q]
+        self.p = q
+        return subview
 
-    def read_int(self):
-        return self.source.read_int()
+    def read_u8(self):
+        if self.used - self.p >= 1:
+            value = self.data[self.p]
+            self.p += 1
+            return value
+        else:
+            return -1
+
+
+class Unpacker(object):
+
+    def __init__(self, unpackable):
+        self.unpackable = unpackable
+
+    def reset(self):
+        self.unpackable.reset()
+
+    def read(self, n=1):
+        return self.unpackable.read(n)
+
+    def read_u8(self):
+        return self.unpackable.read_u8()
 
     def unpack(self):
         return self._unpack()
 
     def _unpack(self):
-        marker = self.read_int()
+        marker = self.read_u8()
 
         if marker == -1:
             raise RuntimeError("Nothing to unpack")
@@ -163,7 +196,7 @@ class Unpacker(object):
             return
 
     def unpack_map(self):
-        marker = self.read_int()
+        marker = self.read_u8()
         return self._unpack_map(marker)
 
     def _unpack_map(self, marker):
@@ -208,7 +241,7 @@ class Unpacker(object):
             return None
 
     def unpack_structure_header(self):
-        marker = self.read_int()
+        marker = self.read_u8()
         if marker == -1:
             return None, None
         else:

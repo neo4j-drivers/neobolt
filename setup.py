@@ -46,7 +46,6 @@ classifiers = [
 ]
 packages = [
     "neobolt",
-    "neobolt.bolt",
     "neobolt.compat",
     "neobolt.packstream",
 ]

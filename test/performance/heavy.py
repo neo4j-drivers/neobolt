@@ -13,7 +13,7 @@ def main():
             metadata = {}
             cx.run("RETURN 1", {}, on_success=metadata.update)
             cx.pull_all(on_records=records.extend, on_success=metadata.update)
-            cx.send()
+            cx.send_all()
             cx.fetch_all()
 
 
