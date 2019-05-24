@@ -708,16 +708,6 @@ class Connection(object):
                 summary_count += summary_delta
         return detail_count, summary_count
 
-    def sync(self):
-        """ Send and fetch all outstanding messages.
-
-        :return: 2-tuple of number of detail messages and number of summary
-                 messages fetched
-        """
-        # TODO: remove this method and use the methods below instead
-        self.send_all()
-        return self.fetch_all()
-
     def close(self):
         """ Close the connection.
         """

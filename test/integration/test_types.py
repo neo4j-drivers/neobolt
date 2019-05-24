@@ -45,7 +45,8 @@ class TypeSystemIntegrationTestCase(IntegrationTestCase):
             cx.run(statement, parameters, on_success=metadata.update)
             cx.pull_all(on_records=data.extend, on_success=metadata.update)
             cx.rollback()
-            cx.sync()
+            cx.send_all()
+            cx.fetch_all()
         assertion(data, metadata)
 
     def _test_io(self, *values):
