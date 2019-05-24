@@ -19,7 +19,6 @@
 # limitations under the License.
 
 
-from abc import abstractmethod
 from collections import OrderedDict
 from collections.abc import MutableSet
 from logging import getLogger
