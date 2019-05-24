@@ -282,6 +282,9 @@ class Inbox(object):
     def __next__(self):
         return next(self._messages)
 
+    # TODO 2.0: remove
+    next = __next__
+
     @classmethod
     def _load_chunks(cls, sock, buffer):
         chunk_size = 0
