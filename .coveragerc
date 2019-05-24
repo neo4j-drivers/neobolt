@@ -4,9 +4,16 @@ source =
     neobolt
 omit =
     .*/*
+    neobolt/__main__.py
     test/*
-    neobolt/compat/*
-    neobolt/util.py
 
 [report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    if self.debug:
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    except ImportError
+
 show_missing = True
