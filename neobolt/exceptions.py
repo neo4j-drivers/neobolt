@@ -23,27 +23,6 @@
 This module contains the core driver exceptions.
 """
 
-# RoutingError:
-# - RoutingUnavailable (procedure not found)
-# - RoutingBroken (unexpected response)
-# - No routers available
-#
-# ConnectionError:
-# - ConnectionUnavailable: Can't connect
-# - Connection???: Connected but wrong protocol
-# - ConnectionExpired: Connection died while in use
-# - ConnectionPoolClosed: Connection pool closed
-# - ConnectionTimedOut: Timed out while connecting
-#
-# AddressError:
-# - Failed to resolve address
-#
-# CypherError:
-# -
-#
-# ProtocolError:
-# -
-
 
 class ProtocolError(Exception):
     """ Raised when an unexpected or unsupported protocol event occurs.
