@@ -160,50 +160,7 @@ class RoutingTable(object):
         return set(self.routers) | set(self.writers) | set(self.readers)
 
 
-class LoadBalancingStrategy(object):
-
-    @classmethod
-    def build(cls, connection_pool, **config):
-        load_balancing_strategy = config.get("load_balancing_strategy", DEFAULT_LOAD_BALANCING_STRATEGY)
-        if load_balancing_strategy == LOAD_BALANCING_STRATEGY_LEAST_CONNECTED:
-            return LeastConnectedLoadBalancingStrategy(connection_pool)
-        elif load_balancing_strategy == LOAD_BALANCING_STRATEGY_ROUND_ROBIN:
-            return RoundRobinLoadBalancingStrategy()
-        else:
-            raise ValueError("Unknown load balancing strategy '%s'" % load_balancing_strategy)
-
-    @abstractmethod
-    def select_reader(self, known_readers):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def select_writer(self, known_writers):
-        raise NotImplementedError()
-
-
-class RoundRobinLoadBalancingStrategy(LoadBalancingStrategy):
-
-    _readers_offset = 0
-    _writers_offset = 0
-
-    def select_reader(self, known_readers):
-        address = self._select(self._readers_offset, known_readers)
-        self._readers_offset += 1
-        return address
-
-    def select_writer(self, known_writers):
-        address = self._select(self._writers_offset, known_writers)
-        self._writers_offset += 1
-        return address
-
-    @classmethod
-    def _select(cls, offset, addresses):
-        if not addresses:
-            return None
-        return addresses[offset % len(addresses)]
-
-
-class LeastConnectedLoadBalancingStrategy(LoadBalancingStrategy):
+class LeastConnectedLoadBalancingStrategy(object):
 
     def __init__(self, connection_pool):
         self._readers_offset = 0
@@ -255,7 +212,7 @@ class RoutingConnectionPool(AbstractConnectionPool):
         self.routing_table = RoutingTable(routers)
         self.missing_writer = False
         self.refresh_lock = Lock()
-        self.load_balancing_strategy = LoadBalancingStrategy.build(self, **config)
+        self.load_balancing_strategy = LeastConnectedLoadBalancingStrategy(connection_pool=self)
 
     def fetch_routing_info(self, address):
         """ Fetch raw routing info from a given router address.

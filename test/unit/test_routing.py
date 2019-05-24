@@ -23,9 +23,9 @@ from collections import OrderedDict
 from unittest import TestCase
 
 from neobolt.direct import connect
-from neobolt.routing import READ_ACCESS, WRITE_ACCESS, OrderedSet, RoutingTable, RoutingConnectionPool,\
-    RoutingProtocolError, \
-    LeastConnectedLoadBalancingStrategy, RoundRobinLoadBalancingStrategy
+from neobolt.routing import READ_ACCESS, WRITE_ACCESS, OrderedSet, \
+    RoutingTable, RoutingConnectionPool, RoutingProtocolError, \
+    LeastConnectedLoadBalancingStrategy
 
 
 VALID_ROUTING_RECORD = {
@@ -248,31 +248,6 @@ class FakeConnectionPool(object):
 
     def in_use_connection_count(self, address):
         return self._addresses.get(address, 0)
-
-
-class RoundRobinLoadBalancingStrategyTestCase(TestCase):
-
-    def test_simple_reader_selection(self):
-        strategy = RoundRobinLoadBalancingStrategy()
-        self.assertEqual(strategy.select_reader(["0.0.0.0", "1.1.1.1", "2.2.2.2"]), "0.0.0.0")
-        self.assertEqual(strategy.select_reader(["0.0.0.0", "1.1.1.1", "2.2.2.2"]), "1.1.1.1")
-        self.assertEqual(strategy.select_reader(["0.0.0.0", "1.1.1.1", "2.2.2.2"]), "2.2.2.2")
-        self.assertEqual(strategy.select_reader(["0.0.0.0", "1.1.1.1", "2.2.2.2"]), "0.0.0.0")
-
-    def test_empty_reader_selection(self):
-        strategy = RoundRobinLoadBalancingStrategy()
-        self.assertIsNone(strategy.select_reader([]))
-
-    def test_simple_writer_selection(self):
-        strategy = RoundRobinLoadBalancingStrategy()
-        self.assertEqual(strategy.select_writer(["0.0.0.0", "1.1.1.1", "2.2.2.2"]), "0.0.0.0")
-        self.assertEqual(strategy.select_writer(["0.0.0.0", "1.1.1.1", "2.2.2.2"]), "1.1.1.1")
-        self.assertEqual(strategy.select_writer(["0.0.0.0", "1.1.1.1", "2.2.2.2"]), "2.2.2.2")
-        self.assertEqual(strategy.select_writer(["0.0.0.0", "1.1.1.1", "2.2.2.2"]), "0.0.0.0")
-
-    def test_empty_writer_selection(self):
-        strategy = RoundRobinLoadBalancingStrategy()
-        self.assertIsNone(strategy.select_writer([]))
 
 
 class LeastConnectedLoadBalancingStrategyTestCase(TestCase):
