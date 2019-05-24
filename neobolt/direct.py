@@ -123,10 +123,18 @@ class ServerInfo(object):
             return None
         if not self.agent.startswith("Neo4j/"):
             return None
-        if feature == "bytes":
+        if feature == "execution_times":
+            return self.version_info() >= (3, 1)
+        elif feature == "bookmarking":
+            return self.version_info() >= (3, 1)
+        elif feature == "bytes":
             return self.version_info() >= (3, 2)
         elif feature == "run_metadata":
             return self.protocol_version >= 3
+        elif feature == "spatial_types":
+            return self.protocol_version >= 2
+        elif feature == "temporal_types":
+            return self.protocol_version >= 2
         else:
             return None
 
