@@ -28,7 +28,7 @@ from uuid import uuid4
 
 from neobolt.packstream import Structure
 from neobolt.packstream.packer import Packer
-from neobolt.packstream.unpacker import Unpackable, Unpacker
+from neobolt.packstream.unpacker import UnpackableBuffer, Unpacker
 
 
 class PackStreamTestCase(TestCase):
@@ -53,7 +53,7 @@ class PackStreamTestCase(TestCase):
         except AssertionError:
             raise AssertionError("Packed value %r is %r instead of expected %r" %
                                  (value, packed, packed_value))
-        unpacked = Unpacker(Unpackable(packed)).unpack()
+        unpacked = Unpacker(UnpackableBuffer(packed)).unpack()
         try:
             assert unpacked == value
         except AssertionError:
@@ -211,7 +211,7 @@ class PackStreamTestCase(TestCase):
         except AssertionError:
             raise AssertionError("Packed value is %r instead of expected %r" %
                                  (packed, packed_value))
-        unpacked = Unpacker(Unpackable(packed)).unpack()
+        unpacked = Unpacker(UnpackableBuffer(packed)).unpack()
         try:
             assert unpacked == unpacked_value
         except AssertionError:
@@ -257,7 +257,7 @@ class PackStreamTestCase(TestCase):
         except AssertionError:
             raise AssertionError("Packed value is %r instead of expected %r" %
                                  (packed, packed_value))
-        unpacked = Unpacker(Unpackable(packed)).unpack()
+        unpacked = Unpacker(UnpackableBuffer(packed)).unpack()
         try:
             assert unpacked == unpacked_value
         except AssertionError:

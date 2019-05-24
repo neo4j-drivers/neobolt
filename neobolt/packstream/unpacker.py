@@ -28,7 +28,7 @@ from neobolt.packstream import Structure
 EndOfStream = object()
 
 
-class Unpackable(object):
+class UnpackableBuffer(object):
 
     initial_capacity = 8192
 
@@ -45,6 +45,10 @@ class Unpackable(object):
         self.used = 0
         self.p = 0
 
+    def ensure_capacity(self, size):
+        if size > len(self.data):
+            self.data += bytearray(size - len(self.data))
+
     def read(self, n=1):
         view = memoryview(self.data)
         q = self.p + n
@@ -59,6 +63,28 @@ class Unpackable(object):
             return value
         else:
             return -1
+
+    def pop_u16(self):
+        """ Remove the last two bytes of data, returning them as a big-endian
+        16-bit unsigned integer.
+        """
+        if self.used >= 2:
+            value = 0x100 * self.data[self.used - 2] + self.data[self.used - 1]
+            self.used -= 2
+            return value
+        else:
+            return -1
+
+    def receive(self, sock, n_bytes):
+        end = self.used + n_bytes
+        if end > len(self.data):
+            self.data += bytearray(end - len(self.data))
+        view = memoryview(self.data)
+        while self.used < end:
+            n = sock.recv_into(view[self.used:end], end - self.used)
+            if n == 0:
+                raise OSError("No data")
+            self.used += n
 
 
 class Unpacker(object):
@@ -82,7 +108,7 @@ class Unpacker(object):
         marker = self.read_u8()
 
         if marker == -1:
-            raise RuntimeError("Nothing to unpack")
+            raise ValueError("Nothing to unpack")
 
         # Tiny Integer
         if 0x00 <= marker <= 0x7F:
@@ -161,7 +187,7 @@ class Unpacker(object):
                 return EndOfStream
 
             else:
-                raise RuntimeError("Unknown PackStream marker %02X" % marker)
+                raise ValueError("Unknown PackStream marker %02X" % marker)
 
     def _unpack_list_items(self, marker):
         marker_high = marker & 0xF0
@@ -261,4 +287,4 @@ class Unpacker(object):
             signature = self.read(1).tobytes()
             return size, signature
         else:
-            raise RuntimeError("Expected structure, found marker %02X" % marker)
+            raise ValueError("Expected structure, found marker %02X" % marker)

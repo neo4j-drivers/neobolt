@@ -42,7 +42,7 @@ from collections import deque
 from logging import getLogger
 from select import select
 from socket import socket, SOL_SOCKET, SO_KEEPALIVE, SHUT_RDWR, \
-    timeout as SocketTimeout, AF_INET, AF_INET6
+    timeout as SocketTimeout, AF_INET, AF_INET6, MSG_DONTWAIT
 from struct import pack as struct_pack, unpack as struct_unpack
 from threading import RLock, Condition
 from sys import platform, version_info
@@ -55,7 +55,7 @@ from neobolt.exceptions import ClientError, ProtocolError, SecurityError, \
     ConnectionExpired, DatabaseUnavailableError, NotALeaderError, \
     ForbiddenOnReadOnlyDatabaseError
 from neobolt.meta import version
-from neobolt.packstream import Packer, Unpacker, Unpackable
+from neobolt.packstream import Packer, Unpacker, UnpackableBuffer
 from neobolt.security import AuthToken, TRUST_DEFAULT, TRUST_ON_FIRST_USE, KNOWN_HOSTS, PersonalCertificateStore, \
     SecurityPlan
 
@@ -179,13 +179,102 @@ class Outbox(object):
             return memoryview(self._data[:end])
 
 
+class BufferedSocket(object):
+    """ Wrapper for a regular socket, with an added a dynamically-resizing
+    receive buffer to reduce the number of calls to recv.
+
+    NOTE: not all socket methods are implemented yet
+    """
+
+    def __init__(self, socket_, initial_capacity=0):
+        self.socket = socket_
+        self.buffer = bytearray(initial_capacity)
+        self.r_pos = 0
+        self.w_pos = 0
+
+    def _fill_buffer(self, min_bytes):
+        """ Fill the buffer with at least `min_bytes` bytes, requesting more if
+        the buffer has space. Internally, this method attempts to do as little
+        allocation as possible and make as few calls to socket.recv as
+        possible.
+        """
+        # First, we need to calculate how much spare space exists between the
+        # write cursor and the end of the buffer.
+        space_at_end = len(self.buffer) - self.w_pos
+        if min_bytes <= space_at_end:
+            # If there's at least enough here for the minimum number of bytes
+            # we need, then do nothing
+            #
+            pass
+        elif min_bytes <= space_at_end + self.r_pos:
+            # If the buffer contains enough space, but it's split between the
+            # end of the buffer and recyclable space at the start of the
+            # buffer, then recycle that space by pushing the remaining data
+            # towards the front.
+            #
+            # print("Recycling {} bytes".format(self.r_pos))
+            size = self.w_pos - self.r_pos
+            view = memoryview(self.buffer)
+            self.buffer[0:size] = view[self.r_pos:self.w_pos]
+            self.r_pos = 0
+            self.w_pos = size
+        else:
+            # Otherwise, there's just not enough space whichever way you shake
+            # it. So, rebuild the buffer from scratch, taking the unread data
+            # and appending empty space big enough to hold the minimum number
+            # of bytes we're looking for.
+            #
+            # print("Rebuilding buffer from {} bytes ({} used) to "
+            #       "{} bytes".format(len(self.buffer),
+            #                         self.w_pos - self.r_pos,
+            #                         self.w_pos - self.r_pos + min_bytes))
+            self.buffer = (self.buffer[self.r_pos:self.w_pos] +
+                           bytearray(min_bytes))
+            self.w_pos -= self.r_pos
+            self.r_pos = 0
+        min_end = self.w_pos + min_bytes
+        end = len(self.buffer)
+        view = memoryview(self.buffer)
+        self.socket.setblocking(0)
+        while self.w_pos < min_end:
+            ready_to_read, _, _ = select([self.socket], [], [])
+            subview = view[self.w_pos:end]
+            n = self.socket.recv_into(subview, end - self.w_pos)
+            if n == 0:
+                raise OSError("No data")
+            self.w_pos += n
+
+    def recv_into(self, buffer, n_bytes=0, flags=0):
+        """ Intercepts a regular socket.recv_into call, taking data from the
+        internal buffer, if available. If not enough data exists in the buffer,
+        more will be retrieved first.
+
+        Unlike the lower-level call, this method will never return 0, instead
+        raising an OSError if no data is returned on the underlying socket.
+
+        :param buffer:
+        :param n_bytes:
+        :param flags:
+        :raises OSError:
+        :return:
+        """
+        available = self.w_pos - self.r_pos
+        required = n_bytes - available
+        if required > 0:
+            self._fill_buffer(required)
+        view = memoryview(self.buffer)
+        end = self.r_pos + n_bytes
+        buffer[:] = view[self.r_pos:end]
+        self.r_pos = end
+        return n_bytes
+
+
 class Inbox(object):
 
     def __init__(self, s, on_error):
         super(Inbox, self).__init__()
-        self.socket = s
         self.on_error = on_error
-        self._messages = self._yield_messages()
+        self._messages = self._yield_messages(s)
 
     def __iter__(self):
         return self
@@ -193,63 +282,43 @@ class Inbox(object):
     def __next__(self):
         return next(self._messages)
 
-    def _load_chunks(self, buffer):
+    @classmethod
+    def _load_chunks(cls, sock, buffer):
+        chunk_size = 0
+        while True:
+            if chunk_size == 0:
+                buffer.receive(sock, 2)
+            chunk_size = buffer.pop_u16()
+            if chunk_size > 0:
+                buffer.receive(sock, chunk_size + 2)
+            yield chunk_size
 
-        def receive(n_bytes):
-            end = buffer.used + n_bytes
-            recv_into = self.socket.recv_into
-            if end > len(buffer.data):
-                buffer.data += bytearray(end - len(buffer.data))
-            view = memoryview(buffer.data)
-            while buffer.used < end:
-                n = recv_into(view[buffer.used:end], end - buffer.used)
-                if n == 0:
-                    self.on_error()
-                buffer.used += n
-
-        def pop_u16():
-            if buffer.used >= 2:
-                value = 0x100 * buffer.data[buffer.used - 2] + buffer.data[buffer.used - 1]
-                buffer.used -= 2
-                return value
-            else:
-                return -1
-
+    def _yield_messages(self, sock):
         try:
-            chunk_size = 0
+            buffer = UnpackableBuffer()
+            chunk_loader = self._load_chunks(sock, buffer)
+            unpacker = Unpacker(buffer)
+            details = []
             while True:
-                if chunk_size == 0:
-                    receive(2)
-                chunk_size = pop_u16()
-                if chunk_size > 0:
-                    receive(chunk_size + 2)
-                yield chunk_size
+                unpacker.reset()
+                details[:] = ()
+                chunk_size = -1
+                while chunk_size != 0:
+                    chunk_size = next(chunk_loader)
+                summary_signature = None
+                summary_metadata = None
+                size, signature = unpacker.unpack_structure_header()
+                if size > 1:
+                    raise ProtocolError("Expected one field")
+                if signature == b"\x71":
+                    data = unpacker.unpack()
+                    details.append(data)
+                else:
+                    summary_signature = signature
+                    summary_metadata = unpacker.unpack_map()
+                yield details, summary_signature, summary_metadata
         except (IOError, OSError) as error:     # TODO 2.0: remove IOError
             self.on_error(error)
-
-    def _yield_messages(self):
-        buffer = Unpackable()
-        chunk_loader = self._load_chunks(buffer)
-        unpacker = Unpacker(buffer)
-        details = []
-        while True:
-            unpacker.reset()
-            details[:] = ()
-            chunk_size = -1
-            while chunk_size != 0:
-                chunk_size = next(chunk_loader)
-            summary_signature = None
-            summary_metadata = None
-            size, signature = unpacker.unpack_structure_header()
-            if size > 1:
-                raise ProtocolError("Expected one field")
-            if signature == b"\x71":
-                data = unpacker.unpack()
-                details.append(data)
-            else:
-                summary_signature = signature
-                summary_metadata = unpacker.unpack_map()
-            yield details, summary_signature, summary_metadata
 
 
 class Connection(object):
@@ -287,7 +356,7 @@ class Connection(object):
         self.socket = sock
         self.server = ServerInfo(SocketAddress.from_socket(sock), protocol_version)
         self.outbox = Outbox()
-        self.inbox = Inbox(self.socket, on_error=self._set_defunct)
+        self.inbox = Inbox(BufferedSocket(self.socket, 32768), on_error=self._set_defunct)
         self.packer = Packer(self.outbox)
         self.unpacker = Unpacker(self.inbox)
         self.responses = deque()
