@@ -138,11 +138,24 @@ class RoutingTable(object):
         self.last_updated_time = self.timer()
         self.ttl = ttl
 
+    def __repr__(self):
+        return "RoutingTable(routers=%r, readers=%r, writers=%r, last_updated_time=%r, ttl=%r)" % (
+            self.routers,
+            self.readers,
+            self.writers,
+            self.last_updated_time,
+            self.ttl,
+        )
+
     def is_fresh(self, access_mode):
         """ Indicator for whether routing information is still usable.
         """
+        log.debug("[#0000]  C: <ROUTING> Checking table freshness for %r", access_mode)
         expired = self.last_updated_time + self.ttl <= self.timer()
-        has_server_for_mode = (access_mode == READ_ACCESS and self.readers) or (access_mode == WRITE_ACCESS and self.writers)
+        has_server_for_mode = bool(access_mode == READ_ACCESS and self.readers) or bool(access_mode == WRITE_ACCESS and self.writers)
+        log.debug("[#0000]  C: <ROUTING> Table expired=%r", expired)
+        log.debug("[#0000]  C: <ROUTING> Table routers=%r", self.routers)
+        log.debug("[#0000]  C: <ROUTING> Table has_server_for_mode=%r", has_server_for_mode)
         return not expired and self.routers and has_server_for_mode
 
     def update(self, new_routing_table):
@@ -154,6 +167,7 @@ class RoutingTable(object):
         self.writers.replace(new_routing_table.writers)
         self.last_updated_time = self.timer()
         self.ttl = new_routing_table.ttl
+        log.debug("[#0000]  S: <ROUTING> table=%r", self)
 
     def servers(self):
         return set(self.routers) | set(self.writers) | set(self.readers)
@@ -234,21 +248,25 @@ class RoutingConnectionPool(AbstractConnectionPool):
         try:
             with self.acquire_direct(address) as cx:
                 _, _, server_version = (cx.server.agent or "").partition("/")
+                # TODO 2.0: remove old routing procedure
                 if server_version and Version.parse(server_version) >= Version((3, 2)):
+                    log.debug("[#%04X]  C: <ROUTING> query=%r", cx.local_port, self.routing_context or {})
                     cx.run("CALL dbms.cluster.routing.getRoutingTable({context})",
                            {"context": self.routing_context}, on_success=metadata.update, on_failure=fail)
                 else:
+                    log.debug("[#%04X]  C: <ROUTING> query={}", cx.local_port)
                     cx.run("CALL dbms.cluster.routing.getServers", {}, on_success=metadata.update, on_failure=fail)
                 cx.pull_all(on_success=metadata.update, on_records=records.extend)
                 cx.send_all()
                 cx.fetch_all()
+                routing_info = [dict(zip(metadata.get("fields", ()), values)) for values in records]
+                log.debug("[#%04X]  S: <ROUTING> info=%r", cx.local_port, routing_info)
+            return routing_info
         except RoutingProtocolError as error:
             raise ServiceUnavailable(*error.args)
         except ServiceUnavailable:
             self.deactivate(address)
             return None
-        else:
-            return [dict(zip(metadata.get("fields", ()), values)) for values in records]
 
     def fetch_routing_table(self, address):
         """ Fetch a routing table from a given router address.
@@ -388,17 +406,21 @@ class RoutingConnectionPool(AbstractConnectionPool):
         if present, remove from the routing table and also closing
         all idle connections to that address.
         """
+        log.debug("[#0000]  C: <ROUTING> Deactivating address %r", address)
         # We use `discard` instead of `remove` here since the former
         # will not fail if the address has already been removed.
         self.routing_table.routers.discard(address)
         self.routing_table.readers.discard(address)
         self.routing_table.writers.discard(address)
+        log.debug("[#0000]  C: <ROUTING> table=%r", self.routing_table)
         super(RoutingConnectionPool, self).deactivate(address)
 
     def remove_writer(self, address):
         """ Remove a writer address from the routing table, if present.
         """
+        log.debug("[#0000]  C: <ROUTING> Removing writer %r", address)
         self.routing_table.writers.discard(address)
+        log.debug("[#0000]  C: <ROUTING> table=%r", self.routing_table)
 
 
 class RoutingProtocolError(Exception):
