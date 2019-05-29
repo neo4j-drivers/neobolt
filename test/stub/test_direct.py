@@ -20,9 +20,19 @@
 
 
 from neobolt.direct import connect, Connection
-from neobolt.exceptions import ServiceUnavailable, IncompleteCommitError
+from neobolt.exceptions import ServiceUnavailable, IncompleteCommitError, \
+    DatabaseUnavailableError
 
 from test.stub.tools import StubTestCase, StubCluster
+
+
+class FakeConnectionPool(object):
+
+    def __init__(self):
+        self.deactivated_addresses = []
+
+    def deactivate(self, address):
+        self.deactivated_addresses.append(address)
 
 
 class ConnectionV1TestCase(StubTestCase):
@@ -76,6 +86,19 @@ class ConnectionV1TestCase(StubTestCase):
                     cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
                     cx.send_all()
                     cx.fetch_all()
+
+    def test_address_deactivation_on_database_unavailable_error(self):
+        with StubCluster({9001: "v1/database_unavailable.script"}):
+            address = ("127.0.0.1", 9001)
+            with connect(address, auth=self.auth_token, encrypted=False) as cx:
+                cx.pool = FakeConnectionPool()
+                with self.assertRaises(DatabaseUnavailableError):
+                    metadata = {}
+                    cx.run("RETURN 1", {}, on_success=metadata.update)
+                    cx.pull_all()
+                    cx.send_all()
+                    cx.fetch_all()
+                assert ("127.0.0.1", 9001) in cx.pool.deactivated_addresses
 
 
 class ConnectionV3TestCase(StubTestCase):

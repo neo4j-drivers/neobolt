@@ -588,14 +588,6 @@ class Connection(object):
                                                   self.server.address))
         try:
             self.socket.sendall(data)
-        except (ConnectionExpired, ServiceUnavailable, DatabaseUnavailableError):
-            if self.pool:
-                self.pool.deactivate(self.unresolved_address),
-            raise
-        except (NotALeaderError, ForbiddenOnReadOnlyDatabaseError):
-            if self.pool:
-                self.pool.remove_writer(self.unresolved_address),
-            raise
         except (IOError, OSError) as error:
             log.error("Failed to write data to connection "
                       "{!r} ({!r}); ({!r})".
@@ -627,14 +619,6 @@ class Connection(object):
         # Receive exactly one message
         try:
             details, summary_signature, summary_metadata = next(self.inbox)
-        except (ConnectionExpired, ServiceUnavailable, DatabaseUnavailableError):
-            if self.pool:
-                self.pool.deactivate(self.unresolved_address),
-            raise
-        except (NotALeaderError, ForbiddenOnReadOnlyDatabaseError):
-            if self.pool:
-                self.pool.remove_writer(self.unresolved_address),
-            raise
         except (IOError, OSError) as error:
             log.error("Failed to read data from connection "
                       "{!r} ({!r}); ({!r})".
@@ -662,7 +646,16 @@ class Connection(object):
             response.on_ignored(summary_metadata or {})
         elif summary_signature == b"\x7F":
             log.debug("[#%04X]  S: FAILURE %r", self.local_port, summary_metadata)
-            response.on_failure(summary_metadata or {})
+            try:
+                response.on_failure(summary_metadata or {})
+            except (ConnectionExpired, ServiceUnavailable, DatabaseUnavailableError):
+                if self.pool:
+                    self.pool.deactivate(self.unresolved_address),
+                raise
+            except (NotALeaderError, ForbiddenOnReadOnlyDatabaseError):
+                if self.pool:
+                    self.pool.remove_writer(self.unresolved_address),
+                raise
         else:
             raise ProtocolError("Unexpected response message with "
                                 "signature %02X" % summary_signature)
