@@ -125,7 +125,6 @@ class GraphTypeOutputTestCase(TypeSystemIntegrationTestCase):
 class SpatialTypeInputTestCase(TypeSystemIntegrationTestCase):
 
     def test_cartesian_point(self):
-        self.assert_supports_spatial_types()
 
         def assertion(data, _):
             x, y = data[0]
@@ -138,7 +137,6 @@ class SpatialTypeInputTestCase(TypeSystemIntegrationTestCase):
                    {"point": point}, assertion)
 
     def test_cartesian_3d_point(self):
-        self.assert_supports_spatial_types()
 
         def assertion(data, _):
             x, y, z = data[0]
@@ -152,7 +150,6 @@ class SpatialTypeInputTestCase(TypeSystemIntegrationTestCase):
                    {"point": point}, assertion)
 
     def test_wgs84_point(self):
-        self.assert_supports_spatial_types()
 
         def assertion(data, _):
             latitude, longitude = data[0]
@@ -165,7 +162,6 @@ class SpatialTypeInputTestCase(TypeSystemIntegrationTestCase):
                    {"point": point}, assertion)
 
     def test_wgs84_3d_point(self):
-        self.assert_supports_spatial_types()
 
         def assertion(data, _):
             latitude, longitude, height = data[0]
@@ -179,7 +175,6 @@ class SpatialTypeInputTestCase(TypeSystemIntegrationTestCase):
                    {"point": point}, assertion)
 
     def test_point_array(self):
-        self.assert_supports_spatial_types()
 
         points = [dehydrate_point(WGS84Point((1.23, 4.56))),
                   dehydrate_point(WGS84Point((9.87, 6.54)))]
@@ -194,7 +189,6 @@ class SpatialTypeInputTestCase(TypeSystemIntegrationTestCase):
 class SpatialTypeOutputTestCase(TypeSystemIntegrationTestCase):
 
     def test_cartesian_point(self):
-        self.assert_supports_spatial_types()
 
         def assertion(data, _):
             value = hydrate_point(*data[0][0])
@@ -207,7 +201,6 @@ class SpatialTypeOutputTestCase(TypeSystemIntegrationTestCase):
         self._test("RETURN point({x:3, y:4})", {}, assertion)
 
     def test_cartesian_3d_point(self):
-        self.assert_supports_spatial_types()
 
         def assertion(data, _):
             value = hydrate_point(*data[0][0])
@@ -219,7 +212,6 @@ class SpatialTypeOutputTestCase(TypeSystemIntegrationTestCase):
         self._test("RETURN point({x:3, y:4, z:5})", {}, assertion)
 
     def test_wgs84_point(self):
-        self.assert_supports_spatial_types()
 
         def assertion(data, _):
             value = hydrate_point(*data[0][0])
@@ -236,7 +228,6 @@ class SpatialTypeOutputTestCase(TypeSystemIntegrationTestCase):
         self._test("RETURN point({latitude:3, longitude:4})", {}, assertion)
 
     def test_wgs84_3d_point(self):
-        self.assert_supports_spatial_types()
 
         def assertion(data, _):
             value = hydrate_point(*data[0][0])
@@ -254,7 +245,6 @@ class SpatialTypeOutputTestCase(TypeSystemIntegrationTestCase):
 class TemporalTypeInputTestCase(TypeSystemIntegrationTestCase):
 
     def test_native_date(self):
-        self.assert_supports_temporal_types()
 
         def assertion(data, _):
             year, month, day = data[0]
@@ -267,7 +257,6 @@ class TemporalTypeInputTestCase(TypeSystemIntegrationTestCase):
                    "RETURN x.year, x.month, x.day", {"x": value}, assertion)
 
     def test_date(self):
-        self.assert_supports_temporal_types()
 
         def assertion(data, _):
             year, month, day = data[0]

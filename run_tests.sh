@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ARGS=$*
-VERSIONS="3.5.5 3.4.14"
+VERSIONS="3.5.5"
 
 coverage erase
 
@@ -26,7 +26,7 @@ then
     for VERSION in ${VERSIONS}
     do
         echo "Running integration tests against Neo4j ${VERSION}"
-        NEO4J_SERVER_PACKAGE="http://dist.neo4j.org/neo4j-enterprise-${VERSION}-unix.tar.gz" coverage run -a -m pytest -v ${ARGS} test/integration
+        NEO4J_VERSION="${VERSION}" coverage run -a -m pytest -v ${ARGS} test/integration
         STATUS="$?"
         if [[ ${STATUS} -ne 0 ]]
         then

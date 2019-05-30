@@ -123,33 +123,30 @@ class PackStreamHydrator(object):
 
 class PackStreamDehydrator(object):
 
-    def __init__(self, protocol_version, supports_bytes=False):
-        # TODO 2.0: remove this flag, since it's been true since 3.2
-        self.supports_bytes = supports_bytes
+    def __init__(self, protocol_version):
         self.dehydration_functions = {}
-        if protocol_version >= 2:
-            from datetime import date, time, datetime, timedelta
-            from .spatial import Point, dehydrate_point
-            from .temporal import (
-                Date, dehydrate_date,
-                Time, dehydrate_time,
-                DateTime, dehydrate_datetime,
-                Duration, dehydrate_duration,
-                dehydrate_timedelta,
-            )
-            self.dehydration_functions.update({
-                Point: dehydrate_point,
-                Date: dehydrate_date,
-                date: dehydrate_date,
-                Time: dehydrate_time,
-                time: dehydrate_time,
-                DateTime: dehydrate_datetime,
-                datetime: dehydrate_datetime,
-                Duration: dehydrate_duration,
-                timedelta: dehydrate_timedelta,
-            })
-            # Allow dehydration from any direct Point subclass
-            self.dehydration_functions.update({cls: dehydrate_point for cls in Point.__subclasses__()})
+        from datetime import date, time, datetime, timedelta
+        from .spatial import Point, dehydrate_point
+        from .temporal import (
+            Date, dehydrate_date,
+            Time, dehydrate_time,
+            DateTime, dehydrate_datetime,
+            Duration, dehydrate_duration,
+            dehydrate_timedelta,
+        )
+        self.dehydration_functions.update({
+            Point: dehydrate_point,
+            Date: dehydrate_date,
+            date: dehydrate_date,
+            Time: dehydrate_time,
+            time: dehydrate_time,
+            DateTime: dehydrate_datetime,
+            datetime: dehydrate_datetime,
+            Duration: dehydrate_duration,
+            timedelta: dehydrate_timedelta,
+        })
+        # Allow dehydration from any direct Point subclass
+        self.dehydration_functions.update({cls: dehydrate_point for cls in Point.__subclasses__()})
 
     def dehydrate(self, values):
         """ Convert native values into PackStream values.
@@ -175,10 +172,7 @@ class PackStreamDehydrator(object):
             elif isinstance(obj, str):
                 return obj
             elif isinstance(obj, (bytes, bytearray)):  # order is important here - bytes must be checked after string
-                if self.supports_bytes:
-                    return obj
-                else:
-                    raise TypeError("This PackSteam channel does not support BYTES (consider upgrading to Neo4j 3.2+)")
+                return obj
             elif isinstance(obj, (list, map_type)):
                 return list(map(dehydrate_, obj))
             elif isinstance(obj, dict):

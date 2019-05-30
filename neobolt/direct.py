@@ -118,26 +118,6 @@ class ServerInfo(object):
                 pass
         return tuple(value)
 
-    def supports(self, feature):
-        if not self.agent:
-            return None
-        if not self.agent.startswith("Neo4j/"):
-            return None
-        if feature == "execution_times":
-            return self.version_info() >= (3, 1)
-        elif feature == "bookmarking":
-            return self.version_info() >= (3, 1)
-        elif feature == "bytes":
-            return self.version_info() >= (3, 2)
-        elif feature == "run_metadata":
-            return self.protocol_version >= 3
-        elif feature == "spatial_types":
-            return self.protocol_version >= 2
-        elif feature == "temporal_types":
-            return self.protocol_version >= 2
-        else:
-            return None
-
 
 class Outbox(object):
 
@@ -416,14 +396,6 @@ class Connection(object):
         except IOError:
             return 0
 
-    def init(self):
-        log.debug("[#%04X]  C: INIT %r {...}", self.local_port, self.user_agent)
-        self._append(b"\x01", (self.user_agent, self.auth_dict),
-                     response=InitResponse(self, on_success=self.server.metadata.update))
-        self.send_all()
-        self.fetch_all()
-        self.packer.supports_bytes = self.server.supports("bytes")
-
     def hello(self):
         headers = {"user_agent": self.user_agent}
         headers.update(self.auth_dict)
@@ -435,7 +407,6 @@ class Connection(object):
                      response=InitResponse(self, on_success=self.server.metadata.update))
         self.send_all()
         self.fetch_all()
-        self.packer.supports_bytes = self.server.supports("bytes")
 
     def __del__(self):
         try:
@@ -452,32 +423,25 @@ class Connection(object):
     def run(self, statement, parameters=None, mode=None, bookmarks=None, metadata=None, timeout=None, **handlers):
         if not parameters:
             parameters = {}
-        if self.protocol_version >= 3:
-            extra = {}
-            if mode:
-                extra["mode"] = mode
-            if bookmarks:
-                try:
-                    extra["bookmarks"] = list(bookmarks)
-                except TypeError:
-                    raise TypeError("Bookmarks must be provided within an iterable")
-            if metadata:
-                try:
-                    extra["tx_metadata"] = dict(metadata)
-                except TypeError:
-                    raise TypeError("Metadata must be coercible to a dict")
-            if timeout:
-                try:
-                    extra["tx_timeout"] = int(1000 * timeout)
-                except TypeError:
-                    raise TypeError("Timeout must be specified as a number of seconds")
-            fields = (statement, parameters, extra)
-        else:
-            if metadata:
-                raise NotImplementedError("Transaction metadata is not supported in Bolt v%d" % self.protocol_version)
-            if timeout:
-                raise NotImplementedError("Transaction timeouts are not supported in Bolt v%d" % self.protocol_version)
-            fields = (statement, parameters)
+        extra = {}
+        if mode:
+            extra["mode"] = mode
+        if bookmarks:
+            try:
+                extra["bookmarks"] = list(bookmarks)
+            except TypeError:
+                raise TypeError("Bookmarks must be provided within an iterable")
+        if metadata:
+            try:
+                extra["tx_metadata"] = dict(metadata)
+            except TypeError:
+                raise TypeError("Metadata must be coercible to a dict")
+        if timeout:
+            try:
+                extra["tx_timeout"] = int(1000 * timeout)
+            except TypeError:
+                raise TypeError("Timeout must be specified as a number of seconds")
+        fields = (statement, parameters, extra)
         log.debug("[#%04X]  C: RUN %s", self.local_port, " ".join(map(repr, fields)))
         if statement.upper() == u"COMMIT":
             self._append(b"\x10", fields, CommitResponse(self, **handlers))
@@ -493,59 +457,34 @@ class Connection(object):
         self._append(b"\x3F", (), Response(self, **handlers))
 
     def begin(self, mode=None, bookmarks=None, metadata=None, timeout=None, **handlers):
-        if self.protocol_version >= 3:
-            extra = {}
-            if mode:
-                extra["mode"] = mode
-            if bookmarks:
-                try:
-                    extra["bookmarks"] = list(bookmarks)
-                except TypeError:
-                    raise TypeError("Bookmarks must be provided within an iterable")
-            if metadata:
-                try:
-                    extra["tx_metadata"] = dict(metadata)
-                except TypeError:
-                    raise TypeError("Metadata must be coercible to a dict")
-            if timeout:
-                try:
-                    extra["tx_timeout"] = int(1000 * timeout)
-                except TypeError:
-                    raise TypeError("Timeout must be specified as a number of seconds")
-            log.debug("[#%04X]  C: BEGIN %r", self.local_port, extra)
-            self._append(b"\x11", (extra,), Response(self, **handlers))
-        else:
-            extra = {}
-            if bookmarks:
-                if self.protocol_version < 2:
-                    # TODO 2.0: remove
-                    extra["bookmark"] = last_bookmark(bookmarks)
-                try:
-                    extra["bookmarks"] = list(bookmarks)
-                except TypeError:
-                    raise TypeError("Bookmarks must be provided within an iterable")
-            if metadata:
-                raise NotImplementedError("Transaction metadata is not supported in Bolt v%d" % self.protocol_version)
-            if timeout:
-                raise NotImplementedError("Transaction timeouts are not supported in Bolt v%d" % self.protocol_version)
-            self.run(u"BEGIN", extra, **handlers)
-            self.discard_all(**handlers)
+        extra = {}
+        if mode:
+            extra["mode"] = mode
+        if bookmarks:
+            try:
+                extra["bookmarks"] = list(bookmarks)
+            except TypeError:
+                raise TypeError("Bookmarks must be provided within an iterable")
+        if metadata:
+            try:
+                extra["tx_metadata"] = dict(metadata)
+            except TypeError:
+                raise TypeError("Metadata must be coercible to a dict")
+        if timeout:
+            try:
+                extra["tx_timeout"] = int(1000 * timeout)
+            except TypeError:
+                raise TypeError("Timeout must be specified as a number of seconds")
+        log.debug("[#%04X]  C: BEGIN %r", self.local_port, extra)
+        self._append(b"\x11", (extra,), Response(self, **handlers))
 
     def commit(self, **handlers):
-        if self.protocol_version >= 3:
-            log.debug("[#%04X]  C: COMMIT", self.local_port)
-            self._append(b"\x12", (), CommitResponse(self, **handlers))
-        else:
-            self.run(u"COMMIT", {}, **handlers)
-            self.discard_all(**handlers)
+        log.debug("[#%04X]  C: COMMIT", self.local_port)
+        self._append(b"\x12", (), CommitResponse(self, **handlers))
 
     def rollback(self, **handlers):
-        if self.protocol_version >= 3:
-            log.debug("[#%04X]  C: ROLLBACK", self.local_port)
-            self._append(b"\x13", (), Response(self, **handlers))
-        else:
-            self.run(u"ROLLBACK", {}, **handlers)
-            self.discard_all(**handlers)
+        log.debug("[#%04X]  C: ROLLBACK", self.local_port)
+        self._append(b"\x13", (), Response(self, **handlers))
 
     def _append(self, signature, fields=(), response=None):
         """ Add a message to the outgoing queue.
@@ -705,7 +644,7 @@ class Connection(object):
         """ Close the connection.
         """
         if not self._closed:
-            if not self._defunct and self.protocol_version >= 3:
+            if not self._defunct:
                 log.debug("[#%04X]  C: GOODBYE", self.local_port)
                 self._append(b"\x02", ())
                 try:
@@ -1059,7 +998,7 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, **config):
     local_port = s.getsockname()[1]
 
     # Send details of the protocol versions supported
-    supported_versions = [3, 2, 1, 0]
+    supported_versions = [3, 0, 0, 0]
     handshake = [MAGIC_PREAMBLE] + supported_versions
     log.debug("[#%04X]  C: <MAGIC> 0x%08X", local_port, MAGIC_PREAMBLE)
     log.debug("[#%04X]  C: <HANDSHAKE> 0x%08X 0x%08X 0x%08X 0x%08X",
@@ -1097,13 +1036,6 @@ def _handshake(s, resolved_address, der_encoded_server_certificate, **config):
         log.debug("[#%04X]  C: <CLOSE>", local_port)
         s.shutdown(SHUT_RDWR)
         s.close()
-    elif agreed_version in (1, 2):
-        connection = Connection(
-            agreed_version, resolved_address, s,
-            der_encoded_server_certificate=der_encoded_server_certificate,
-            **config)
-        connection.init()
-        return connection
     elif agreed_version in (3,):
         connection = Connection(
             agreed_version, resolved_address, s,

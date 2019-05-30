@@ -19,27 +19,19 @@
 # limitations under the License.
 
 
-from os import makedirs, remove
-from os.path import basename, dirname, join as path_join, realpath, isfile, expanduser
-import platform
-from unittest import TestCase, SkipTest
+from os import getenv, makedirs
+from os.path import basename, dirname, join as path_join, isfile
 from shutil import copyfile
 from sys import stderr
+from unittest import TestCase
+from urllib.request import urlretrieve
+
+from boltkit.server import Neo4jService
 
 from neobolt.direct import connect
 
-
-try:
-    from urllib.request import urlretrieve
-except ImportError:
-    from urllib import urlretrieve
-
-from boltkit.config import update as update_config
-from boltkit.controller import _install, WindowsController, UnixController
-
-from neobolt.exceptions import AuthError
-
-from test.env import NEO4J_SERVER_PACKAGE, NEO4J_USER, NEO4J_PASSWORD, NEOCTRL_ARGS
+from test.env import NEO4J_SERVER_PACKAGE, NEO4J_USER, NEO4J_PASSWORD, \
+    NEOCTRL_ARGS
 
 
 def copy_dist(source, target):
@@ -109,6 +101,8 @@ class IntegrationTestCase(TestCase):
     local_server_package = path_join(dist_path, basename(server_package)) if server_package else None
     neoctrl_args = NEOCTRL_ARGS
 
+    neo4j = None
+
     @classmethod
     def delete_all(cls):
         with connect(cls.bolt_address, auth=cls.auth_token) as cx:
@@ -137,72 +131,21 @@ class IntegrationTestCase(TestCase):
         return cls.protocol_version() >= version
 
     @classmethod
-    def assert_supports_spatial_types(cls):
-        if not cls.at_least_protocol_version(2):
-            raise SkipTest("Spatial types require Bolt protocol v2 or above")
-
-    @classmethod
-    def assert_supports_temporal_types(cls):
-        if not cls.at_least_protocol_version(2):
-            raise SkipTest("Temporal types require Bolt protocol v2 or above")
-
-    @classmethod
-    def delete_known_hosts_file(cls):
-        known_hosts = path_join(expanduser("~"), ".neo4j", "known_hosts")
-        if isfile(known_hosts):
-            remove(known_hosts)
-
-    @classmethod
-    def _unpack(cls, package):
-        try:
-            makedirs(cls.run_path)
-        except OSError:
-            pass
-        controller_class = WindowsController if platform.system() == "Windows" else UnixController
-        home = realpath(controller_class.extract(package, cls.run_path))
-        return home
-
-    @classmethod
-    def _start_server(cls, home):
-        controller_class = WindowsController if platform.system() == "Windows" else UnixController
-        cls.controller = controller_class(home, 1)
-        update_config(cls.controller.home, {"dbms.connectors.default_listen_address": "::"})
-        if NEO4J_USER is None:
-            cls.controller.create_user(cls.user, cls.password)
-            cls.controller.set_user_role(cls.user, "admin")
-        cls.controller.start(timeout=300)
-
-    @classmethod
-    def _stop_server(cls):
-        if cls.controller is not None:
-            cls.controller.stop()
-            if NEO4J_USER is None:
-                pass  # TODO: delete user
-
-    @classmethod
     def setUpClass(cls):
-        if is_listening(cls.bolt_address):
-            print("Using existing server listening on port {}\n".format(cls.bolt_port))
-            try:
-                cx = connect(cls.bolt_address, auth=cls.auth_token)
-            except AuthError as error:
-                raise RuntimeError("Failed to authenticate (%s)" % error)
-            else:
-                cx.close()
-        elif cls.server_package is not None:
-            print("Using server from package {}\n".format(cls.server_package))
-            package = copy_dist(cls.server_package, cls.local_server_package)
-            home = cls._unpack(package)
-            cls._start_server(home)
-        elif cls.neoctrl_args is not None:
-            print("Using boltkit to install server 'neoctrl-install {}'\n".format(cls.neoctrl_args))
-            edition = "enterprise" if "-e" in cls.neoctrl_args else "community"
-            version = cls.neoctrl_args.split()[-1]
-            home = _install(edition, version, cls.run_path)
-            cls._start_server(home)
+        docker_tag = getenv("NEO4J_VERSION")
+        if docker_tag is None:
+            docker_tag = "enterprise"
         else:
-            raise SkipTest("No Neo4j server available for %s" % cls.__name__)
+            docker_tag += "-enterprise"
+        print("Running contained Neo4j using Docker tag {}".format(docker_tag))
+        cls.neo4j = Neo4jService(
+            image=docker_tag,
+            auth=cls.auth_token, **{
+                "dbms.connectors.default_listen_address": "::",
+            }
+        )
+        cls.neo4j.start(timeout=30)
 
     @classmethod
     def tearDownClass(cls):
-        cls._stop_server()
+        cls.neo4j.stop()

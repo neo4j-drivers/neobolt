@@ -35,72 +35,6 @@ class FakeConnectionPool(object):
         self.deactivated_addresses.append(address)
 
 
-class ConnectionV1TestCase(StubTestCase):
-
-    def test_construction(self):
-        with StubCluster({9001: "v1/empty.script"}):
-            address = ("127.0.0.1", 9001)
-            with connect(address, auth=self.auth_token, encrypted=False) as cx:
-                self.assertIsInstance(cx, Connection)
-
-    def test_return_1(self):
-        with StubCluster({9001: "v1/return_1.script"}):
-            address = ("127.0.0.1", 9001)
-            with connect(address, auth=self.auth_token, encrypted=False) as cx:
-                metadata = {}
-                records = []
-                cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
-                cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                cx.send_all()
-                cx.fetch_all()
-                self.assertEqual([[1]], records)
-
-    def test_disconnect_on_run(self):
-        with StubCluster({9001: "v1/disconnect_on_run.script"}):
-            address = ("127.0.0.1", 9001)
-            with connect(address, auth=self.auth_token, encrypted=False) as cx:
-                with self.assertRaises(ServiceUnavailable):
-                    metadata = {}
-                    cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
-                    cx.send_all()
-                    cx.fetch_all()
-
-    def test_disconnect_on_pull_all(self):
-        with StubCluster({9001: "v1/disconnect_on_pull_all.script"}):
-            address = ("127.0.0.1", 9001)
-            with connect(address, auth=self.auth_token, encrypted=False) as cx:
-                with self.assertRaises(ServiceUnavailable):
-                    metadata = {}
-                    records = []
-                    cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
-                    cx.pull_all(on_success=metadata.update, on_records=records.extend)
-                    cx.send_all()
-                    cx.fetch_all()
-
-    def test_disconnect_after_init(self):
-        with StubCluster({9001: "v1/disconnect_after_init.script"}):
-            address = ("127.0.0.1", 9001)
-            with connect(address, auth=self.auth_token, encrypted=False) as cx:
-                with self.assertRaises(ServiceUnavailable):
-                    metadata = {}
-                    cx.run("RETURN $x", {"x": 1}, on_success=metadata.update)
-                    cx.send_all()
-                    cx.fetch_all()
-
-    def test_address_deactivation_on_database_unavailable_error(self):
-        with StubCluster({9001: "v1/database_unavailable.script"}):
-            address = ("127.0.0.1", 9001)
-            with connect(address, auth=self.auth_token, encrypted=False) as cx:
-                cx.pool = FakeConnectionPool()
-                with self.assertRaises(DatabaseUnavailableError):
-                    metadata = {}
-                    cx.run("RETURN 1", {}, on_success=metadata.update)
-                    cx.pull_all()
-                    cx.send_all()
-                    cx.fetch_all()
-                assert ("127.0.0.1", 9001) in cx.pool.deactivated_addresses
-
-
 class ConnectionV3TestCase(StubTestCase):
 
     def test_construction(self):
@@ -292,3 +226,16 @@ class ConnectionV3TestCase(StubTestCase):
                 with self.assertRaises(IncompleteCommitError):
                     cx.send_all()
                     cx.fetch_all()
+
+    def test_address_deactivation_on_database_unavailable_error(self):
+        with StubCluster({9001: "v3/database_unavailable.script"}):
+            address = ("127.0.0.1", 9001)
+            with connect(address, auth=self.auth_token, encrypted=False) as cx:
+                cx.pool = FakeConnectionPool()
+                with self.assertRaises(DatabaseUnavailableError):
+                    metadata = {}
+                    cx.run("RETURN 1", {}, on_success=metadata.update)
+                    cx.pull_all()
+                    cx.send_all()
+                    cx.fetch_all()
+                assert ("127.0.0.1", 9001) in cx.pool.deactivated_addresses
