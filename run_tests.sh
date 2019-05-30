@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ARGS=$*
-VERSIONS="3.5.5"
+VERSIONS="snapshot 3.5"
 
 coverage erase
 
