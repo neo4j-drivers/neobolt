@@ -511,12 +511,15 @@ class Connection(object):
         self.send_all()
         self.fetch_all()
 
+    def _send_all(self):
+        data = self.outbox.view()
+        if data:
+            self.socket.sendall(data)
+            self.outbox.clear()
+
     def send_all(self):
         """ Send all queued messages to the server.
         """
-        data = self.outbox.view()
-        if not data:
-            return
         if self.closed():
             raise self.Error("Failed to write to closed connection "
                              "{!r} ({!r})".format(self.unresolved_address,
@@ -526,7 +529,7 @@ class Connection(object):
                              "{!r} ({!r})".format(self.unresolved_address,
                                                   self.server.address))
         try:
-            self.socket.sendall(data)
+            self._send_all()
         except (IOError, OSError) as error:
             log.error("Failed to write data to connection "
                       "{!r} ({!r}); ({!r})".
@@ -536,7 +539,6 @@ class Connection(object):
             if self.pool:
                 self.pool.deactivate(self.unresolved_address)
             raise
-        self.outbox.clear()
 
     def fetch_message(self):
         """ Receive at least one message from the server, if available.
@@ -648,8 +650,8 @@ class Connection(object):
                 log.debug("[#%04X]  C: GOODBYE", self.local_port)
                 self._append(b"\x02", ())
                 try:
-                    self.send_all()
-                except ServiceUnavailable:
+                    self._send_all()
+                except:
                     pass
             log.debug("[#%04X]  C: <CLOSE>", self.local_port)
             try:
@@ -1070,6 +1072,7 @@ def connect(address, **config):
     resolver.custom_resolve()
     resolver.dns_resolve()
     for resolved_address in resolver.addresses:
+        s = None
         try:
             host = address[0]
             s = _connect(resolved_address, **config)
