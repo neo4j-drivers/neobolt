@@ -40,19 +40,22 @@ class StubTestCase(TestCase):
 
 class StubServer(Thread):
 
-    def __init__(self, port, script):
+    def __init__(self, port, script, timeout=None):
         super(StubServer, self).__init__()
         self.port = port
         self.script = path_join(dirname(__file__), "scripts", script)
+        self.timeout = timeout or 3
 
     def run(self):
-        check_call(["bolt", "stub", "-t", "5", "-l", ":{}".format(self.port), self.script])
+        check_call(["bolt", "stub", "-t", str(self.timeout),
+                    "-l", ":{}".format(self.port), self.script])
 
 
 class StubCluster(object):
 
-    def __init__(self, servers):
-        self.servers = {port: StubServer(port, script) for port, script in dict(servers).items()}
+    def __init__(self, servers, timeout=None):
+        self.servers = {port: StubServer(port, script, timeout=timeout)
+                        for port, script in dict(servers).items()}
 
     def __enter__(self):
         self.start()
