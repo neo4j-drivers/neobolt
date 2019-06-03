@@ -271,7 +271,7 @@ def test_update_scenarios(update_scenario):
         else:
             assert False, "Unexpected server outcome %r" % outcome
         routers.append(("127.0.0.1", port))
-    with StubCluster(servers, timeout=5):
+    with StubCluster(servers):
         with RoutingPool(*routers) as pool:
             if overall_outcome is RoutingTable:
                 pool.update_routing_table()
@@ -486,7 +486,7 @@ def test_connected_to_writer():
 def test_should_retry_if_first_writer_fails():
     with StubCluster({9001: "v3/router_with_multiple_writers.script",
                       9006: "v3/fail_on_init.script",
-                      9007: "v3/empty.script"}, timeout=30):
+                      9007: "v3/empty.script"}):
         address = ("127.0.0.1", 9001)
         with RoutingPool(address) as pool:
             assert not pool.routing_table.is_fresh(WRITE_ACCESS)

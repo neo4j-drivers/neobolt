@@ -1080,6 +1080,8 @@ def connect(address, **config):
             connection = _handshake(s, address, der_encoded_server_certificate,
                                     **config)
         except Exception as error:
+            if s:
+                s.close()
             last_error = error
         else:
             return connection

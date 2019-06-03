@@ -44,7 +44,7 @@ class StubServer(Thread):
         super(StubServer, self).__init__()
         self.port = port
         self.script = path_join(dirname(__file__), "scripts", script)
-        self.timeout = timeout or 3
+        self.timeout = timeout or 300
 
     def run(self):
         check_call(["bolt", "stub", "-t", str(self.timeout),
