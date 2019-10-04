@@ -10,7 +10,7 @@ python:
   - "3.7-dev"
 
 install:
-  - sudo apt-get update && sudo apt-get install oracle-java9-set-default
+  - sudo apt-get update && sudo apt-get install openjdk-8-jdk
   - pip install tox-travis
 
 before_script:
