@@ -12,7 +12,6 @@ python:
 install:
   - sudo apt-get update
   - sudo apt-get install openjdk-8-jdk
-  - sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
   - pip install tox-travis
 
 before_script:
@@ -24,4 +23,5 @@ before_script:
 
 script:
   - export BOTO_CONFIG=/dev/null  # https://github.com/travis-ci/travis-ci/issues/7940
+  - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
   - tox
