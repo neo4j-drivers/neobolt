@@ -407,14 +407,11 @@ class Connection(object):
         try:
             self.socket.sendall(data)
         except SocketError as error:
-            log.error("Failed to write data to connection "
-                      "{!r} ({!r}); ({!r})".
-                      format(self.unresolved_address,
-                             self.server.address,
-                             "; ".join(map(repr, error.args))))
             if self.pool:
                 self.pool.deactivate(self.unresolved_address)
-            raise
+            raise self.Error("Failed to write to defunct connection "
+                             "{!r} ({!r})".format(self.unresolved_address,
+                                                  self.server.address))
         self.output_buffer.clear()
 
     def fetch(self):
@@ -470,10 +467,9 @@ class Connection(object):
     def _receive(self):
         received = self.input_buffer.receive_message(self.socket, 8192)
         if received == 0:
-            message = ("Failed to read from defunct connection " 
+            message = ("Failed to read from defunct connection "
                        "{!r} ({!r})".format(self.unresolved_address,
                                             self.server.address))
-            log.error(message)
             # We were attempting to receive data but the connection
             # has unexpectedly terminated. So, we need to close the
             # connection from the client side, and remove the address

@@ -21,6 +21,7 @@
 
 from unittest import SkipTest
 
+import neobolt
 from neobolt.direct import DEFAULT_PORT, Connection, connect
 from neobolt.exceptions import ServiceUnavailable, TransientError, AuthError
 
@@ -80,6 +81,30 @@ class ConnectionTestCase(IntegrationTestCase):
             cx.sync()
         foo = records[0][0][2]["foo"]
         self.assertEqual(b, foo)
+
+    def test_connection_double_close(self):
+        records = []
+
+        cx = connect(self.bolt_address, auth=self.auth_token)
+        metadata = {}
+        cx.run("RETURN 1", {}, on_success=metadata.update)
+        cx.pull_all(on_records=records.extend, on_success=metadata.update)
+        cx.sync()
+        cx.close()
+        cx.close()
+
+
+    def test_connection_raise_exception_if_closed(self):
+        records = []
+
+        cx = connect(self.bolt_address, auth=self.auth_token)
+        metadata = {}
+        cx.close()
+
+        with self.assertRaises(neobolt.exceptions.ServiceUnavailable) as ex:
+            cx.run("RETURN 1", {}, on_success=metadata.update)
+            cx.pull_all(on_records=records.extend, on_success=metadata.update)
+            cx.sync()
 
 
 class ConnectionV3IntegrationTestCase(IntegrationTestCase):
