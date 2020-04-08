@@ -111,9 +111,11 @@ except ImportError:
     JYTHON = False
 
     try:
+        # Python >= 3.3
         from time import perf_counter
     except ImportError:
-        from time import time as perf_counter
+        # Python < 3.3
+        from backports.time_perf_counter import perf_counter
 else:
     JYTHON = True
 
@@ -127,8 +129,3 @@ try:
 except ImportError:
     from urlparse import urlparse, parse_qs
 
-
-try:
-    from time import perf_counter
-except ImportError:
-    from time import clock as perf_counter

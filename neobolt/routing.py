@@ -40,7 +40,7 @@ INITIAL_RETRY_DELAY = 1.0
 RETRY_DELAY_MULTIPLIER = 2.0
 RETRY_DELAY_JITTER_FACTOR = 0.2
 
-DEFAULT_MAX_RETRY_TIME = 30.0  # 30s
+DEFAULT_MAX_RETRY_TIME = 30.0  # seconds
 
 LOAD_BALANCING_STRATEGY_LEAST_CONNECTED = 0
 LOAD_BALANCING_STRATEGY_ROUND_ROBIN = 1
@@ -100,8 +100,6 @@ class OrderedSet(MutableSet):
 
 class RoutingTable(object):
 
-    timer = perf_counter
-
     @classmethod
     def parse_routing_info(cls, records):
         """ Parse the records returned from a getServers call and
@@ -136,13 +134,13 @@ class RoutingTable(object):
         self.routers = OrderedSet(routers)
         self.readers = OrderedSet(readers)
         self.writers = OrderedSet(writers)
-        self.last_updated_time = self.timer()
+        self.last_updated_time = perf_counter()
         self.ttl = ttl
 
     def is_fresh(self, access_mode):
         """ Indicator for whether routing information is still usable.
         """
-        expired = self.last_updated_time + self.ttl <= self.timer()
+        expired = self.last_updated_time + self.ttl <= perf_counter()
         has_server_for_mode = (access_mode == READ_ACCESS and self.readers) or (access_mode == WRITE_ACCESS and self.writers)
         return not expired and self.routers and has_server_for_mode
 
@@ -153,7 +151,7 @@ class RoutingTable(object):
         self.routers.replace(new_routing_table.routers)
         self.readers.replace(new_routing_table.readers)
         self.writers.replace(new_routing_table.writers)
-        self.last_updated_time = self.timer()
+        self.last_updated_time = perf_counter()
         self.ttl = new_routing_table.ttl
 
     def servers(self):
