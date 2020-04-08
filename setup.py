@@ -42,6 +42,7 @@ else:
     ext_modules = cythonize([Extension("*", ["**/*.pyx"])])
 
 install_requires = [
+    'backports.time_perf_counter;python_version<"3.3"',
 ]
 classifiers = [
     "Intended Audience :: Developers",
